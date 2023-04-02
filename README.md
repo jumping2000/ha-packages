@@ -33,9 +33,6 @@ Here are some ideas to get you started:
 
 <br>
 
-<p align="center"> <img src="https://github-readme-stats.vercel.app/api?username=jumping2000&show_icons=true&theme=gotham" alt="Gianpit" />
-
-
 <!-- ✨ _special_ ✨ -->
 [website]: https://hassiohelp.eu/
 [Websitebadge]: https://img.shields.io/website?down_message=Offline&label=HssioHelp&logoColor=blue&up_message=Online&url=https%3A%2F%2Fhassiohelp.eu
