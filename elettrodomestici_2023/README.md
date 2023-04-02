@@ -1,4 +1,4 @@
-# 🌊 Elettrodomestici Smart 💧
+# 📡 Elettrodomestici Smart 📶
 
 
 | Elettrodomestici Smar|
