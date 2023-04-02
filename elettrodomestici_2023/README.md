@@ -1,7 +1,5 @@
-# 📡 Elettrodomestici Smart 📶
 
-
-| Elettrodomestici Smar|
+| # 📡 Elettrodomestici Smart 📶|
 | :---: |
 | [Lavatrice 💧](lavatrice.md) |
 | [Lavastoviglie 🍽](#lavastoviglie) | 
