@@ -32,8 +32,9 @@ Here are some ideas to get you started:
 ---
 
 Here some packages for Home Assistant:
-* Elettrodomestici 2020
-* [Elettrodomestici 2023](elettrodomestici_2023/README.md)
+* [📣 Elettrodomestici 202 💧](elettrodomestici_2020/README.md)
+* [📣 Elettrodomestici 2023 💧](elettrodomestici_2023/README.md)
+* [⚡ Home Energy and Gas 🔥](#)
 
 ---
 
