@@ -7,7 +7,8 @@
 | [Asciugatrice 🌀](#asciugatrice) | 
 | [Inverter ☀](#inverter) |
 | [Condizionatore 🌪](#condizionatore) |
-| [Termostato 🔥](#Termostato) |
+| [Termostato 🔥](#termostato) |
+| [Router 📶](#router) |
 
 
 
