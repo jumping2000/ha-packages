@@ -31,7 +31,11 @@ Here are some ideas to get you started:
 
 ---
 
-<br>
+Here some packages for Home Assistant:
+* Elettrodomestici
+* Elettrodomestici 2023
+
+---
 
 <!-- ✨ _special_ ✨ -->
 [website]: https://hassiohelp.eu/
