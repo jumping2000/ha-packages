@@ -191,8 +191,8 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
         <td><div align=center><img width = 400 src="img/lavatrice_4.png"/></div></td>
     </tr>
 	<tr>
-	    <th>Info Card</th>
-            <th>Energy Card</th>
+	    <th>🌀 Centrifuga in corso 🌀</th>
+            <th>🎽 E' l'ora di tendere i panni 🎽 </th>
 	</tr>
     <tr>
         <td><div align=center><img width = 400 src="img/centrifuga.png"/></div></td>
