@@ -1,0 +1,221 @@
+#################################################################
+#                                                               #
+#                    Packages/Forno e Cucina                    #
+#                                                               #
+#################################################################
+
+#################################################################
+#                                                               #
+#                          Customize                            #
+#                                                               #
+#################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Node Anchors
+    ################################################
+    package.node_anchors:
+      customize: &customize
+        package: 'oven'
+        version: '0.1'
+        author: 'Gianpi - www.hassiohelp.eu'
+
+      expose: &expose
+        <<: *customize
+        haaska_hidden: false
+        homebridge_hidden: false
+
+    ################################################
+    ## Sensor
+    ################################################
+    sensor.oven_status:
+      <<: *customize
+      icon: mdi:toaster-oven
+
+    sensor.kitchen_status:
+      <<: *customize
+      icon: mdi:silverware
+
+#################################################################
+#                                                               #
+#                            GROUP                              #
+#                                                               #
+#################################################################  
+group:
+  oven:
+    name: 'Forno'
+    entities:
+      - sensor.oven_status
+      - switch.plug_forno
+      - sensor.forno_power
+      - sensor.oven_cost
+      - sensor.oven_time_left
+
+#################################################################
+#                                                               #
+#                            INPUT                              #
+#                                                               #
+#################################################################
+input_select:
+  oven_program:
+    name: Programma Forno
+    options:
+      - Pane # 30 min
+      - Pizza #35 min
+      - Lasagne # 40
+      - Pasta al forno #80
+      - Arrosto # 60
+      - Agnello # 50 min
+      - Polpette #30
+      - Patate #65
+      - Verdure #80
+      - Torta di mele #55
+      - Crostata #45
+      - Ciambellone #40
+      - 'Off'
+    initial: 'Off'
+
+input_datetime:
+  oven_time_end:
+    name: End time
+    has_time: true
+    has_date: true
+
+#################################################################
+#                                                               #
+#                            SENSOR                             #
+#                                                               #
+#################################################################
+sensor:
+  - platform: template
+    sensors:
+      oven_status:
+        entity_id: sensor.forno_power, switch.plug_forno
+        friendly_name: 'Status forno'
+        value_template: >
+          {%- if is_state("switch.plug_forno","off") %}
+              Off
+          {% elif states("sensor.forno_power")|int > 100 %}
+              Riscaldamento
+          {% elif states("sensor.forno_power")|int > 38 %}
+              Mantenimento
+          {% elif states("sensor.forno_power")|int > 0 %}
+              Idle
+          {% else %}
+              Off
+          {%- endif %}
+
+      oven_cost:
+        entity_id: sensor.forno_energy_today
+        value_template: "{{(states('sensor.forno_energy_today') | float * 0.21) | round(2) }}"
+        unit_of_measurement: '€'
+        friendly_name: 'Costo Forno Oggi'
+
+      oven_time_left:
+        entity_id: input_select.oven_status, input_select.oven_program, sensor.time
+        value_template: >
+          {% set timer = ((states.input_datetime.oven_time_end.attributes.timestamp - as_timestamp(now())) / 60 ) | round(0)%}
+          {% if states('sensor.oven_status') != 'Off' %}
+            {{ timer if timer>0 else 0  }} min
+          {% else %}
+            {% set program = states('input_select.oven_program') %}
+            {% set dict_time_program = {
+              'Pane': '00:30:00',
+              'Pizza': '00:40:00',
+              'Lasagne': '00:40:00',
+              'Pasta al forno': '01:20:00',
+              'Arrosto': '01:00:00',
+              'Agnello': '00:50:00',
+              'Polpette': '00:30:00',
+              'Patate': '01:05:00',
+              'Verdure': '01:20:00',
+              'Torta di mele': '00:55:00',
+              'Crostata': '00:45:00',
+              'Ciambellone': '00:40:00',
+              'Off': '00:00:00' } %}
+            {{ dict_time_program[program] if program in dict_time_program }}
+          {% endif %}
+        friendly_name: 'Finish in '
+
+#################################################################
+#                                                               #
+#                          AUTOMATION                           #
+#                                                               #
+#################################################################
+automation:
+#################################################################
+  - alias: Forno Program
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: input_select.oven_program
+    - platform: state
+      entity_id: sensor.oven_status
+      to: Riscaldamento
+    action:
+    - service: input_datetime.set_datetime
+      entity_id: input_datetime.oven_time_end
+      data_template:
+        time: >-
+          {% set program = states('input_select.oven_program') %}
+          {% set dict_time_program = {
+            'Pane': '00:30:00',
+            'Pizza': '00:35:00',
+            'Lasagne': '00:40:00',
+            'Pasta al forno': '01:20:00',
+            'Arrosto': '01:00:00',
+            'Agnello': '00:50:00',
+            'Polpette': '00:30:00',
+            'Patate': '01:05:00',
+            'Verdure': '01:20:00',
+            'Torta di mele': '00:55:00',
+            'Crostata': '00:45:00',
+            'Ciambellone': '00:40:00',
+            'Off': '00:00:00' } %}
+          {% set t = now().timestamp() %}
+          {% set sec = strptime(dict_time_program[program], "%H:%M:%S").hour*3600 + strptime(dict_time_program[program], "%H:%M:%S").minute*60  %}
+          {{ (t+sec) | timestamp_custom("%H:%M:%S", true) }}
+        date: >-
+          {{ now().timestamp() | timestamp_custom("%Y-%m-%d", true)  }}
+
+#################################################################
+  - alias: Manda alert quando forno inizia
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: sensor.oven_status
+      from: 'Off'
+    condition:
+    - condition: numeric_state
+      entity_id: sensor.forno_power
+      above: 18
+    action:
+    - service: notify.telegram
+      data:
+        title: "-- Attenzione --"
+        message: 'Il forno è in funzione'
+
+#################################################################
+  - alias: Manda alert quando forno spento
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: sensor.oven_status
+      to : "Off"
+      for:
+        minutes: 1
+    condition:
+    - condition: state
+      entity_id: sensor.oven_status
+      state: "Off"
+    action:
+    - service: notify.telegram
+      data_template:
+        title: "-- Attenzione --"
+        message: "Forno spento, buon appetito. Consumati oggi {{ float(states('sensor.forno_energy_today')) | float | round(2)  }} kWh"
+
+#################################################################
+#                                                               #
+#                     END OF CONFIGURATION FILE                 #
+#                                                               #
+#################################################################

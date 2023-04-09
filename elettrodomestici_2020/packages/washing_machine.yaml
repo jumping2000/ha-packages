@@ -1,0 +1,327 @@
+#################################################################
+#                                                               #
+#                    Packages/washing Machine                   #
+#                                                               #
+#################################################################
+
+#################################################################
+#                                                               #
+#                          Customize                            #
+#                                                               #
+#################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Node Anchors
+    ################################################
+    package.node_anchors:
+      customize: &customize
+        package: 'washing_machine'
+
+      expose: &expose
+        <<: *customize
+        haaska_hidden: false
+        homebridge_hidden: false
+
+    ################################################
+    ## sensor
+    ################################################
+    sensor.washing_machine_status:
+      <<: *customize
+      icon: mdi:washing-machine
+
+    sensor.washing_machine_cost:
+      <<: *customize
+      icon: mdi:currency-eur
+
+    sensor.washing_machine_time_left:
+      <<: *customize
+      icon: mdi:progress-clock 
+
+#################################################################
+#                                                               #
+#                            SENSOR                             #
+#                                                               #
+#################################################################  
+sensor:
+  - platform: template
+    sensors:
+      washing_machine_status:
+        entity_id: input_select.washing_machine_status
+        value_template: "{{ states('input_select.washing_machine_status') }}"
+        friendly_name: 'Status Lavatrice'
+
+      washing_machine_time_left:
+        entity_id: input_select.washing_machine_status, input_select.washing_machine_program, sensor.time
+        value_template: >
+          {% set timer = ((states.input_datetime.washing_machine_time_end.attributes.timestamp - as_timestamp(now())) / 60 ) | round(0) %}
+          {% if states('sensor.washing_machine_status') != 'Avviare' %}
+            {{ timer if timer>0 else 0 }} min
+          {% else %}
+            {% set program = states('input_select.washing_machine_program') %}
+            {% set dict_time_program = {
+              'Cotone': '03:20:00',
+              'Misti': '01:10:00',
+              'Sintetici': '01:40:00',
+              'Delicati': '00:40:00',
+              'Lana': '00:40:00',
+              'Rapido': '00:30:00',
+              'Colorati': '01:20:00',
+              'Centrifuga': '00:15:00',
+              'Off': '00:00:00' } %}
+            {{ dict_time_program[program] if program in dict_time_program }}
+          {% endif %}
+        friendly_name: 'Finish in '
+
+      washing_machine_cost:
+        entity_id: sensor.lavatrice_energy_today
+        value_template: "{{(states('sensor.lavatrice_energy_today') | float * 0.21) | round(2) }}"
+        unit_of_measurement: '€'
+        friendly_name: Costo Lavatrice Oggi
+
+#################################################################
+#                                                               #
+#                 INPUT BOOLEAN SELECT DATETIME                 #
+#                                                               #
+#################################################################  
+input_select:
+  washing_machine_status:
+    name: Stato Lavatrice
+    options:
+      - Avviare
+      - Lavaggio
+      - Risciacquo
+      - Centrifuga
+      - Completamento
+      - Svuotare
+    initial: Avviare
+
+  washing_machine_program:
+    name: Programma Lavatrice
+    options:
+      - Cotone #3,2
+      - Misti #1,10
+      - Sintetici #1,4
+      - Delicati #0,4
+      - Lana #0,40
+      - Rapido # 0,30
+      - Colorati # 1,20
+      - Centrifuga # 0,15
+      - 'Off'
+    initial: Colorati
+
+input_datetime:
+  washing_machine_time_end:
+    name: End time
+    has_time: true
+    has_date: true
+
+#################################################################
+#                                                               #
+#                            GROUP                              #
+#                                                               #
+#################################################################  
+group:
+  washing_machine:
+    name: 'Washing Machine'
+    entities:
+      - sensor.washing_machine_status
+      - switch.plug_lavatrice
+      - sensor.lavatrice_power
+      - sensor.washing_machine_cost
+      - sensor.washing_machine_time_left
+
+#################################################################
+#                                                               #
+#                          AUTOMATION                           #
+#                                                               #
+#################################################################
+automation:
+#################################################################
+  - alias: Lavatrice Program
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: input_select.washing_machine_program
+    - platform: state
+      entity_id: sensor.washing_machine_status
+      from: Avviare
+      to: Lavaggio
+    action:
+    - service: input_datetime.set_datetime
+      entity_id: input_datetime.washing_machine_time_end
+      data_template:
+        time: >-
+          {% set program = states('input_select.washing_machine_program') %}
+          {% set dict_time_program = {
+            'Cotone': '03:20:00',
+            'Misti': '01:10:00',
+            'Sintetici': '01:40:00',
+            'Delicati': '00:40:00',
+            'Lana': '00:40:00',
+            'Rapido': '00:30:00',
+            'Colorati': '01:20:00',
+            'Centrifuga': '00:15:00',
+            'Off': '00:00:00' } %}
+          {% set t = now().timestamp() %}
+          {% set sec = strptime(dict_time_program[program], "%H:%M:%S").hour*3600 + strptime(dict_time_program[program], "%H:%M:%S").minute*60  %}
+          {{ (t+sec) | timestamp_custom("%H:%M:%S", true) }}
+        date: >-
+          {{ now().timestamp() | timestamp_custom("%Y-%m-%d", true)  }}
+
+#################################################################
+# detect running state
+  - alias: Lavatrice Washing
+    initial_state: true
+    trigger:
+    - platform: numeric_state
+      entity_id: sensor.lavatrice_power
+      above: 5
+    #  for:
+    #    minutes: 1
+    condition:
+    - condition: state
+      entity_id: input_select.washing_machine_status
+      state: Avviare
+    action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.washing_machine_status
+        option: Lavaggio
+
+#################################################################
+# detect Washing machine rinse
+  - alias: Lavatrice Rinse
+    initial_state: true
+    trigger:
+    - platform: numeric_state
+      entity_id: sensor.lavatrice_power
+      below: 1000
+      for:
+        minutes: 15
+    condition:
+    - condition: state
+      entity_id: input_select.washing_machine_status
+      state: Lavaggio
+      for:
+        minutes: 15
+    action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.washing_machine_status
+        option: Risciacquo
+#################################################################
+# Detect Spin State
+  - alias: Lavatrice Spin
+    trigger:
+    - platform: numeric_state
+      entity_id: sensor.lavatrice_power
+      above: 60 
+      for:
+        minutes: 1
+    condition:
+    - condition: state
+      entity_id: input_select.washing_machine_status
+      state: Risciacquo
+    action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.washing_machine_status
+        option: Centrifuga
+#################################################################
+# Detect Finish State
+  - alias: Lavatrice Finishing
+    trigger:
+    - platform: numeric_state
+      entity_id: sensor.lavatrice_power
+      below: 2.5
+      for:
+        minutes: 1
+    condition:
+      condition: or
+      conditions:
+      - condition: state
+        entity_id: input_select.washing_machine_status
+        state: Lavaggio
+      - condition: state
+        entity_id: input_select.washing_machine_status
+        state: Risciacquo
+      - condition: state
+        entity_id: input_select.washing_machine_status
+        state: Centrifuga
+    action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.washing_machine_status
+        option: Completamento
+#################################################################
+# clean
+  - alias: Lavatrice Clean
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: input_select.washing_machine_status
+      to: Completamento
+      for:
+        minutes: 10
+    condition:
+    - condition: state
+      entity_id: input_select.washing_machine_status
+      state: Completamento
+    action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.washing_machine_status
+        option: 'Svuotare'
+
+#################################################################
+# back to start state
+  - alias: Lavatrice in avviare
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: input_select.washing_machine_status
+      to: 'Svuotare'
+      for:
+        minutes: 5
+    - platform: numeric_state
+      entity_id: sensor.lavatrice_power
+      below: 1
+    condition:
+      condition: or
+      conditions:
+      - condition: state
+        entity_id: input_select.washing_machine_status
+        state: Completamento
+      - condition: state
+        entity_id: input_select.washing_machine_status
+        state: Svuotare
+    action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.washing_machine_status
+        option: Avviare
+    - service: notify.telegram
+      data_template:
+        title: "-- Attenzione --"
+        message: "Lavatrice finita, i panni sono pronti per essere stesi. Consumato oggi {{ float(states('sensor.lavatrice_energy_today')) | float | round(2)  }} kWh"
+
+#################################################################
+  - alias: Manda alert quando lavatrice inizia
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: sensor.washing_machine_status
+      from: 'Avviare'
+      to: 'Lavaggio'
+    action:
+    - service: notify.telegram
+      data:
+        title: '--Washing Machine--'
+        message: 'Lavatrice iniziata'
+
+#################################################################
+#                                                               #
+#                     END OF CONFIGURATION FILE                 #
+#                                                               #
+#################################################################

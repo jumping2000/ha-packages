@@ -1,0 +1,741 @@
+###################################################################################
+## CARD LAVATRICE
+###################################################################################
+type: picture-elements
+style: |
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  ha-card { 
+    --my-rotate:  {% if (is_state('sensor.washing_machine_status', 'Lavaggio') or
+                    is_state('sensor.washing_machine_status', 'Risciacquo') or
+                    is_state('sensor.washing_machine_status', 'Centrifuga')) %} 
+                    rotate 100ms infinite 
+                  {% endif %};
+  }
+image: /local/images/devices/sfondo.jpg
+elements:
+  - type: image
+    entity: switch.plug_lavatrice
+    image: /local/images/devices/lavatrice.png
+    state_filter:
+      'off': brightness(56%) saturate(0.5) opacity(1.0)
+      'on': null
+    style:
+      left: 27%
+      top: 57.5%
+      width: 27%
+    tap_action:
+      action: toggle
+  - type: image
+    entity: sensor.washing_machine_status
+    image: /local/images/devices/lavatrice_oblo.png
+    state_filter:
+      Avviare: opacity(0.0)
+      Lavaggio: opacity(0.0)
+      Risciacquo: opacity(0.0)
+      Centrifuga: opacity(0.0)
+      Completamento: opacity(0.0)
+      Svuotare: null
+    style:
+      left: 21.5%
+      pointer-events: none
+      top: 55.5%
+      width: 33%
+  - type: image
+    entity: sensor.washing_machine_status
+    image: /local/images/devices/lavatrice_panni.png
+    state_filter:
+      Avviare: opacity(0.0)
+      Lavaggio: null
+      Risciacquo: null
+      Centrifuga: null
+      Completamento: null
+      Svuotare: opacity(0.0)
+    style:
+      transform: 'translate(0%,0%)'
+      animation: var(--my-rotate)
+      left: 19%
+      pointer-events: none
+      top: 45%
+      width: 15%
+  - type: state-label
+    entity: input_select.washing_machine_program
+    prefix: 'Programma: '
+    style:
+      left: 0
+      bottom: 0
+      pointer-events: none
+      font-size: 16px
+      line-height: 32px
+      color: white
+      width: 100%
+      transform: initial
+      padding: 0px 13px
+  - type: icon
+    icon: 'mdi:arrow-left-drop-circle-outline'
+    tap_action:
+      action: call-service
+      service: input_select.select_previous
+      service_data:
+        entity_id: input_select.washing_machine_program
+    style:
+      left: 48%
+      bottom: 0
+      transform: initial
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 8px 13px
+  - type: icon
+    icon: 'mdi:arrow-right-drop-circle-outline'
+    tap_action:
+      action: call-service
+      service: input_select.select_next
+      service_data:
+        entity_id: input_select.washing_machine_program
+    style:
+      left: 54%
+      bottom: 0
+      transform: initial
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 8px 13px
+  - type: state-label
+    entity: sensor.washing_machine_time_left
+    style:
+      bottom: 0
+      right: 0
+      pointer-events: none
+      font-size: 16px
+      transform: initial
+      color: white
+      line-height: 32px
+      padding: 0px 44px
+  - type: icon
+    icon: 'mdi:progress-clock'
+    entity: sensor.washing_machine_status
+    style:
+      bottom: 0
+      right: 0
+      transform: initial
+      color: white
+      line-height: 32px
+      padding: 8px 16px
+  - type: state-label
+    entity: sensor.lavatrice_power
+    style:
+      top: 0
+      left: 0
+      pointer-events: none
+      transform: initial
+      font-size: 12px
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 4px 35px
+  - type: icon
+    icon: 'mdi:flash-circle'
+    style:
+      top: 0
+      left: 0
+      pointer-events: none
+      transform: scale(0.8)
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 10px 13px
+  - type: state-label
+    entity: sensor.lavatrice_energy_today
+    style:
+      top: 0
+      left: 17%
+      pointer-events: none
+      transform: initial
+      font-size: 12px
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 4px 35px
+  - type: icon
+    icon: 'mdi:circle-slice-3'
+    style:
+      top: 0
+      left: 17%
+      pointer-events: none
+      transform: scale(0.8)
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 10px 13px
+  - type: state-label
+    entity: sensor.washing_machine_cost
+    style:
+      top: 0
+      left: 40%
+      pointer-events: none
+      transform: initial
+      font-size: 12px
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 4px 35px
+  - type: icon
+    icon: 'mdi:currency-eur'
+    style:
+      top: 0
+      left: 40%
+      pointer-events: none
+      transform: scale(0.8)
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 10px 13px
+  - type: state-icon
+    entity: switch.plug_lavatrice
+    tap_action:
+      action: toggle
+    style:
+      top: 0
+      left: 60%
+      transform: scale(0.8)
+      font-size: 12px
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 6px 35px
+  - type: state-icon
+    entity: binary_sensor.0x00158d0002bf5143_contact
+    style:
+      top: 0
+      left: 60%
+      pointer-events: none
+      transform: scale(0.8)
+      font-size: 12px
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 6px 2px
+  - type: state-label
+    prefix: 'Stato: '
+    entity: sensor.washing_machine_status
+    style:
+      top: 13%
+      left: 38%
+      pointer-events: none
+      transform: initial
+      font-size: 16px
+      font-weight: bold
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 30px 35px
+  - type: 'custom:mini-graph-card'
+    entities:
+      - sensor.lavatrice_power
+    style:
+      '--paper-card-background-color': 'rgba(0, 0, 0, 0.0)'
+      top: 60%
+      left: 70%
+      width: 50%
+    hours_to_show: 4
+    icon: 'mdi:flash'
+    name: Potenza
+    font_size: 2
+    unit: W
+    hour24: true
+    points_per_hour: 60
+    show:
+      icon_adaptive_color: true
+      name_adaptive_color: true
+      name: true
+      icon: true
+      state: false
+      fill: fade
+      points: false
+      extrema: true
+      labels: hover
+###################################################################################
+## CARD LAVASTOVIGLIE
+###################################################################################
+type: picture-elements
+style: |
+  @keyframes blinker {
+    0% 49% 51% 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  ha-card {
+    --my-blinker: {% if (is_state('sensor.dishwasher_status', 'Lavaggio') or
+                    is_state('sensor.dishwasher_status', 'Asciugatura')) %} 
+                    blinker 800ms infinite 
+                  {% endif %};
+  }
+image: /local/images/devices/sfondo.jpg
+elements:
+  - type: image
+    entity: switch.plug_lavastoviglie
+    image: /local/images/devices/lavastoviglie.png
+    state_filter:
+      'off': brightness(56%) saturate(0.5) opacity(1.0)
+      'on': null
+    style:
+      left: 27%
+      top: 57.5%
+      width: 27%
+    tap_action:
+      action: toggle
+  - type: image
+    entity: sensor.dishwasher_status
+    image: /local/images/devices/lavastoviglie_finita.png
+    state_filter:
+      Avviare: opacity(0.0)
+      Lavaggio: opacity(0.0)
+      Asciugatura: opacity(0.0)
+      Svuotare: null
+    style:
+      left: 27%
+      pointer-events: none
+      top: 55%
+      width: 33%
+    tap_action:
+      action: call-service
+      service: switch.toggle
+      service_data:
+        entity_id: switch.plug_lavastoviglie
+  - type: image
+    entity: sensor.stato_lavastoviglie
+    image: /local/images/devices/lavastoviglie_wash.png
+    state_filter:
+      Avviare: opacity(0.0)
+      Lavaggio: null
+      Asciugatura: null
+      Svuotare: opacity(0.0)
+    style:
+      animation: var(--my-blinker)
+      transform: 'translate(0%,0%)'
+      left: 23%
+      top: 34%
+      width: 7.5%
+    tap_action:
+      action: call-service
+      service: switch.toggle
+      service_data:
+        entity_id: switch.plug_lavastoviglie
+  - type: state-label
+    entity: input_select.dishwasher_program
+    prefix: 'Programma: '
+    style:
+      left: 0
+      bottom: 0
+      pointer-events: none
+      font-size: 16px
+      line-height: 32px
+      color: white
+      width: 100%
+      transform: initial
+      padding: 0px 13px
+  - type: icon
+    icon: 'mdi:arrow-left-drop-circle-outline'
+    tap_action:
+      action: call-service
+      service: input_select.select_previous
+      service_data:
+        entity_id: input_select.dishwasher_program
+    style:
+      left: 48%
+      bottom: 0
+      transform: initial
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 8px 13px
+  - type: icon
+    icon: 'mdi:arrow-right-drop-circle-outline'
+    tap_action:
+      action: call-service
+      service: input_select.select_next
+      service_data:
+        entity_id: input_select.dishwasher_program
+    style:
+      left: 54%
+      bottom: 0
+      transform: initial
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 8px 13px
+  - type: state-label
+    entity: sensor.dishwasher_time_left
+    style:
+      bottom: 0
+      right: 0
+      pointer-events: none
+      font-size: 16px
+      transform: initial
+      color: white
+      line-height: 32px
+      padding: 0px 44px
+  - type: icon
+    icon: 'mdi:progress-clock'
+    entity: sensor.dishwasher_status
+    style:
+      bottom: 0
+      right: 0
+      transform: initial
+      color: white
+      line-height: 32px
+      padding: 8px 16px
+  - type: state-label
+    entity: sensor.lavastoviglie_power
+    style:
+      top: 0
+      left: 0
+      pointer-events: none
+      transform: initial
+      font-size: 12px
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 4px 35px
+  - type: icon
+    icon: 'mdi:flash-circle'
+    style:
+      top: 0
+      left: 0
+      pointer-events: none
+      transform: scale(0.8)
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 10px 13px
+  - type: state-label
+    entity: sensor.lavastoviglie_energy_today
+    style:
+      top: 0
+      left: 17%
+      pointer-events: none
+      transform: initial
+      font-size: 12px
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 4px 35px
+  - type: icon
+    icon: 'mdi:circle-slice-3'
+    style:
+      top: 0
+      left: 17%
+      pointer-events: none
+      transform: scale(0.8)
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 10px 13px
+  - type: state-label
+    entity: sensor.dishwasher_cost
+    style:
+      top: 0
+      left: 40%
+      pointer-events: none
+      transform: initial
+      font-size: 12px
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 4px 35px
+  - type: icon
+    icon: 'mdi:currency-eur'
+    style:
+      top: 0
+      left: 40%
+      pointer-events: none
+      transform: scale(0.8)
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 10px 13px
+  - type: state-icon
+    entity: switch.plug_lavastoviglie
+    tap_action:
+      action: toggle
+    style:
+      top: 0
+      left: 60%
+      transform: scale(0.8)
+      font-size: 12px
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 6px 35px
+  - type: state-label
+    prefix: 'Stato: '
+    entity: sensor.dishwasher_status
+    style:
+      top: 13%
+      left: 38%
+      pointer-events: none
+      transform: initial
+      font-size: 16px
+      font-weight: bold
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 30px 35px
+  - type: 'custom:mini-graph-card'
+    entities:
+      - sensor.lavastoviglie_power
+    style:
+      '--paper-card-background-color': 'rgba(0, 0, 0, 0.0)'
+      top: 60%
+      left: 70%
+      width: 50%
+    hours_to_show: 4
+    icon: 'mdi:flash'
+    name: Potenza
+    font_size: 2
+    unit: W
+    hour24: true
+    points_per_hour: 60
+    show:
+      icon_adaptive_color: true
+      name_adaptive_color: true
+      name: true
+      icon: true
+      state: false
+      fill: fade
+      points: false
+      extrema: true
+      labels: hover
+###################################################################################
+## CARD FORNO
+###################################################################################
+type: picture-elements
+style: |
+  @keyframes smoke {
+    100% {
+      transform: translatey(-180px) scaley(1.5) scalex(1.5);
+      filter: blur(15px);
+  }
+    0% {
+      transform: translatey(0) scaley(0.5) scalex(0.5);
+      filter: blur(5px);
+  }
+  }
+  @keyframes cook {
+    0% 100% { filter: saturate(1); }
+    50% { filter: saturate(0); }
+  }
+
+  ha-card {
+    --my-cook: {% if is_state('sensor.oven_status', 'Riscaldamento') or is_state('sensor.oven_status', 'Mantenimento')%} cook 1800ms infinite {% endif %};
+    --my-smoke: {% if is_state('sensor.oven_status', 'Idle') %} smoke 2.5s infinite {% endif %};
+  }
+image: /local/images/devices/sfondo.jpg
+elements:
+  - type: image
+    entity: switch.plug_forno
+    image: /local/images/devices/forno.png
+    state_filter:
+      'off': brightness(56%) saturate(0.5) opacity(1.0)
+      'on': null
+    style:
+      left: 26.5%
+      top: 56.5%
+      width: 28%
+    tap_action:
+      action: toggle
+  - type: image
+    entity: sensor.oven_status
+    image: /local/images/devices/forno_chicken.png
+    state_filter:
+      'Off': opacity(0.0)
+      Riscaldamento: null
+      Mantenimento: null
+      Idle: opacity(0.0)
+    style:
+      transform: 'translate(0%,0%)'
+      animation: var(--my-cook)
+      left: 16.5%
+      top: 43%
+      width: 21%
+    tap_action:
+      action: call-service
+      service: switch.toggle
+      service_data:
+        entity_id: switch.plug_forno
+  - type: image
+    entity: sensor.oven_status
+    image: /local/images/devices/forno_smoke.png
+    state_filter:
+      'Off': opacity(0.0)
+      Riscaldamento: opacity(0.0)
+      Mantenimento: opacity(0.0)
+      Idle: null
+    style:
+      transform: 'translate(0%,0%)'
+      animation: var(--my-smoke)
+      left: 16.5%
+      top: 35%
+      width: 25%
+    tap_action:
+      action: call-service
+      service: switch.toggle
+      service_data:
+        entity_id: switch.plug_forno
+  - type: state-label
+    entity: input_select.oven_program
+    prefix: 'Tempo Cottura: '
+    style:
+      left: 0
+      bottom: 0
+      pointer-events: none
+      font-size: 16px
+      line-height: 32px
+      color: white
+      width: 100%
+      transform: initial
+      padding: 0px 13px
+  - type: icon
+    icon: 'mdi:arrow-left-drop-circle-outline'
+    tap_action:
+      action: call-service
+      service: input_select.select_previous
+      service_data:
+        entity_id: input_select.oven_program
+    style:
+      left: 48%
+      bottom: 0
+      transform: initial
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 8px 13px
+  - type: icon
+    icon: 'mdi:arrow-right-drop-circle-outline'
+    tap_action:
+      action: call-service
+      service: input_select.select_next
+      service_data:
+        entity_id: input_select.oven_program
+    style:
+      left: 54%
+      bottom: 0
+      transform: initial
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 8px 13px
+  - type: state-label
+    entity: sensor.oven_time_left
+    style:
+      bottom: 0
+      right: 0
+      pointer-events: none
+      font-size: 16px
+      transform: initial
+      color: white
+      line-height: 32px
+      padding: 0px 44px
+  - type: icon
+    icon: 'mdi:progress-clock'
+    entity: sensor.oven_status
+    style:
+      bottom: 0
+      right: 0
+      transform: initial
+      color: white
+      line-height: 32px
+      padding: 8px 16px
+  - type: state-label
+    entity: sensor.forno_power
+    style:
+      top: 0
+      left: 0
+      pointer-events: none
+      transform: initial
+      font-size: 12px
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 4px 35px
+  - type: icon
+    icon: 'mdi:flash-circle'
+    style:
+      top: 0
+      left: 0
+      pointer-events: none
+      transform: scale(0.8)
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 10px 13px
+  - type: state-label
+    entity: sensor.forno_energy_today
+    style:
+      top: 0
+      left: 17%
+      pointer-events: none
+      transform: initial
+      font-size: 12px
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 4px 35px
+  - type: icon
+    icon: 'mdi:circle-slice-3'
+    style:
+      top: 0
+      left: 17%
+      pointer-events: none
+      transform: scale(0.8)
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 10px 13px
+  - type: state-label
+    entity: sensor.oven_cost
+    style:
+      top: 0
+      left: 40%
+      pointer-events: none
+      transform: initial
+      font-size: 12px
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 4px 35px
+  - type: icon
+    icon: 'mdi:currency-eur'
+    style:
+      top: 0
+      left: 40%
+      pointer-events: none
+      transform: scale(0.8)
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 10px 13px
+  - type: state-icon
+    entity: switch.plug_forno
+    tap_action:
+      action: toggle
+    style:
+      top: 0
+      left: 60%
+      transform: scale(0.8)
+      font-size: 12px
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 6px 35px
+  - type: state-label
+    entity: sensor.oven_status
+    prefix: 'Stato: '
+    style:
+      top: 13%
+      left: 38%
+      pointer-events: none
+      transform: initial
+      font-size: 16px
+      font-weight: bold
+      color: 'rgba(255,255,255,0.8)'
+      line-height: 32px
+      padding: 30px 35px
+  - type: 'custom:mini-graph-card'
+    entities:
+      - sensor.forno_power
+    style:
+      '--paper-card-background-color': 'rgba(0, 0, 0, 0.0)'
+      top: 60%
+      left: 70%
+      width: 50%
+    hours_to_show: 4
+    icon: 'mdi:flash'
+    name: Potenza
+    font_size: 2
+    unit: W
+    hour24: true
+    points_per_hour: 60
+    show:
+      icon_adaptive_color: true
+      name_adaptive_color: true
+      name: true
+      icon: true
+      state: false
+      fill: fade
+      points: false
+      extrema: true
+      labels: hover

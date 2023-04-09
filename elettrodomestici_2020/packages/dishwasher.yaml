@@ -1,0 +1,274 @@
+#################################################################
+#                                                               #
+#                    Packages/Dishwashwer                       #
+#                                                               #
+#################################################################
+
+#################################################################
+#                                                               #
+#                          Customize                            #
+#                                                               #
+#################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Node Anchors
+    ################################################
+    package.node_anchors:
+      customize: &customize
+        package: 'dishwasher'
+
+      expose: &expose
+        <<: *customize
+        haaska_hidden: false
+        homebridge_hidden: false
+
+    ################################################
+    ## sensor
+    ################################################
+    sensor.dishwasher_status:
+      <<: *customize
+      icon: mdi:dishwasher
+
+    sensor.dishwasher_cost:
+      <<: *customize
+      icon: mdi:currency-eur
+
+    sensor.dishwasher_time_left:
+      <<: *customize
+      icon: mdi:progress-clock
+
+#################################################################
+#                                                               #
+#                            SENSOR                             #
+#                                                               #
+#################################################################  
+sensor:
+  - platform: template
+    sensors:
+      dishwasher_status:
+        entity_id: input_select.dishwasher_status
+        value_template: "{{ states('input_select.dishwasher_status') }}"
+        friendly_name: 'Status lavastoviglie'
+
+      dishwasher_time_left:
+        entity_id: input_select.dishwasher_status, input_select.dishwasher_program, sensor.time
+        value_template: >
+          {% set timer = ((states.input_datetime.dishwasher_time_end.attributes.timestamp - as_timestamp(now())) / 60 ) | round(0) %}
+          {% if states('sensor.dishwasher_status') != 'Avviare' %}
+            {{ timer if timer>0 else 0  }} min
+          {% else %}
+            {% set program = states('input_select.dishwasher_program') %}
+            {% set dict_time_program = {
+              'Eco': '02:20:00',
+              'Intensivo': '02:30:00',
+              'Normale': '02:00:00',
+              'Ammollo': '00:10:00',
+              'Off': '00:00:00' } %}
+            {{ dict_time_program[program] if program in dict_time_program }}
+          {% endif %}
+        friendly_name: 'Finish in '
+
+      dishwasher_cost:
+        entity_id: sensor.lavastoviglie_energy_today
+        value_template: "{{(states('sensor.lavastoviglie_energy_today') | float * 0.21) | round(2) }}"
+        unit_of_measurement: '€'
+        friendly_name: 'Costo Lavastoviglie Oggi'
+
+#################################################################
+#                                                               #
+#                 INPUT BOOLEAN SELECT DATETIME                 #
+#                                                               #
+#################################################################  
+input_select:
+  dishwasher_status:
+    name: Stato Lavastoviglie
+    options:
+      - Avviare
+      - Lavaggio
+      - Asciugatura
+      - Svuotare
+    initial: Avviare
+
+  dishwasher_program:
+    name: Programma Lavastoviglie
+    options:
+      - Eco #3,2
+      - Intensivo #1,10
+      - Normale #1,4
+      - Ammollo #0,4
+      - 'Off'
+    initial: Eco
+
+input_datetime:
+  dishwasher_time_end:
+    name: End time
+    has_time: true
+    has_date: true
+
+#################################################################
+#                                                               #
+#                            GROUP                              #
+#                                                               #
+#################################################################  
+group:
+  dishwasher:
+    name: 'Dishwasher'
+    entities:
+      - sensor.dishwasher_status
+      - switch.plug_lavastoviglie
+      - sensor.lavastoviglie_power
+      - sensor.dishwasher_cost
+      - sensor.dishwasher_left
+
+#################################################################
+#                                                               #
+#                          AUTOMATION                           #
+#                                                               #
+#################################################################
+automation:
+#################################################################
+  - alias: Lavastoviglie Program
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: input_select.dishwasher_program
+    - platform: state
+      entity_id: sensor.dishwasher_status
+      from: Avviare
+      to: Lavaggio
+    action:
+    - service: input_datetime.set_datetime
+      entity_id: input_datetime.dishwasher_time_end
+      data_template:
+        time: >-
+          {% set program = states('input_select.dishwasher_program') %}
+          {% set dict_time_program = {
+              'Eco': '02:20:00',
+              'Intensivo': '02:30:00',
+              'Normale': '02:00:00',
+              'Ammollo': '00:10:00',
+              'Off': '00:00:00' } %}
+          {% set t = now().timestamp() %}
+          {% set sec = strptime(dict_time_program[program], "%H:%M:%S").hour*3600 + strptime(dict_time_program[program], "%H:%M:%S").minute*60  %}
+          {{ (t+sec) | timestamp_custom("%H:%M:%S", true) }}
+        date: >-
+          {{ now().timestamp() | timestamp_custom("%Y-%m-%d", true)  }}
+
+#################################################################
+# washing state
+  - alias: Lavastoviglie active quando rileva potenza
+    initial_state: true
+    trigger:
+    - platform: numeric_state
+      entity_id: sensor.lavastoviglie_power
+      above: 10
+      for:
+        minutes: 1
+    condition:
+      condition: or
+      conditions:
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Avviare
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Svuotare
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Asciugatura
+    action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.dishwasher_status
+        option: Lavaggio
+
+#################################################################
+# Drying state
+  - alias: lavastoviglie drying quando non rileva potenza
+    initial_state: true
+    trigger:
+    - platform: numeric_state
+      entity_id: sensor.lavastoviglie_power
+      below: 6
+    condition:
+    - condition: state
+      entity_id: input_select.dishwasher_status
+      state: Lavaggio
+    action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.dishwasher_status
+        option: Asciugatura
+
+################################################################# 
+# clean state
+  - alias: lavastoviglie clean
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: sensor.dishwasher_status
+      to: Asciugatura
+      for:
+        minutes: 15
+    condition:
+    - condition: state
+      entity_id: input_select.dishwasher_status
+      state: Asciugatura
+    action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.dishwasher_status
+        option: Svuotare
+
+################################################################# 
+# back to start state
+  - alias: lavastoviglie Dirty
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: sensor.dishwasher_status
+      to: Svuotare
+      for:
+        minutes: 5
+    - platform: numeric_state
+      entity_id: sensor.lavastoviglie_power
+      below: 1
+    condition:
+      condition: or
+      conditions:
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Svuotare
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Asciugatura
+    action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.dishwasher_status
+        option: Avviare
+    - service: notify.telegram
+      data:
+        title: "-- Attenzione --"
+        message: "La lavastoviglie è finita, puoi mettere a posto i piatti. Consumati oggi {{ float(states('sensor.lavastoviglie_energy_today')) | float | round(2)  }} kWh"
+
+#################################################################
+  - alias: Manda alert quando lavastoviglie inizia
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: sensor.dishwasher_status
+      from: 'Avviare'
+      to: 'Lavaggio'
+    action:
+    - service: script.my_notify
+      data:
+        title: '--Disher Washer--'
+        message: 'Lavastoviglie iniziata'
+
+#################################################################
+#                                                               #
+#                     END OF CONFIGURATION FILE                 #
+#                                                               #
+#################################################################
