@@ -1,0 +1,92 @@
+#<<: !include ../secrets.yaml
+preferences:
+  flash_write_interval: 10min
+captive_portal:
+# Enable logging
+logger:
+# Enable Home Assistant API
+api:
+#
+# api:
+#   encryption:
+#     key: 
+# Enable OTA updates
+#
+wifi:
+  ssid: !secret Wifi_SSID
+  password: !secret Wifi_pass
+  fast_connect: true
+  power_save_mode: NONE #LIGHT
+  output_power: 20
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: ${sensor_name} Hotspot
+    password: !secret AP_pass
+#
+ota:
+  password: !secret OTA_pass
+# Enable Web server (optional).
+web_server:
+  port: 80
+#
+binary_sensor:
+#stato della connessione
+  - platform: status
+    name: ${sensor_name} Status
+##
+button:
+# RESTART
+  - platform: restart
+    name: ${sensor_name} Restart
+sensor:
+  # WiFi Signal sensor.
+  - platform: wifi_signal
+    name: ${sensor_name} RSSI
+    update_interval: ${update_interval} 
+  # Uptime sensor.
+  - platform: uptime
+    id: uptime_sensor
+    name: ${sensor_name} Seconds Uptime
+    internal: true
+    update_interval: ${update_interval} 
+    on_raw_value:
+      then:
+        - text_sensor.template.publish:
+            id: uptime_human
+            state: !lambda |-
+              int seconds = round(id(uptime_sensor).raw_state);
+              int days = seconds / (24 * 3600);
+              seconds = seconds % (24 * 3600);
+              int hours = seconds / 3600;
+              seconds = seconds % 3600;
+              int minutes = seconds /  60;
+              seconds = seconds % 60;
+              return (
+                (days ? to_string(days) + "d " : "") +
+                (hours ? to_string(hours) + "h " : "") +
+                (minutes ? to_string(minutes) + "m " : "") +
+                (to_string(seconds) + "s")
+              ).c_str();
+###
+# Text sensors with general information.
+text_sensor:
+# Expose ESPHome version as sensor.
+  - platform: version
+    name: ${sensor_name} ESPHome Version
+# Expose WiFi information as sensors.
+  - platform: wifi_info
+    ip_address:
+      name: ${sensor_name} IP
+      icon: "mdi:ip"
+    ssid:
+      name: ${sensor_name} SSID
+      icon: "mdi:access-point-network"
+    bssid:
+      name: ${sensor_name} BSSID
+      icon: "mdi:ethernet"
+## Uptime
+  - platform: template
+    name: ${sensor_name} Uptime
+    id: uptime_human
+    icon: mdi:clock-start
+    update_interval: ${update_interval} 
