@@ -1,0 +1,88 @@
+base_button:
+  show_icon: true
+  show_name: true  
+  tap_action:
+    action: more-info
+  styles:
+    name:
+      [font-size: *CONF_FONT_SIZE_SMALL, color: *CONF_COLOR_NAME, justify-self: center]
+    card: 
+      [font-size: *CONF_FONT_SIZE_SMALL, border-radius: 4%, height: 90px, justify-self: center] #text-shadow: 0px 0px 5px black,
+    label: 
+      [font-size: *CONF_FONT_SIZE_SMALL, color: *CONF_COLOR_LABEL, justify-self: center]
+    state: 
+      [font-size: *CONF_FONT_SIZE_MEDIUM, justify-self: center]
+
+device_button_vertical:
+  template: ['base_button','feedback_click']
+  show_state: true
+  show_label: true 
+  color: auto
+  hold_action:
+    action: more-info
+  styles:
+    card:
+      - background-color: var('--background-color')
+      - padding: 1%
+      - margin-bottom: 0
+      - margin-top: 0
+      - border-width: 1px
+      - border-radius:  '[[[ return variables.border_radius ]]]'
+      - height: '[[[ return variables.button_height ]]]'
+      - border-color: '[[[ return variables.border_color ]]]'
+    grid:
+      - grid-template-areas: '"n" "s" "l"'
+      - grid-template-columns: 1fr
+      - grid-template-rows: auto auto auto # auto min-content 
+
+device_button_vertical_icon:
+  template: ['base_button','feedback_click']
+  show_state: true
+  show_label: true 
+  color: auto
+  tap_action:
+    action: toggle
+  hold_action:
+    action: more-info
+  styles:
+    card:
+      - background-color: var('--background-color')
+      - padding: 1%
+      - margin-bottom: 0
+      - margin-top: 0
+      - border-width: 1px
+      - border-radius:  '[[[ return variables.border_radius ]]]'
+      - height: '[[[ return variables.button_height ]]]'
+      - border-color: '[[[ return variables.border_color ]]]'
+    icon:
+      - justify-self: center
+    grid:
+      - grid-template-areas: '"i" "n" "s"'
+      - grid-template-columns: 1fr
+      - grid-template-rows: 50% auto auto # auto min-content
+      
+container:
+  styles:
+    card:
+      - padding: 0
+      - border: 0
+    name:
+      - border-radius: 0
+      - padding: 0
+      - width: 100%
+      - font-weight: bold
+    grid:
+      - grid-template-areas: '"i" "n" "pictures" "buttons"'
+      - grid-template-columns: 1fr
+      - grid-template-rows: 1fr min-content min-content min-content
+    custom_fields:
+      pictures:
+        - background-color: transparent
+      buttons:
+        - background-color: transparent
+
+feedback_click:
+  styles:
+    card:
+      - '--mdc-ripple-color': var(--paper-item-icon-active-color)
+      - '--mdc-ripple-press-opacity': 0.2
