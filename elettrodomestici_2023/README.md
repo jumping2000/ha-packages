@@ -1,14 +1,14 @@
 
 | 📡 Elettrodomestici Smart 📶|
 | :---: |
-| [Lavatrice 💧](lavatrice.md) |
-| [Lavastoviglie 🍽](#lavastoviglie) - NOT RELEASED| 
-| [Forno 👨‍🍳](#forno)  - NOT RELEASE | 
-| [Asciugatrice 🌀](#asciugatrice)  - NOT RELEASE | 
-| [Inverter ☀](#inverter)  - NOT RELEASE |
-| [Condizionatore 🌪](#condizionatore)  - NOT RELEASE |
-| [Termostato 🔥](#termostato)  - NOT RELEASE |
-| [Router 📶](#router)  - NOT RELEASE |
+| [Lavatrice 💧](lavatrice.md) - Released in just few days|
+| [Lavastoviglie 🍽](#lavastoviglie) - NOT YET RELEASED| 
+| [Forno 👨‍🍳](#forno) - NOT YET RELEASED|
+| [Asciugatrice 🌀](#asciugatrice) - NOT YET RELEASED|
+| [Inverter ☀](#inverter) - NOT YET RELEASED|
+| [Condizionatore 🌪](#condizionatore) - NOT YET RELEASED|
+| [Termostato 🔥](#termostato) - NOT YET RELEASED|
+| [Router 📶](#router) - NOT YET RELEASED|
 
 
 
