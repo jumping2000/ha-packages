@@ -26,7 +26,7 @@ L'articolo riprende quanto avevamo già scritto nel 2020 con l'articolo **[Elett
 1. un package per poter monitorare lo stato degli elettrodomestici non smart utilizzando una presa o dispositivo in grado di effettuare delle misurazione dei livelli di potenza, 
 2. una card Lovelace con effetti grafici CSS ed informazioni di funzionamento. 
 
-In particolare in questa **edizione 2023** useremo alcuni custom ricchi di funzionalità come [Button Card](https://github.com/custom-cards/button-card) ed [ApexChart Card](https://github.com/RomRider/apexcharts-card) che oramai sono diventati dei veri e propri classici delle interfacce sviluppate per Home Assistant e introdurremo ulteriori elementi sia a livello di dati disponibili che a livello di grafica, ma la perla che rende l'uso del package veramente superiore sotto tutti punti di vista rispetto a pacchetti analoghi, è l'utilizzo di una "macchina a stati finiti" [FSM](https://it.wikipedia.org/wiki/Automa_a_stati_finiti) sviluppata in ESPHome che restituisce lo stato del dispositivo in maniera molto precisa. Ovviamente è disponibile anhce la versione _lite_ per chi non vuole cimentarsi nella configurazione ESPHOME della presa smart ed utilizzare i dati messi a disposizione dalla presa. 
+In particolare in questa **edizione 2023** useremo alcuni custom ricchi di funzionalità come [Button Card](https://github.com/custom-cards/button-card) ed [ApexChart Card](https://github.com/RomRider/apexcharts-card) che oramai sono diventati dei veri e propri classici delle interfacce sviluppate per Home Assistant e introdurremo ulteriori elementi sia a livello di dati disponibili che a livello di grafica, ma la perla che rende l'uso del package veramente superiore sotto tutti punti di vista rispetto a pacchetti analoghi, è l'utilizzo di una "macchina a stati finiti" [FSM](https://it.wikipedia.org/wiki/Automa_a_stati_finiti) sviluppata in ESPHome che restituisce lo stato del dispositivo in maniera molto precisa. Ovviamente è disponibile anche la versione _lite_ per chi non vuole cimentarsi nella configurazione ESPHOME della presa smart ed utilizzare i dati messi a disposizione dalla presa. 
 
 Riepiloghiamo i punti di forza di questo pacchetto sono:
 1. Adattabile per l'uso su tablet, smartphone, PC;
@@ -35,13 +35,13 @@ Riepiloghiamo i punti di forza di questo pacchetto sono:
 4. Uso estensivo degli "_anchor_" per centralizzare le parti YAML da personalizzare nel package e nella GUI;
 5. Versioni grafica per dashboard "_yaml_" e la traccia per usare la dashboard "_storage_", vedi [Dashboard](https://www.home-assistant.io/dashboards/dashboards/);
 6. Riduzione del numero di componenti custom necessari;
-7. Utilizzo dei dati statistici conservati nel DB di HA senza quindi rihiedere uan retention "_infinita_" o cmq molto estesa del DB stesso;
+7. Utilizzo dei dati statistici conservati nel DB di HA senza quindi richiedere uan retention "_infinita_" o cmq molto estesa del DB stesso;
 
 <span style="color:red">**🚨 Come usuale prestate attenzione a collegare la vostra lavatrice ad un dispositivo smart che sia in grado di supportarne il carico, purtroppo gli incidenti domestici sono sempre dietro l'angolo. 🚨**</span>
 
 ## Prerequisiti 
 
-Per poter utilizzare il packages occorrono alcune card e alcune configurazioni abbastanza comuni, le card e i custom sono disponibili sul community store [HACS](https://hacs.xyz/) , sul sito [HassioHelp.eu](https://hassiohelp.eu) sono presenti numerose guide, prestate particolare attenzione alla data di rilascio della guida, alcune sono datate e potrebbero essere da ricontrollare, in questo caso il gruppo Telegram [Hassiohelp](https://t.me/HassioHelp) è un vaildissimo aiuto.
+Per poter utilizzare il packages occorrono alcune card e alcune configurazioni abbastanza comuni, le card e i custom sono disponibili sul community store [HACS](https://hacs.xyz/) , sul sito [HassioHelp.eu](https://hassiohelp.eu) sono presenti numerose guide, prestate particolare attenzione alla data di rilascio della guida, alcune sono datate e potrebbero essere da ricontrollare, in questo caso il gruppo Telegram [Hassiohelp](https://t.me/HassioHelp) è un validissimo aiuto.
 
 | Card/Custom | Uso |
 | :---: | --- |
@@ -107,7 +107,7 @@ Vediamo in dettaglio quali sono gli stati per la lavatrice, le transizioni da un
 
 Questo stati sono calcolati nella versione FSM _full esphome_ del package e nella versione _lite_ rispettivamente da:
 * FSM implementata nel codice ESPHome e restituita dal sensore Esphome `sensor.washing_machine_status`
-* FSM a quattro stati e realizzata con tre semplici automazioni, restitusce il template sensor `sensor.washing_machine_status`
+* FSM a quattro stati e realizzata con tre semplici automazioni, restituisce il template sensor `sensor.washing_machine_status`
 
 Ovviamente la versione FSM realizzata con ESPHOME sarà più precisa, _se opportunamente configurata con cura con i dati di potenza della propria lavatrice_, perché lo stato della lavatrice dipenderà da un'analisi più fine della potenza assorbita e degli stati. 
 
@@ -157,7 +157,7 @@ Il package espone una grande serie di dati, funzionalità, grafici e configurazi
 * Grafico X-Y della potenza consumata
 * Grafico a barre dei cicli di funzionamento per programmare la manutenzione
 * Grafico a istogramma dell'energia consumata negli ultimi 30 giorni
-* Grafico a barre per corrente, tensione, potenza attiva, apparente e reattiva se restituiti dallla presa smart oaltro sistema di misura.
+* Grafico a barre per corrente, tensione, potenza attiva, apparente e reattiva se restituiti dalla presa smart o altro sistema di misura.
 
 
 **Funzionalità presenti**
@@ -167,7 +167,7 @@ Il package espone una grande serie di dati, funzionalità, grafici e configurazi
 * Notifiche per i cambi di stato
 
 Per evitare l'uso inutile di entità per configurare alcune aspetti "statici" o comunque poco variabili, relativi al funzionamento, abbiamo preferito usare gli [anchor](https://github.com/thomasloven/hass-config/wiki/Misc-tricks) impostabili nella sezione **"IMPOSTAZIONI DEL PACKAGES"**.
-Al contrario gli aspetti di configurazione che sono più soggetti a variazioni sono configurabili dalla card.  Per i **template sensor** sarà comunque necessario personalizzare leggerrmente il codice visto che non è possibile usare gli anchor, ma in questo caso è chiarmaente indicato.
+Al contrario gli aspetti di configurazione che sono più soggetti a variazioni sono configurabili dalla card.  Per i **template sensor** sarà comunque necessario personalizzare leggermente il codice visto che non è possibile usare gli anchor, ma in questo caso è chiaramente indicato.
 
 ***Altra funzionalità innovativa del package è l'uso delle funzionalità di esposizione dei dati statistici delle card standard Lovelace e Apex senza quindi incidere nelle dimensioni del DB***, il `recorder` può quindi rimanere configurato con i classici 5-10 giorni di memorizzazione dei dati ma è possibile visualizzare i dati di energia consumata degli ultimi 30 giorni o più se uno desidera.
 
@@ -294,7 +294,7 @@ Per i **servizi di notifica** sono da configurare i seguenti parametri, con le e
 * _MEDIA PLAYER Google: &DEFAULT_MEDIA_PLAYER_GOOGLE_ deve inserire un'entità media player Google Home, ad esempio _media_player.google_sala;
 * _SERVICE TTS: &DEFAULT_SERVICE_TTS_ dove inserire il servizio TTS, ad esempio _tts.google_translate_say_.
 
-Andando nel dettaglio i seguenti sono i paramentri che si possono modificare, quindi **l'utilizzatore deve necessariamente inserire la correttà entità**:, gli altri presenti non sono da cambiare:
+Andando nel dettaglio i seguenti sono i parametri che si possono modificare, quindi **l'utilizzatore deve necessariamente inserire la correttà entità**:, gli altri presenti non sono da cambiare:
 * _PLUG LAVATRICE SWITCH: &CONF_SWITCH_ENTITY_ dove inserire l'entità _switch_ che comanda la presa smart;
 * _PLUG LAVATRICE POTENZA (W): &CONF_POWER_ENTITY_ dove inserire l'entità _sensor_ che espone la potenza;
 * _PLUG LAVATRICE ENERGIA (kWh): &CONF_ENERGY_ENTITY_ dove inserire l'entità _sensor_ che espone l'energia;
@@ -324,7 +324,7 @@ Altri parametri di configurazione sono presenti nella card Lovelace:
 
 Anche nella parte lovelace è stato fatto un uso estensivo degli [anchor](https://github.com/thomasloven/hass-config/wiki/Misc-tricks) in modo da centralizzare le impostazioni da personalizzare, purtroppo questo tipo di modifica è possibile solo con la modalità lovelace YAML, per la modalità storage non è possibile inserire _anchor_.
 
-Vediamo i principali aspetti di configurazione dell'interfaccia Lovelace, **per ogni parametro va impostata da parte dell'utilizzatore la correttà entità**:
+Vediamo i principali aspetti di configurazione dell'interfaccia Lovelace, **per ogni parametro va impostata da parte dell'utilizzatore la corretta entità**:
 * _SFONDO_IMMAGINE: &CONF_BACKGROUND_IMAGE_ scelta dell'immagine di sfondo tra quelle presenti;
 * _GRANDEZZA_CARATTERI_BASE: &CONF_FONT_SIZE_ grandezza caratteri per gli elementi della picture-elements card;
 * _GRANDEZZA_CARATTERI_APEX: &CONF_FONT_SIZE_APEX_  grandezza caratteri per gli elementi di APex Card;
