@@ -1,7 +1,7 @@
 
 | 📡 Elettrodomestici Smart 📶|
 | :---: |
-| [Lavatrice 💧](lavatrice.md) - COUNTDOWN 3..2..1|
+| [Lavatrice 💧](lavatrice.md) - FIRST VERSION RELEASED|
 | [Lavastoviglie 🍽](#lavastoviglie) - NOT YET RELEASED| 
 | [Forno 👨‍🍳](#forno) - NOT YET RELEASED|
 | [Asciugatrice 🌀](#asciugatrice) - NOT YET RELEASED|
