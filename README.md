@@ -5,8 +5,12 @@
 [![Websitebadge]][website] [![Forum][forumbadge]][forum] [![telegrambadge]][telegram] [![facebookbadge]][facebook] 
 <br>
 ## ha-packages
-[![releasebadge]][release] [![downloadsbadge]][downloads] [![lastcommittbadge]][lastcommitt] [![codesizebadge]][codesize]
-
+![GitHub last commit](https://img.shields.io/github/last-commit/jumping2000/ha-packages)
+![GitHub (Pre-)Release Date](https://img.shields.io/github/release-date-pre/jumping2000/ha-packages)
+![GitHub Release Date](https://img.shields.io/github/release-date/jumping2000/ha-packages)
+![GitHub release (latest by date)](https://img.shields.io/github/downloads/jumping2000/ha-packages/2023.4.1/total)
+![GitHub repo size](https://img.shields.io/github/repo-size/jumping2000/ha-packages)
+![GitHub issues](https://img.shields.io/github/issues/jumping2000/ha-packages)
 ---
 
 ### :zap: Recent Activity
@@ -38,15 +42,3 @@ Here some packages for Home Assistant:
 
 [forum]: https://forum.hassiohelp.eu/
 [forumbadge]: https://img.shields.io/badge/HassioHelp-Forum-blue
-
-[release]: https://github.com/jumping2000/ha-packages/releases 
-[releasebadge]: https://img.shields.io/badge/release-violet
-
-[downloads]: https://github.com/jumping2000/ha-packages/releases 
-[downloadsbadge]: https://img.shields.io/badge/downloads-violet
-
-[lastcommitt]: https://github.com/jumping2000/ha-packages/commits/master
-[lastcommittbadge]: https://img.shields.io/badge/lastcommit-violet
-
-[codesize]: https://github.com/jumping2000/ha-packages/
-[codesizebadge]: https://img.shields.io/badge/codesize-violet
