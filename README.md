@@ -12,6 +12,10 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/jumping2000/ha-packages)
 ![GitHub issues](https://img.shields.io/github/issues/jumping2000/ha-packages)
 ![GitHub](https://img.shields.io/github/license/jumping2000/ha-packages)
+
+<br>
+Please support my job! <a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="20"></a>
+
 ---
 
 ### :zap: Recent Activity
