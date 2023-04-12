@@ -14,7 +14,7 @@
 ![GitHub](https://img.shields.io/github/license/jumping2000/ha-packages)
 
 <br>
-Please support my job! <a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="20"></a>
+<b>Please support my job!</b> <a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="20"></a>
 
 ---
 
