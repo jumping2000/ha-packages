@@ -17,6 +17,9 @@
 - [x] [Installazione](#installazione)
 - [x] [Configurazione](#configurazione)
 
+**Ti piace questo package?** <a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="20"></a>
+ 
+
 ## Introduzione
 
 L'articolo riprende quanto avevamo già scritto nel 2020 con l'articolo **[Elettrodomestici Smart](https://hassiohelp.eu/2020/04/05/elettrodomestici-smart-con-home-assistant/)** che ha introdotto:
