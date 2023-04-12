@@ -1,23 +1,11 @@
 ### Hi there 👋 ![](https://visitor-badge.glitch.me/badge?page_id=jumping2000.jumping2000)
 
-<!--
-**jumping2000/jumping2000** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-
-Here are some ideas to get you started:
-
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
-
 📫 How to reach me: 
 
 [![Websitebadge]][website] [![Forum][forumbadge]][forum] [![telegrambadge]][telegram] [![facebookbadge]][facebook] 
+<br>
+## ha-packages
+[![releasebadge]][release] [![downloadsbadge]][downloads] [![lastcommittbadge]][lastcommitt] [![codesizebadge]][codesize]
 
 ---
 
@@ -50,3 +38,15 @@ Here some packages for Home Assistant:
 
 [forum]: https://forum.hassiohelp.eu/
 [forumbadge]: https://img.shields.io/badge/HassioHelp-Forum-blue
+
+[release]: https://github.com/jumping2000/ha-packages/releases 
+[releasebadge]: https://img.shields.io/badge/release-violet
+
+[downloads]: https://github.com/jumping2000/ha-packages/releases 
+[downloadsbadge]: https://img.shields.io/badge/downloads-violet
+
+[lastcommitt]: https://github.com/jumping2000/ha-packages/commits/master
+[lastcommittbadge]: https://img.shields.io/badge/lastcommit-violet
+
+[codesize]: https://github.com/jumping2000/ha-packages/
+[codesizebadge]: https://img.shields.io/badge/codesize-violet
