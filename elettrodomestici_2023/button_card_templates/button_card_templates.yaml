@@ -1,28 +1,40 @@
+###########################################################
+dummy_entity:
+###########################################################
+  SFONDO_IMMAGINE: &CONF_BACKGROUND_IMAGE "/local/images/devices/green_house.png"
+  GRANDEZZA_CARATTERI_SMALL: &CONF_FONT_SIZE_SMALL "0.85em"
+  GRANDEZZA_CARATTERI_MEDIUM: &CONF_FONT_SIZE_MEDIUM "0.95em"
+  GRANDEZZA_CARATTERI_BIG: &CONF_FONT_SIZE_BIG "1.1em"
+  ALTEZZA_LINEA: &CONF_LINE_HEIGHT "24px"
+  COLORE_NAME: &CONF_COLOR_NAME "var(--primary-text-color)" #"white"
+  COLORE_LABEL: &CONF_COLOR_LABEL "var(--google-grey)" #"gray"
+  COLOR_UNAVAILABLE_UNKOWN: &CONF_COLOR_UN "darkgray"
+###########################################################
 base_button:
   show_icon: true
-  show_name: true  
+  show_name: true
   tap_action:
     action: more-info
   styles:
     name:
       [font-size: *CONF_FONT_SIZE_SMALL, color: *CONF_COLOR_NAME, justify-self: center]
     card: 
-      [font-size: *CONF_FONT_SIZE_SMALL, border-radius: 4%, height: 90px, justify-self: center] #text-shadow: 0px 0px 5px black,
+      [font-size: *CONF_FONT_SIZE_SMALL, border-radius: 4%, height: 90px, justify-self: center]
     label: 
       [font-size: *CONF_FONT_SIZE_SMALL, color: *CONF_COLOR_LABEL, justify-self: center]
     state: 
       [font-size: *CONF_FONT_SIZE_MEDIUM, justify-self: center]
-
+###########################################################
 device_button_vertical:
   template: ['base_button','feedback_click']
   show_state: true
-  show_label: true 
+  show_label: true
   color: auto
   hold_action:
     action: more-info
   styles:
     card:
-      - background-color: var('--background-color')
+      - background-color: '[[[ return variables.button_background ]]]'
       - padding: 1%
       - margin-bottom: 0
       - margin-top: 0
@@ -34,11 +46,11 @@ device_button_vertical:
       - grid-template-areas: '"n" "s" "l"'
       - grid-template-columns: 1fr
       - grid-template-rows: auto auto auto # auto min-content 
-
+###########################################################
 device_button_vertical_icon:
   template: ['base_button','feedback_click']
   show_state: true
-  show_label: true 
+  show_label: true
   color: auto
   tap_action:
     action: toggle
@@ -46,7 +58,7 @@ device_button_vertical_icon:
     action: more-info
   styles:
     card:
-      - background-color: var('--background-color')
+      - background-color: '[[[ return variables.button_background ]]]'
       - padding: 1%
       - margin-bottom: 0
       - margin-top: 0
@@ -60,12 +72,12 @@ device_button_vertical_icon:
       - grid-template-areas: '"i" "n" "s"'
       - grid-template-columns: 1fr
       - grid-template-rows: 50% auto auto # auto min-content
-      
+###########################################################
 container:
   styles:
     card:
       - padding: 0
-      - border: 0
+      - border: 0 # solid
     name:
       - border-radius: 0
       - padding: 0
@@ -80,9 +92,3 @@ container:
         - background-color: transparent
       buttons:
         - background-color: transparent
-
-feedback_click:
-  styles:
-    card:
-      - '--mdc-ripple-color': var(--paper-item-icon-active-color)
-      - '--mdc-ripple-press-opacity': 0.2
