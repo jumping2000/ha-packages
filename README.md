@@ -7,8 +7,9 @@
 ## ha-packages
 ![GitHub last commit](https://img.shields.io/github/last-commit/jumping2000/ha-packages)
 ![GitHub Release Date](https://img.shields.io/github/release-date/jumping2000/ha-packages)
-![GitHub release (latest by date)](https://img.shields.io/github/downloads/jumping2000/ha-packages/2023.4.2/total)
+![GitHub all releases](https://img.shields.io/github/downloads/jumping2000/ha-packages/total)
 ![GitHub repo size](https://img.shields.io/github/repo-size/jumping2000/ha-packages)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/jumping2000/ha-packages)
 ![GitHub issues](https://img.shields.io/github/issues/jumping2000/ha-packages)
 ![GitHub](https://img.shields.io/github/license/jumping2000/ha-packages)
 
