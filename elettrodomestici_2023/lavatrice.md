@@ -10,18 +10,15 @@
 | [User interface](#user-interface) |
 | [Installazione](#installazione) | 
 | [Configurazione](#configurazione) |
-| [Conclusioni e Supporto](#conclusioni-e-supporto) |
+| [Conclusioni](#conclusioni) |
 
 **Paragrafi obbligatori:**
 - [x] [Prerequisiti](#prerequisiti)
 - [x] [Installazione](#installazione)
 - [x] [Configurazione](#configurazione)
 
-**Ti piace questo package? Supportami per realizzarne altri!** <a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="20"></a>
 
-#### Ti piace questo package? Supportami per realizzarne altri!
-
-<a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="30"></a><br>
+**Ti piace questo package? Lascia una stella su Github e supportami per realizzarne altri!** <a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="20"></a>
 
 ## Introduzione
 
@@ -29,22 +26,22 @@ L'articolo riprende quanto avevamo già scritto nel 2020 con l'articolo **[Elett
 1. un package per poter monitorare lo stato degli elettrodomestici non smart utilizzando una presa o dispositivo in grado di effettuare delle misurazione dei livelli di potenza, 
 2. una card Lovelace con effetti grafici CSS ed informazioni di funzionamento. 
 
-In particolare in questa **edizione 2023** useremo alcuni custom ricchi di funzionalità come [Button Card](https://github.com/custom-cards/button-card) ed [ApexChart Card](https://github.com/RomRider/apexcharts-card) che oramai sono diventati dei veri e propri classici delle interfacce sviluppate per Home Assistant e introdurremo ulteriori elementi sia a livello di dati disponibili che a livello di grafica, ma la perla che rende l'uso del package veramente superiore sotto tutti punti di vista rispetto a pacchetti analoghi, è l'utilizzo di una "macchina a stati finiti" [FSM](https://it.wikipedia.org/wiki/Automa_a_stati_finiti) sviluppata in ESPHome che restituisce lo stato del dispositivo in maniera molto precisa. Ovviamente è disponibile anhce la versione _lite_ per chi non vuole cimentarsi nella configurazione della presa smart. 
+In particolare in questa **edizione 2023** useremo alcuni custom ricchi di funzionalità come [Button Card](https://github.com/custom-cards/button-card) ed [ApexChart Card](https://github.com/RomRider/apexcharts-card) che oramai sono diventati dei veri e propri classici delle interfacce sviluppate per Home Assistant e introdurremo ulteriori elementi sia a livello di dati disponibili che a livello di grafica, ma la perla che rende l'uso del package veramente superiore sotto tutti punti di vista rispetto a pacchetti analoghi, è l'utilizzo di una "macchina a stati finiti" [FSM](https://it.wikipedia.org/wiki/Automa_a_stati_finiti) sviluppata in ESPHome che restituisce lo stato del dispositivo in maniera molto precisa. Ovviamente è disponibile anhce la versione _lite_ per chi non vuole cimentarsi nella configurazione ESPHOME della presa smart ed utilizzare i dati messi a disposizione dalla presa. 
 
 Riepiloghiamo i punti di forza di questo pacchetto sono:
 1. Adattabile per l'uso su tablet, smartphone, PC;
-2. Macchina a stati finiti per ricavare lo stato della lavatrice (per la versione _advanced_);
+2. Macchina a stati finiti _ESPHOME_ o _lite_ per ricavare lo stato della lavatrice;
 3. Utilizzo di codice YAML non obsoleto e riduzioni del "codice inutile";
 4. Uso estensivo degli "_anchor_" per centralizzare le parti YAML da personalizzare nel package e nella GUI;
-5. Versioni per chi utilizza grafica "_storage_ o "_yaml_";
+5. Versioni grafica per dashboard "_yaml_" e la traccia per usare la dashboard "_storage_", vedi [Dashboard](https://www.home-assistant.io/dashboards/dashboards/);
 6. Riduzione del numero di componenti custom necessari;
-7. Utilizzo dei dati statistici conservati nel DB di HA senza appesantire il DB stesso;
+7. Utilizzo dei dati statistici conservati nel DB di HA senza quindi rihiedere uan retention "_infinita_" o cmq molto estesa del DB stesso;
 
 <span style="color:red">**🚨 Come usuale prestate attenzione a collegare la vostra lavatrice ad un dispositivo smart che sia in grado di supportarne il carico, purtroppo gli incidenti domestici sono sempre dietro l'angolo. 🚨**</span>
 
 ## Prerequisiti 
 
-Per poter utilizzare il packages occorrono alcune card e alcune configurazioni abbastanza comuni, le card e i custom sono disponibili sul community store [HACS](https://hacs.xyz/) , sul sito [HassioHelp.eu](https://hassiohelp.eu) sono presenti numerose guide, prestate particolare attenzione alla darta di rilascio della guida, alcune sono datate e potrebbero non essere più valide, in questo caso il gruppo Telegram [Hassiohelp](https://t.me/HassioHelp) è un vaildo aiuto.
+Per poter utilizzare il packages occorrono alcune card e alcune configurazioni abbastanza comuni, le card e i custom sono disponibili sul community store [HACS](https://hacs.xyz/) , sul sito [HassioHelp.eu](https://hassiohelp.eu) sono presenti numerose guide, prestate particolare attenzione alla data di rilascio della guida, alcune sono datate e potrebbero essere da ricontrollare, in questo caso il gruppo Telegram [Hassiohelp](https://t.me/HassioHelp) è un vaildissimo aiuto.
 
 | Card/Custom | Uso |
 | :---: | --- |
@@ -64,7 +61,7 @@ L'utilizzo delle card _facoltative_ permette una migliore visualizzazione delle 
 Per poter procedere con l'installazione del package ci sono alcuni passi da effettuare:
 * abilitare i packages come descritto qui: [Packages](https://www.home-assistant.io/docs/configuration/packages/);
 * configurare Home Assistant per avere i sensori di tempo e di data come spiegato qui: [Time & Date](https://www.home-assistant.io/integrations/time_date/) o nelle guide [HassioHelp](https://hassiohelp.eu);
-* configurare il sensore che restituisce il costo dell'energia (package accessorio ad hoc presente nella configurazione);
+* configurare il sensore che restituisce il costo dell'energia (a breve ci sarà package accessorio ad hoc) scegliendo tra un sensore che recupera direttamente il PUN oppure un hekper input_number configurabile;
 * impostazione dei servizi di notifica: ad esempio [Telegram](https://www.home-assistant.io/integrations/telegram/), [Google](https://www.home-assistant.io/integrations/google_assistant/), [Mobile App](https://companion.home-assistant.io/) la scelta migliore rimane sempre l'uso del [Centro Notifiche](https://github.com/caiosweet/Package-Notification-HUB-AppDaemon) che centralizza la configurazione di tutti i servizi di notifica.
 
 | Guide Hassiohelp |
@@ -91,13 +88,13 @@ E' fondamentale avere una presa, o un relay “smart” (come la famiglia Shelly
 1. utilizzare una versione ridotta (_lite_) del package;
 2. adattare le automazioni già sviluppate nll'articolo del 2020 al proprio caso.
 
-Nel repository su Github sono presenti due packages già pronti per l'uso, la versione ***FSM*** e la versione ***lite***, lasciamo agli utenti adattare il codice YAML per realizzare la FSM con le automazioni YAML.
+Nel repository su Github sono presenti due packages già pronti per l'uso, la versione ***FSM*** e la versione ***lite***, che utilizza una FSM semplificata e realizzata con le automazioni YAML.
 
 ## Funzionamento
 
 L’idea alla base dell'articolo è che grazie alle informazioni di potenza restituite dalla presa smart siamo in grado di capire in che stato si trova il nostro elettrodomestico e quindi possiamo costruire una serie di sensori che diano delle informazioni da visualizzare nella UI di Home Assistant o piuttosto per avvertirci quando stendere i panni tramite un servizio di notifica.
 
-Vediamo in dettaglio quali sono gli stati per la lavatrice, le transizioni da uno stato ad un altro sono guidate dalla potenza assorbita dalla lavatrice stessa:
+Vediamo in dettaglio quali sono gli stati per la lavatrice, le transizioni da uno stato ad un altro sono guidate dalla potenza assorbita dalla lavatrice stessa e dal tempo di permanenza nello stato:
 
 | Stato | Caratteristiche |
 | :---: | --- |
@@ -108,11 +105,29 @@ Vediamo in dettaglio quali sono gli stati per la lavatrice, le transizioni da un
 | **Centrifuga** | Fase di rotazione del cestello ed eliminazione dell'acqua |
 | **Svuotare** | Stato finale del programma di lavaggio |
 
-Questo stati sono calcolati nella versione FSM del package e nella versione _lite_ rispettivamente da:
-* FSM implementata nel codice ESPHome e restituita dal sensore `sensor.washing_machine_status`
-* template sensor `sensor.washing_machine_status` 
+Questo stati sono calcolati nella versione FSM _full esphome_ del package e nella versione _lite_ rispettivamente da:
+* FSM implementata nel codice ESPHome e restituita dal sensore Esphome `sensor.washing_machine_status`
+* FSM a quattro stati e realizzata con tre semplici automazioni, restitusce il template sensor `sensor.washing_machine_status`
 
-Ovviamente la versione FSM sarà molto più precisa, _se opportunamente configurata con i dati di potenza della propria lavatrice_, perché lo stato della lavatrice dipenderà sia dalla potenza assorbita che dallo stato attuale, mentre la versione con template sensor solo dalla potenza assorbita. Anche chi possiede una lavatrice smart che espone in HA lo stato dell'elettrodomestico potrà utilizzare il package aggiustando il codice in maniera minimale adattandolo ai dati esposti dall'integrazione smart.
+Ovviamente la versione FSM realizzata con ESPHOME sarà più precisa, _se opportunamente configurata con cura con i dati di potenza della propria lavatrice_, perché lo stato della lavatrice dipenderà da un'analisi più fine della potenza assorbita e degli stati. 
+
+Per la versione _lite_ la FSM è la seguente:
+<br>
+
+```mermaid
+stateDiagram-v2
+  direction LR
+  [*] --> Idle
+  Idle --> Lavaggio: POWER/TIME_1
+  Lavaggio --> Risciacquo: POWER/TIME_2
+  Risciacquo --> Lavaggio: POWER/TIME_3
+  Risciacquo --> Svuotare: POWER/TIME_4
+  Lavaggio --> Svuotare: POWER/TIME_4
+  Svuotare --> Idle: TIME_1
+```
+
+<br>
+Anche chi possiede una lavatrice smart che espone in HA lo stato dell'elettrodomestico potrà utilizzare il package aggiustando il codice in maniera minimale adattandolo ai dati esposti dall'integrazione smart, vediamo come nel seguente paragrafo.
 
 ---
 
@@ -136,13 +151,13 @@ Il package espone una grande serie di dati, funzionalità, grafici e configurazi
 * Numero dei cicli giornalieri, settimanali, mensili ed annuali di lavaggio effettuati 
 * Durata dei cicli giornalieri, settimanali, mensili ed annuali di lavaggio effettuati
 * Numero e durata totale dei cicli effettuati
-* Durata ultimo lavaggio
+* Durata e costi dell'ultimo lavaggio
 
 **Grafici**
 * Grafico X-Y della potenza consumata
 * Grafico a barre dei cicli di funzionamento per programmare la manutenzione
 * Grafico a istogramma dell'energia consumata negli ultimi 30 giorni
-* Grafico a barre per corrente, tensione, potenza attiva, apparente e reattiva
+* Grafico a barre per corrente, tensione, potenza attiva, apparente e reattiva se restituiti dallla presa smart oaltro sistema di misura.
 
 
 **Funzionalità presenti**
@@ -210,7 +225,7 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 | Download |
 | :---: |
 
-[Github](https://github.com/jumping2000/ha-packages/elettrodomestici2023) permette di effettuare il completo download dei file che costituiscono il pacchetto, quindi file yaml e immagini. Per quanto riguarda il package la scelta è tra la versione _FSM_ e la versione _lite_, quindi l'utente dovrà cancellare la versione che non interessa.
+[Github](https://github.com/jumping2000/ha-packages/elettrodomestici_2023) permette di effettuare il completo download dei file che costituiscono il pacchetto, quindi file yaml e immagini. Per quanto riguarda il package la scelta è tra la versione _FSM_ e la versione _lite_, quindi l'utente dovrà cancellare la versione che non interessa.
 
 | Struttura dei file |
 | :---: |
@@ -233,7 +248,8 @@ Per chi usa la modalità [storage](https://www.home-assistant.io/dashboards/dash
 │   │
 |   ├── esphome/
 |   │   ├── common/
-|   │   │    └── device_base.yaml
+|   │   │   ├── device_base.yaml
+│   │   │   └── secrets.yaml
 |   |   └── plug_lavatrice.yaml
 │   │
 │   ├── lovelace/
@@ -270,8 +286,8 @@ Nella sezione **"IMPOSTAZIONI DEL PACKAGE"** presente nella parte iniziale nel f
 1. servizi di notifica;
 2. i dati necessari per il funzionamento come lo switch della presa a cui è collegata la lavatrice o il sensore di potenza.
 
-Per i **servizi di notifica** sono da configurare i seguenti parametri, con le entitù corrette:
-* _SCRIPT Centro notifiche: &DEFAULT_SCRIPT_ se utilizzate il famoso ***Centro Notifiche di HassioHelp*** basta lasciare solo questo parametro e non mettere nulla nei prossimi;
+Per i **servizi di notifica** sono da configurare i seguenti parametri, con le entità corrette:
+* _SCRIPT Centro notifiche: &DEFAULT_SCRIPT_ se utilizzate il famoso ***Centro Notifiche di HassioHelp*** avete già finito 😜, gli altri parametri non sono usati;
 * _SERVIZIO Notify: &DEFAULT_NOTIFY_ dove inserire l'entità _notify_ principale, ad esempio _notify.telegram_;
 * _SERVIZIO Mobile: &DEFAULT_NOTIFY_MOBILE_ dove inserire l'entità _notify_ del servizio di notifica della [Companion App](https://companion.home-assistant.io/) di HA;
 * _MEDIA PLAYER Alexa: &DEFAULT_MEDIA_PLAYER_ALEXA_ deve inserire un' entità media player tra quelle configurate, ad esempio _media_player.alexa_sala;
@@ -288,7 +304,17 @@ Andando nel dettaglio i seguenti sono i paramentri che si possono modificare, qu
 * _GROCY AMMORBIDENTE (mm): &CONF_AMMORBIDENTE_AMOUNT_ dove inserire la quantità di ammorbidente;
 * _RITARDO TRA LE VARIE NOTIFICHE IN MINUTI: &DELAY_NOTIFICATION_ indica quanti minuti passano tra una notifica ed un altra.
 
-Altri parametri di configurazione sono presenti nell'interfaccia utente:
+**Per il package _lite_ i parametri da configurare sono:**
+* _POTENZA SOGLIA DI AVVIO (W): &CONF_POWER_START_ : soglia di potenza che indica l'avvio del lavaggio;
+* _POTENZA SOGLIA DI FINE (W): &CONF_POWER_END_: soglia di potenza che indica la fine del lavaggio;
+* _POTENZA SOGLIA RISCALDAMENTO ACQUA (W): &CONF_POWER_RINSE 1000_: soglia di potenza che indica lo stato di riscaldamento dell'acqua di lavaggio, usata per gli stati di **Lavaggio** e **Risciacquo**.
+* _TEMPO SOGLIA RISCIAQUO ACQUA (minuti): &CONF_TIME_RINSE 1_ il tempo di permanenza per la transizione nello stato **Risciacquo**;
+* TEMPO INIZIO LAVATRICE (minuti): &CONF_TIME_START 1: indica il tempo di permanenza per la transizione nello  **Lavaggio**;
+* TEMPO COMPLETAMENTO LAVATRICE (minuti): &CONF_TIME_END 3
+indica il tempo di permanenza per la transizione nello stato **Svuotare**;
+* _TEMPO RITORNO AD IDLE LAVATRICE (minuti): &CONF_TIME_IDLE 5_: indica il tempo necessario per la transizione nello stato iniziale **Idle**
+
+Altri parametri di configurazione sono presenti nella card Lovelace:
 * "_Ripetizioni Notifica_" indica il numero di ripetizioni della notifica di fine lavaggio.
 * "_Cicli di avviso manutenzione_" indica dopo quanti cicli il sistema manda una notifica per effettuare operazioni di manutenzione (esempio lavaggio con anticalcare).
 * "_Lavatrice Grocy_": per selezionare se si utilizza l'ERP [Grocy](https://grocy.info/) per tenere conto dei consumi.
@@ -349,14 +375,20 @@ button_card_templates:
 Di seguito sono elencate le principali entità e il loro ruolo all'interno del package:
 * `sensor.washing_machine_status`: sensore che riporta lo stato in cui si trova la lavatrice;
 * `sensor.washing_machine_time_left`: l'entità contiene il tempo alla fine del programma di lavaggio;
+* `sensor.PUN_f1`: sensore scraping che restituisce il costo dell'energia PUN in EUR/kWh nella fascia F1;
 * `binary_sensor.washing_machine_status`: sensore che riporta lo stato on/off;
 * `binary_sensor.washing_machine_maintenance`: indica che è venuto il momento di fare un lavaggio con un anticalcare 😜;
 * `input_boolean.lavatrice_grocy_utilization`: helper che abilità l'utilizzo di Grocy;
 * `input_number.lavatrice_ripetizioni_notifica`: numero di ripetizioni della notifiche a fine lavaggio;
 * `input_number.lavatrice_avviso_manutenzione`: numero di cicli di manutenzione dopo i quali **HA** invia una notifica di avviso;
+* `input_number.costo_energia`: costo dell'energia in EUR/kWh configurato dall'urgente se non si vuole il sensore scraping;
 * `automation.lavatrice_status`: è la principale automazione del package che notifica gli eventi di cambio di stato;
 * `automation.avviso_manutenzione_lavatrice`: notifica l'avvertimento per fare le operazioni di manutenzione programmata;
-* `automation.lavatrice_program`: è l'automazione che permette il cambio di programma.
+* `automation.lavatrice_program`: è l'automazione che permette il cambio di programma;
+* `automation.lavatrice_fsm_washing`: è l'automazione della versione _lite_ interessata all'avvio dell'automa (macchina);
+* `automation.lavatrice_fsm_rinse`: è l'automazione della versione _lite_ che sottende ai cambi di stato tra lavaggio e risciacquo;
+* `automation.lavatrice_fsm_finish`: è l'automazione della versione _lite_ che ha il compito di riprtare allo stato iniziale l'automa.
+
 
 | ESPHome |
 | :---: |
@@ -369,7 +401,7 @@ I passi necessari per effettuare la configurazione [ESPHome](https://esphome.io/
 * effettuare la calibrazione dei valori di tensione, corrente, e potenza della presa.
 
 La **configurazione FSM** è basata sul componente aggiuntivo [ESPHome State Machine](https://github.com/muxa/esphome-state-machine), consiglio di leggere le informazioni contenute in questa pagina.
-Il **cuore** della configurazione è il seguente che riassume gli stati e le transizioni permesse a fronte degli input ricevuti che in questo caso sono livelli di potenza esposti dalla presa smart.
+Il **cuore** della configurazione è il seguente codice che riassume gli stati e le transizioni permesse a fronte degli input ricevuti che in questo caso sono livelli di potenza esposti dalla presa smart.
 
 
 ```yaml
@@ -404,7 +436,7 @@ state_machine:
           - Svuotare -> Idle
     diagram: mermaid
 ```
-
+<br>
 Questo è il diagramma FSM.
 
 ```mermaid
@@ -421,13 +453,27 @@ stateDiagram-v2
   Risciacquo --> Svuotare: CLEANING
   Svuotare --> Idle: OPENING
 ```
-
+<br>
 La parte di **calibrazione** é piuttosto noiosa ma di vitale importanza per avere dei dati di potenza che si avvicinano il più possibile alla realtà, esistono alcuni siti che spiegano come effettuare questa operazione:
 * https://www.danielmartingonzalez.com/en/calibrate-sensors-esphome/
 * https://frenck.dev/calibrating-an-esphome-flashed-power-plug/
 
 
-## Conclusioni e Supporto
+## Conclusioni
+Con questo package abbiamo visto come combinare insieme diversi elementi:
+* una raffinata modellazione dei consumi elettrici della lavatrice
+* una grafica accattivante con effetti visuali
+* un uso moderno dei dati statistici di HA
 
-| Ispirazione |
+Il risultato sembra piacevole , lasciate pure le vostre impressioni sui nostri canali social.
+
+| Ispirazione e ringraziamenti |
 | :---: |
+
+L'idea alla base diq eusto package è sempre l'ottimo lavoro di [Phil Hawthorne](https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/) del 2017 ma sempre fonte di ispirazioni per tutti i lavori di questo tipo.
+Per la parte FSM in ESPHOME Mikhail Diatchenko ha realizzato un ottimo componente: [ESPHome State Machine](https://github.com/muxa/esphome-state-machine).
+
+| Supporto |
+| :---: |
+
+**Ti piace questo package? Lascia una stella su Github e supportami per realizzarne altri!** <a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="20"></a>
