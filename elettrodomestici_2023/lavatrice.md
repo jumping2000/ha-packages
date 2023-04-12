@@ -17,7 +17,7 @@
 - [x] [Installazione](#installazione)
 - [x] [Configurazione](#configurazione)
 
-**Ti piace questo package?** <a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="20"></a>
+**Ti piace questo package?** Supportami affinchè ne possa realizzare altri! <a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="20"></a>
  
 
 ## Introduzione
