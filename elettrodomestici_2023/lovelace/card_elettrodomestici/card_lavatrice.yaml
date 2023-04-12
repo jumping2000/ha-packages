@@ -1,0 +1,531 @@
+####################################################
+#                                                  #
+#                   LAVATRICE                      #
+#                                                  #
+####################################################
+dummy_entity:
+##   
+  SFONDO_IMMAGINE: &CONF_BACKGROUND_IMAGE "/local/hassiohelp/pkg_elettrodomestici/sfondo_black.png" 
+  GRANDEZZA_CARATTERI_BASE: &CONF_FONT_SIZE "12px"
+  GRANDEZZA_CARATTERI_APEX: &CONF_FONT_SIZE_APEX "10px"
+  ALTEZZA_LINEA: &CONF_LINE_HEIGHT "24px"
+  COLORSCHEME_RGB_RED: &CONF_COLOR_RED "#bf212f"
+  COLORSCHEME_RGB_YELLOW: &CONF_COLOR_YELLOW "#f9a73e"
+  COLORSCHEME_RGB_GREEN2: &CONF_COLOR_GREEN2 "#006f3c"
+  COLORSCHEME_RGB_GREEN: &CONF_COLOR_GREEN "#27b376"
+  COLORSCHEME_RGB_BLUE: &CONF_COLOR_BLUE "#264b96"
+##
+  PLUG_LAVATRICE_SWITCH: &CONF_SWITCH_LAVATRICE "switch.plug_lavatrice"
+  PLUG_LAVATRICE_POTENZA_(W): &CONF_POWER_LAVATRICE "sensor.plug_lavatrice_power"
+  PLUG_LAVATRICE_ENERGIA_(kWh): &CONF_ENERGY_LAVATRICE "sensor.plug_lavatrice_energy"
+  PLUG_LAVATRICE_CORRENTE_(A): &CONF_CURRENT_LAVATRICE "sensor.plug_lavatrice_current"
+  PLUG_LAVATRICE_TENSIONE_(V): &CONF_VOLTAGE_LAVATRICE "sensor.plug_lavatrice_voltage"
+  PLUG_LAVATRICE_POT_APPARENTE_(var): &CONF_APPARENT_LAVATRICE "sensor.plug_lavatrice_apparent_power"
+  PLUG_LAVATRICE_POT_REATTIVA_(VA): &CONF_REACTIVE_LAVATRICE "sensor.plug_lavatrice_reactive_power"
+  BINARY_SENSOR_PORTA_LAVATRICE: &CONF_OBLO_LAVATRICE "binary_sensor.door_lavatrice_contact"
+  CONTEGGIO_MANUTENZIONI_LAVATRICE: &CONF_MAINTENANCE_LAVATRICE "sensor.lavatrice_modulo_manutenzione"
+  ##
+  LAVATRICE_STATUS: &CONF_STATUS_LAVATRICE "sensor.washing_machine_status"
+  PROGRAM_LAVATRICE_STATUS: &CONF_PROGRAM_LAVATRICE "input_select.lavatrice_program"
+##
+###########################################################
+## PICTURE + BUTTON LAVATRICE
+###########################################################
+  - type: 'custom:button-card'
+    view_layout:
+      grid-area: bottom
+    template: container
+    custom_fields:
+    #######################################
+    ## PICTURE CARD
+    #######################################
+      pictures:
+        card:
+          type: picture-elements
+          style: |
+            {% set stato = states('sensor.washing_machine_status') %}
+            @keyframes idle {}
+            @keyframes unknown {}
+            @keyframes unavailable {}
+            @keyframes lavaggio {
+              0% { transform: rotate(0deg); }
+              10% { transform: rotate(40deg); }
+              20% { transform: rotate(80deg); }
+              30% { transform: rotate(40deg); }
+              40% { transform: rotate(80deg); }
+              60% { transform: rotate(-40deg); }
+              70% { transform: rotate(-80deg); }
+              80% { transform: rotate(-40deg); }
+              90% { transform: rotate(-80deg); }
+              100% { transform: rotate(0deg); }
+            }
+            @keyframes riempimento{
+              30% { transform: rotate(40deg); }
+              60% { transform: rotate(-40deg); }
+            }
+            @keyframes centrifuga {
+              from { transform: rotate(0deg); }
+              to { transform: rotate(360deg); }             
+            }
+            @keyframes risciacquo {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(720deg); } 
+            }
+            ha-card { 
+              --my-animation-name: {{stato|lower}};
+              --my-rotate: {{ {
+                    'Riempimento' : '1800ms infinite ease-in-out',
+                    'Lavaggio' : '1800ms infinite ease-in-out backwards',
+                    'Centrifuga' : '150ms infinite ease-in-out',
+                    'Risciacquo' : '1500ms infinite ease-in-out alternate backwards',
+                    'Idle': '',
+                    'unknown':'',
+                    'unavailable':''
+                    } [stato] }};
+              border-radius: 0px 0px 0px 0px;
+            }
+          image: *CONF_BACKGROUND_IMAGE
+          elements:
+      #######################################
+      # inserire lo switch della lavatrice  #
+      #######################################
+            - type: image
+              entity: *CONF_SWITCH_LAVATRICE 
+              image: /local/hassiohelp/pkg_elettrodomestici/lavatrice.png
+              state_filter:
+                'off': brightness(50%) saturate(0.5) opacity(1.0)
+                'on': brightness(100%)
+              style:
+                left: 22%
+                top: 48.5% #58
+                width: 27%
+              tap_action:
+                action: toggle
+      ###
+            - type: image
+              entity: *CONF_STATUS_LAVATRICE 
+              image: /local/hassiohelp/pkg_elettrodomestici/lavatrice_oblo.png
+              state_filter:
+                Idle: opacity(0.0)
+                Riempimento: opacity(0.0)
+                Lavaggio: opacity(0.0)
+                Risciacquo: opacity(0.0)
+                Centrifuga: opacity(0.0)
+                Svuotare: Null
+              style:
+                left: 16.5%
+                pointer-events: none
+                top: 46% #55.5%
+                width: 33%
+      ###
+            - type: image
+              entity: *CONF_STATUS_LAVATRICE 
+              image: /local/hassiohelp/pkg_elettrodomestici/lavatrice_panni.png
+              state_filter:
+                Idle: opacity(0.0)
+                Riempimento: null
+                Lavaggio: null
+                Risciacquo: null
+                Centrifuga: null
+                Svuotare: opacity(0.0)
+              style:
+                transform: 'translate(0%,0%)'
+                animation: var(--my-rotate)
+                animation-name: var(--my-animation-name)
+                left: 14.5%
+                pointer-events: none
+                top: 30%
+                width: 15%
+      #######################################
+      ## POWER LABEL
+      #######################################
+            - type: state-label
+              entity: *CONF_POWER_LAVATRICE 
+              style:
+                top: 0%
+                left: 36%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE 
+                line-height: *CONF_LINE_HEIGHT
+                padding: 0px 14px
+                color: "var(--primary-text-color)"
+            - type: icon
+              icon: mdi:flash
+              style:
+                top: 0%
+                left: 36%
+                pointer-events: none
+                transform: scale(0.8)
+                line-height: *CONF_LINE_HEIGHT
+                padding: 7px 2px
+                color: "var(--primary-text-color)"
+      #######################################
+      ### ENERGY LABEL
+      #######################################
+            - type: state-label
+              entity: *CONF_ENERGY_LAVATRICE 
+              prefix: 'Oggi: '
+              style:
+                top: 0%
+                left: 55%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE 
+                line-height: *CONF_LINE_HEIGHT
+                padding: 0px 14px
+            - type: state-label
+              entity: sensor.lavatrice_oggi_cost
+              style:
+                top: 0%
+                left: 84%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE 
+                line-height: *CONF_LINE_HEIGHT
+                padding: 0px 14px
+            - type: icon
+              icon: mdi:circle-slice-3
+              style:
+                top: 0%
+                left: 54%
+                pointer-events: none
+                transform: scale(0.8)
+                line-height: *CONF_LINE_HEIGHT
+                padding: 7px 2px
+      #######################################
+      ### STATUS LABEL
+      #######################################
+            - type: state-label
+              entity: *CONF_STATUS_LAVATRICE  
+              prefix: 'Stato: '
+              style:
+                top: 10%
+                left: 36%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE 
+                font-weight: bold
+                color: *CONF_COLOR_GREEN
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 2px
+      #######################################
+      ### BINARY STATUS
+      #######################################
+            - type: state-label
+              entity: *CONF_BINARY_LAVATRICE
+              style:
+                top: 10%
+                left: 65%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE 
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 22px
+            - type: state-icon
+              entity: *CONF_BINARY_LAVATRICE
+              state-color: true
+              style:
+                top: 10% #0
+                left: 64% #0
+                transform: scale(0.8)
+                line-height: *CONF_LINE_HEIGHT
+                padding: 0px 2px
+      #######################################
+      ### MAINTENANCE LABEL
+      #######################################
+            - type: state-label
+              entity: *CONF_MAINTENANCE_LAVATRICE
+              prefix: 'Cicli: '
+              style:
+                top: 10%
+                left: 84%
+                pointer-events: none
+                font-size: *CONF_FONT_SIZE  # 14px
+                line-height: *CONF_LINE_HEIGHT #24px
+                transform: initial
+                padding: 2px 2px
+      #######################################
+      ## GRAFICO
+      #######################################
+      # da inserire il sensore potenza      #
+      #######################################
+            - type: 'custom:apexcharts-card'
+              style:
+                '--card-background-color': 'rgba(0, 0, 0, 0.0)'
+                '--ha-card-border-width': '0px'
+                '--ha-card-box-shadow': 'none'
+                top: 60%
+                left: 60%
+                width: 50%
+                font-size: *CONF_FONT_SIZE_APEX
+              experimental:
+                color_threshold: true
+              apex_config:
+                chart:
+                  height: 120px
+                tooltip:
+                  enabled: true
+                title:
+                  style:
+                    fontSize: *CONF_FONT_SIZE_APEX
+                    fontFamily: Segoe UI Light 
+                yaxis:
+                  forceNiceScale: true
+                  decimalsInFloat: 0
+                  labels:
+                    style:
+                      fontSize: *CONF_FONT_SIZE_APEX
+                      fontFamily: Segoe UI Light
+                xaxis:
+                  axisBorder:
+                    show: true
+                  labels:
+                    show: false
+                    style:
+                      fontSize: *CONF_FONT_SIZE_APEX
+                      fontFamily: Segoe UI Light
+                grid:
+                  show: true
+                  borderColor: rgba(112, 135, 164, 0.5)
+              graph_span: 3h
+              span:
+                start: minute
+                offset: '-3h'
+              show:
+                last_updated: false
+              header:
+                standard_format: false
+                show: false
+                show_states: false
+                colorize_states: true
+                title: 'Potenza'
+              series:
+                - entity: *CONF_POWER_LAVATRICE
+                  name: Potenza
+                  type: line #area
+                  stroke_width: 2 #0
+                  curve: stepline
+                  group_by:
+                    func: last
+                    fill: last
+                    duration: 1m
+                  show:
+                    header_color_threshold: true
+                    extremas: true
+                    name_in_header: false
+                    legend_value: false
+                  opacity: 0.8
+                  color_threshold:
+                    - color: *CONF_COLOR_GREEN
+                      value: 500
+                    - color: *CONF_COLOR_GREEN2
+                      value: 1000
+                    - color: *CONF_COLOR_YELLOW
+                      value: 1500
+                    - color: *CONF_COLOR_RED
+                      value: 2300
+      #######################################
+      ## GRAFICO MANUTENZIONE
+      #######################################
+            - type: custom:bar-card
+              style:
+                '--card-background-color': 'transparent'
+                '--ha-card-border-radius': '5px'
+                '--ha-card-box-shadow': 'none'
+                top: 56%
+                left: 91%
+                width: 60px
+                height: 115px
+              stack: horizontal
+              direction: up
+              positions:
+                name: 'off'
+                value: 'off'
+                indicator: 'off'
+                minmax: 'off'
+                icon: 'off'
+              columns: 1
+              entities:
+                - entity: *CONF_MAINTENANCE_LAVATRICE
+                  max: 50
+                  severity:
+                    - color: *CONF_COLOR_GREEN
+                      from: 0
+                      to: 19
+                    - color: *CONF_COLOR_YELLOW
+                      from: 20
+                      to: 39
+                    - color: *CONF_COLOR_RED
+                      from: 40
+                      to: 50
+      #######################################
+      ### Programma
+      #######################################
+            - type: state-label
+              entity: *CONF_PROGRAM_LAVATRICE
+              prefix: 'Programma: '
+              style:
+                left: 5% 
+                bottom: -3%
+                font-size: *CONF_FONT_SIZE 
+                line-height: *CONF_LINE_HEIGHT
+                transform: initial
+                padding: 2px 2px
+            - type: icon
+              icon: mdi:arrow-left-drop-circle-outline
+              tap_action:
+                action: call-service
+                service: input_select.select_previous
+                service_data:
+                  entity_id: *CONF_PROGRAM_LAVATRICE
+              style:
+                left: 50%
+                bottom: 0%
+                transform: initial
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 2px
+            - type: icon
+              icon: mdi:arrow-right-drop-circle-outline
+              tap_action:
+                action: call-service
+                service: input_select.select_next
+                service_data:
+                  entity_id: *CONF_PROGRAM_LAVATRICE
+              style:
+                left: 56%
+                bottom: 0%
+                transform: initial
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 2px
+      ### tempo rimasto
+            - type: state-label
+              entity: sensor.washing_machine_time_left
+              style:
+                right: 6%
+                bottom: -3%
+                pointer-events: none
+                font-size: *CONF_FONT_SIZE 
+                transform: initial
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 2px
+            - type: icon
+              icon: mdi:progress-clock
+              entity: *CONF_STATUS_LAVATRICE
+              style:
+                bottom: 0%
+                right: 1%
+                transform: initial
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 2px
+###########################################################
+## BOTTOM												  #
+###########################################################
+      #######################################
+      ## BUTTON
+      #######################################
+      buttons:
+        card:
+          type: custom:mod-card
+          card_mod:
+            style: |
+              :host {
+                --grid-card-gap: 0px;
+              }
+          card:
+            type: grid
+            columns: 5
+            square: false
+            cards:
+              ###########################################################
+              ## BOTTONI IN BASSO										#
+              ###########################################################
+              ### 1 ###
+              - type: custom:button-card
+                template: device_button_vertical_icon
+                name: Info
+                icon: mdi:information
+                variables:
+                  border_radius: 0px 0px 0px 20px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+                tap_action:
+                  action: fire-dom-event
+                  browser_mod:
+                    service: browser_mod.popup
+                    data:
+                      style: |-
+                        --popup-min-width: 950px; 
+                        --popup-max-width: 1050px;
+                        --popup-border-radius: var(--ha-card-border-radius);
+                      title: Dati Lavatrice
+                      content: !include lavatrice_button1.yaml
+              ### 2 ###
+              - type: custom:button-card
+                template: device_button_vertical
+                name: Settimana
+                entity: sensor.lavatrice_settimana_energy
+                label: >
+                  [[[ return states['sensor.lavatrice_settimana_cost'].state + ' €'; ]]]
+                variables:
+                  border_radius: 0px 0px 0px 0px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+              ### 3 ###
+              - type: custom:button-card 
+                template: device_button_vertical
+                name: Mese
+                entity: sensor.lavatrice_mese_energy
+                label: >
+                  [[[ return states['sensor.lavatrice_mese_cost'].state + ' €'; ]]]
+                variables:
+                  border_radius: 0px 0px 0px 0px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+              ### 4 ###
+              - type: custom:button-card
+                template: device_button_vertical
+                name: Anno
+                entity: sensor.lavatrice_anno_energy
+                label: >
+                  [[[ return states['sensor.lavatrice_anno_cost'].state + ' €' ; ]]]
+                variables:
+                  border_radius: 0px 0px 0px 0px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+              ### 5 ###
+              - type: "custom:button-card"
+                template: device_button_vertical_icon
+                name: Lavatrice
+                entity: switch.plug_lavatrice
+                icon: mdi:washing-machine
+                variables:
+                  border_radius: 0px 0px 20px 0px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+                show_state: false
+                show_label: false
+                styles:
+                  icon:
+                    - color: >
+                        [[[
+                          if (states['switch.plug_lavatrice'].state== 'on')
+                            return "#27b376";
+                          return "#bf212f";
+                        ]]]
+                hold_action:
+                  action: fire-dom-event
+                  browser_mod:
+                    service: browser_mod.popup
+                    data:
+                      style: |-
+                        --popup-min-width: 950px; 
+                        --popup-max-width: 1050px;
+                        --popup-border-radius: var(--ha-card-border-radius);
+                      title: Energia Lavatrice
+                      content: !include lavatrice_button5.yaml
