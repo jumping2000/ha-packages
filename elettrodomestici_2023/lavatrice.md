@@ -233,7 +233,16 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 La struttura dei file è rappresentata di seguito, quindi occorre rispettare la posizione dei file nel filesystem come da schema sottostante, in alternativa l'utente esperto può riposizionare i files nella maniera che più preferisce. 
 L'unica eccezione è la card Lovelace che può essere posizionata nelle viste - [View Lovelace](https://www.home-assistant.io/dashboards/views/) - già presenti nella propria configurazione.
 
-Per chi usa la modalità [storage](https://www.home-assistant.io/dashboards/dashboards/) è presente un file ad hoc che include tutta la parte Lovelace.
+Per fare in modo che la _custom button-card_ possa utilizzare i templates, occorre inserire la seguente configurazione in `ui-lovelace.yaml`. Per ulteriori informazioni fatre riferimento alla documentazione della card custom [Configuring templates](https://github.com/custom-cards/button-card#configuration-templates).
+
+```yaml
+##ui-lovelace.yaml
+
+button_card_templates:
+  !include_dir_merge_named button_card_templates
+```
+
+Per chi usa la modalità [storage](https://www.home-assistant.io/dashboards/dashboards/) è presente un file ad hoc che include tutta la parte Lovelace ( NON ANCORA DISPONIBILE)
 
 ```bash
 .
