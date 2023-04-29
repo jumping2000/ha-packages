@@ -6,7 +6,7 @@
   ## package_lavatrice:
   ## INFO 📦
   ##  😅 Gianpi [hassiohelp.eu]
-  ##  📅 13/04/2023
+  ##  📅 29/04/2023 - 2023.4.3
   ##  📌 INFORMATION provided by plug and energy meter
   ##  📂 PATH IMAGE /config/www/hassiohelp/pkg_elettrodomestici
   ##  🎁 THANKS TO: https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/
@@ -29,7 +29,7 @@
           package: "Washing Machine 🌍"
           site: "hassiohelp.eu 🌐"
           author: "Gianpi"
-          version: "2023.4.2"
+          version: "2023.4.3"
           
         expose: &expose
           <<: *customize
@@ -49,7 +49,7 @@
         PLUG LAVATRICE SWITCH: &CONF_SWITCH_ENTITY "switch.plug_lavatrice"
         PLUG LAVATRICE POTENZA (W): &CONF_POWER_ENTITY "sensor.plug_lavatrice_power"
         PLUG LAVATRICE ENERGIA (kWh): &CONF_ENERGY_ENTITY "sensor.plug_lavatrice_energy"
-        #TEMPO COMPLETAMENTO LAVATRICE (minuti): &CONF_TIME_COMPLETAMENTO 3
+        SENSORE DII CONTATTO SPOETELLO: &CONF_BINARY_DOOR "binary_sensor.door_lavatrice_contact"
         ##
         ## DA CONFIGURARE SECONDO I PROPRI DATI
         GROCY DETERSIVO ID: &CONF_DETERSIVO_ID 1
@@ -57,9 +57,9 @@
         GROCY AMMORBIDENTE ID: &CONF_AMMORBIDENTE_ID 2
         GROCY AMMORBIDENTE (mm): &CONF_AMMORBIDENTE_AMOUNT 50
         ##
-        RITARDO TRA LE VARIE NOTIFICHE IN MINUTI: &DELAY_NOTIFICATION 5
+        RITARDO TRA LE VARIE NOTIFICHE IN MINUTI: &CONF_DELAY_NOTIFICATION 5
         ## NON CAMBIARE ##
-        EVENTO DI SILENZIAMENTO: &CONF_SILENCE "silence-washingmachine"
+        SILENZIAMENTO NOTIFICHE: &CONF_ID_LAVATRICE "washingmachine"
         COUNTER CICLI LAVAGGIO: &CONF_CICLI_TOTALE "counter.cicli_lavaggio_lavatrice"
         DURATA LAVAGGIO OGGI: &CONF_OGGI_RUNTIME "sensor.lavatrice_oggi_runtime"
 
@@ -150,24 +150,9 @@
         icon: mdi:transmission-tower-import
         friendly_name: "Energia annuale"
 
-      sensor.lavatrice_oggi_cost:
+      sensor.lavatrice_cost:
         <<: *customize
-        friendly_name: "Costo oggi"
-        icon: mdi:currency-eur
-
-      sensor.lavatrice_settimana_cost:
-        <<: *customize
-        friendly_name: "Costo settimanale"
-        icon: mdi:currency-eur
-
-      sensor.lavatrice_mese_cost:
-        <<: *customize
-        friendly_name: "Costo mensile"
-        icon: mdi:currency-eur
-
-      sensor.lavatrice_anno_cost:
-        <<: *customize
-        friendly_name: "Costo annuale"
+        friendly_name: "Costo"
         icon: mdi:currency-eur
 
       sensor.lavatrice_total_runtime:
@@ -195,6 +180,15 @@
         - 'Off'
       initial: Colorati
 
+    washing_machine_status:
+      name: Stato Lavatrice
+      options:
+        - Idle
+        - Lavaggio
+        - Risciacquo
+        - Svuotare
+      initial: Idle
+
   input_datetime:
     lavatrice_time_end:
       name: End time
@@ -218,7 +212,7 @@
       icon: mdi:chart-areaspline
     lavatrice_ripetizioni_notifica:
       name: Numero ripetizioni notifica
-      min: 1
+      min: 0
       max: 10
       step: 1
       icon: mdi:voicemail
@@ -244,10 +238,10 @@
       name: Durata ciclo di lavaggio
       icon: mdi:timer-sand
       initial: 'off'
-    lavatrice_cancella_notifiche:
-      name: Cencella notifiche
-      icon: mdi:delete-circle
-      initial: 'off'
+    # lavatrice_clothes_in:
+    #   name: Panni dentro
+    #   icon: mdi:tshirt-v
+    #   initial: 'off'
 
   #################################################################
   #                                                               #
@@ -297,9 +291,8 @@
       entity_id: binary_sensor.washing_machine_status
       state: "on"
       type: time
-      start: "{{ as_timestamp(states.input_boolean.lavatrice_runtime.last_changed) | default }}"
+      start: "{{ as_timestamp(states['input_boolean.lavatrice_runtime'].last_changed) | default }}"
       end: "{{ now() }}"
-      #start: "{{ as_timestamp(states.input_boolean.lavatrice_runtime.last_changed, now() | timestamp_custom('%c')) }}"
 
     - platform: history_stats
       name: Lavatrice oggi runtime
@@ -314,7 +307,7 @@
   #                          TEMPLATE                             #
   #                                                               #
   #################################################################
-  ### personalizzare l'entità di energia ###
+  ### personalizzare l'entità di energia in "sensore_energia" ###
   template:
     - trigger:
         - platform: state
@@ -323,9 +316,29 @@
       sensor:
         - name: lavatrice_run_energy
           state: >
+            {% set sensore_energia = "sensor.plug_lavatrice_energy"%}
             {% set value1 =  states('input_number.lavatrice_energia_iniziale') |float(default=0) %}
-            {% set value2 =  states('sensor.plug_lavatrice_energy') |float(default=0) %}
+            {% set value2 =  states(sensore_energia) |float(default=0) %}
             {{ (value2 - value1)|round(2,default=0)}}
+          availability: >
+            {% set sensore_energia = "sensor.plug_lavatrice_energy" %}
+            {{ states(sensore_energia) not in ['unavailable', 'unknown', 'None'] }}
+
+    - trigger:
+        - platform: state
+          entity_id: *CONF_BINARY_DOOR
+          from: "off"
+          to: "on"
+      sensor:
+        - name: lavatrice_panni_in
+          state: >
+            {%set binary1 = 'binary_sensor.washing_machine_status' %}
+            {%set binary2 = 'binary_sensor.door_lavatrice_contact' %}
+            {%set last1 = as_timestamp(states[binary1].last_changed) %}
+            {{ ((as_timestamp(now()) - last1)/3600)|round(2,default=0) if states(binary1)=='off' else 0 }}
+          availability: >
+            {%set binary2 = 'binary_sensor.door_lavatrice_contact' %}
+            {{ states(binary2) not in ['unavailable', 'unknown', 'None'] }}
 
     - sensor:
       - name: lavatrice_total_runtime
@@ -336,12 +349,16 @@
           {%  else %}
             {{ value|int }}:0{{ ((value|float % 1)|round(2) * 60)|int(default=0) }}:00
           {%  endif %}
+        availability: >
+          {{ states('input_number.lavatrice_runtime') not in ['unavailable', 'unknown', 'None'] }}
 
       - name: lavatrice_modulo_manutenzione
         state: >
           {%- set value1 =  states('counter.cicli_lavaggio_lavatrice') |int(default=0) -%}
           {%- set value2 =  states('input_number.lavatrice_avviso_manutenzione') |int(default=0) -%}
           {{ value1 % value2 if value2 !=0 else 0 }}
+        availability: >
+          {{ states('counter.cicli_lavaggio_lavatrice') not in ['unavailable', 'unknown', 'None'] }}
 
       - name: washing_machine_time_left
         state: >
@@ -362,18 +379,20 @@
               'Off': '00:00:00' } %}
             {{ dict_time_program[program] if program in dict_time_program else '00:00:00'}}
           {% endif %}
+        availability: >
+          {{ states('input_datetime.lavatrice_time_end') not in ['unavailable', 'unknown', 'None'] }}
 
       - name: lavatrice_cost
-        state: "{{(states('sensor.lavatrice_run_energy') | float(default=0) * states('sensor.sen_f1') | float(default=0) ) | round(2, default=0) }}"
+        state: "{{(states('sensor.lavatrice_run_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
         attributes:
-          lavatrice_oggi_cost: "{{(states('sensor.lavatrice_oggi_energy') | float(default=0) * states('sensor.sen_f1') | float(default=0) ) | round(2, default=0) }}"
-          lavatrice_settimana_cost: "{{(states('sensor.lavatrice_settimana_energy') | float(default=0) * states('sensor.sen_f1') | float(default=0) ) | round(2, default=0) }}"
-          lavatrice_mese_cost: "{{(states('sensor.lavatrice_mese_energy') | float(default=0) * states('sensor.sen_f1') | float(default=0) ) | round(2, default=0) }}"
-          lavatrice_anno_cost: "{{(states('sensor.lavatrice_anno_energy') | float(default=0) * states('sensor.sen_f1') | float(default=0) ) | round(2, default=0) }}"
+          oggi_cost: "{{(states('sensor.lavatrice_oggi_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          settimana_cost: "{{(states('sensor.lavatrice_settimana_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          mese_cost: "{{(states('sensor.lavatrice_mese_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          anno_cost: "{{(states('sensor.lavatrice_anno_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
         unit_of_measurement: '€'
         device_class: monetary
         availability: >
-          {{ states('sensor.lavatrice_oggi_energy') is defined and states('sensor.lavatrice_oggi_energy') not in ['unavailable', 'unknown', 'none'] }}
+          {{ states('sensor.lavatrice_oggi_energy') not in ['unavailable', 'unknown', 'None'] }}
 
     - binary_sensor:
       - name: washing_machine_status
@@ -381,7 +400,7 @@
         state: >
           {{ states('sensor.washing_machine_status') in ['Riempimento','Lavaggio','Risciacquo','Centrifuga'] }}
         availability: >
-          {{ states('sensor.washing_machine_status') not in ['unavailable', 'unknown', 'none'] }}
+          {{ states('sensor.washing_machine_status') not in ['unavailable', 'unknown', 'None'] }}
 
       - name: washing_machine_maintenance
         device_class: problem
@@ -390,7 +409,7 @@
           {%- set value2 =  states('input_number.lavatrice_avviso_manutenzione') | int(default=0) -%}
           {{ (value1 % value2 == 0) if value2 !=0 else False}}
         availability: >
-          {{ states('counter.cicli_lavaggio_lavatrice') not in ['unavailable', 'unknown', 'none'] }}
+          {{ states('counter.cicli_lavaggio_lavatrice') not in ['unavailable', 'unknown', 'None'] }}
 
   #################################################################
   #                                                               #
@@ -472,6 +491,65 @@
           target:
             entity_id: input_number.lavatrice_runtime
 
+    # do_something:
+    #   alias: "test"
+    #   icon: "mdi:party-popper"
+    #   description: "test acionable"
+    #   variables:
+    #     alert_number: " {{ states('input_number.lavatrice_ripetizioni_notifica') }} "
+    #     critical: "on"
+    #     id: *CONF_ID_TEST
+    #     ack_mobile: "{{ 'silence-' + id}}"
+    #     ack_telegram:  "{{ '/' + ack_mobile}}"
+    #   mode: single
+    #   sequence:
+    #     - alias: "Repeat the sequence UNTIL the conditions are true"
+    #       repeat:
+    #         sequence:
+    #           - service: script.my_notify
+    #             data:
+    #               title: "-- Attenzione --"
+    #               notify: notify.telegram, notify.mobile_app_mi_9
+    #               title: "test"
+    #               message: "test di prova, notifica numero {{  repeat.index }}"
+    #               mobile: 
+    #                 tag: "{{ id }}"
+    #                 group: "{{ id }}"
+    #                 # Android Specific
+    #                 ttl: "{{ iif(critical, 0, 3600000) }}"
+    #                 priority: "{{ iif(critical, 'high', 'normal') }}"
+    #                 # iOS Specific
+    #                 push:
+    #                   interruption-level: "{{ iif(critical, 'critical', 'active') }}"
+    #                 # Actions
+    #                 actions:
+    #                   - action: "{{ ack_mobile }}"
+    #                     title: "Silenzia Notifiche"
+    #                     destructive: true
+    #               telegram:
+    #                 # Actions
+    #                 inline_keyboard:
+    #                 -  '{{ "\U0001F527" }} Silenzia Notifiche:{{ ack_telegram }}'
+    #           - wait_for_trigger:
+    #             - platform: event
+    #               event_type: mobile_app_notification_action
+    #               event_data:
+    #                 action: "{{ ack_mobile }}"
+    #             - platform: event
+    #               event_type: telegram_callback
+    #               event_data:
+    #                 data:  "{{ ack_telegram }}"
+    #             timeout:
+    #               minutes: 1 # intervallo
+    #         until: "{{  repeat.index > alert_number-1 or wait.remaining > 0 }}"
+    #     ### SOSTITUIRE SE NON SI VUOLE IL CENTRO NOTIFICHE ##
+    #     - service: script.my_notify
+    #       data:
+    #         title: "-- Attenzione --"
+    #         notify: notify.telegram, notify.mobile_app_mi_9
+    #         message: "Notifica periodica di test cancellata"
+    #         google: 1
+
   #################################################################
   #                                                               #
   #                          AUTOMATION                           #
@@ -525,48 +603,6 @@
               {{ now().timestamp() | timestamp_custom("%Y-%m-%d", true)  }}
   
   #################################################################
-    - alias: Interrompi notifiche lavatrice
-      trigger:
-        - platform: event
-          event_type: mobile_app_notification_action
-          event_data:
-            action: *CONF_SILENCE
-        - platform: event
-          event_type: telegram_callback
-          event_data:
-            data:  "/silence-washingmachine"
-      action:
-        - service: input_boolean.turn_on
-          target:
-            entity_id: input_boolean.lavatrice_cancella_notifiche
-        - service: script.my_notify
-          data:
-            title: "-- Attenzione --"
-            notify: notify.telegram, notify.mobile_app_mi_9
-            message: "Notifica periodica per lavatrice 💧 cancellata"
-            google: 1
-        ### NOTIFICHE TELEGRAM, COMPANION, GOOGLE, ALEXA ###
-        # - service: *DEFAULT_NOTIFY_MOBILE
-        #   data:
-        #     title: "-- Attenzione --"
-        #     message: "Notifica periodica per lavatrice 💧 cancellata."
-        #     data:
-        #       tag: "washingmachine-working"
-        # - service: *DEFAULT_NOTIFY
-        #   data:
-        #     title: "-- Attenzione --"
-        #     message: "Notifica periodica per lavatrice 💧 cancellata."
-        # - service: *DEFAULT_SERVICE_TTS
-        #   data:
-        #     entity_id: *DEFAULT_MEDIA_PLAYER_GOOGLE
-        #     message: "Notifica periodica per lavatrice cancellata."
-        # - service: notify.alexa_media
-        #   data:
-        #     message: "Notifica periodica per lavatrice cancellata."
-        #     target: *DEFAULT_MEDIA_PLAYER_ALEXA 
-        #     data:
-        #       type: announce
-  #################################################################
     - alias: Avviso manutenzione lavatrice
       trigger:
         - platform: template
@@ -610,6 +646,10 @@
         - variables:
             grocy_utilization: " {{ states('input_boolean.lavatrice_grocy_utilization') }} "
             alert_number: " {{ states('input_number.lavatrice_ripetizioni_notifica') }} "
+            energy_plug: *CONF_ENERGY_ENTITY
+            critical: "on"
+            id: *CONF_ID_LAVATRICE
+            ack_mobile: "{{'silence-'+id}}"
         - if:
             - alias: "se non sono in IDLE"
               condition: template
@@ -621,6 +661,7 @@
                 title: "-- Attenzione --"
                 message: "La lavatrice 💧 è in fase di {{ trigger.to_state.state|lower }}"
                 google: 1
+                notify: notify.telegram, notify.mobile_app_mi_9
             # ## NOTIFICHE TELEGRAM, COMPANION, GOOGLE, ALEXA ###
             # - service: *DEFAULT_NOTIFY_MOBILE
             #   data:
@@ -640,7 +681,6 @@
             #     target: *DEFAULT_MEDIA_PLAYER_ALEXA 
             #     data:
             #       type: announce
-
         - alias: Check the state
           choose:
             - alias: Status --> Riempimento
@@ -658,32 +698,32 @@
                 - service: script.my_notify
                   data:
                     title: "-- Attenzione --"
-                    message: "Lavatrice 💧 iniziata"
+                    message: "Lavatrice iniziata 🏁"
                     google: 1
+                # ## NOTIFICHE TELEGRAM, COMPANION, GOOGLE, ALEXA ###
+                # - service: *DEFAULT_NOTIFY_MOBILE
+                #   data:
+                #     title: "-- Attenzione --"
+                #     message:  "Lavatrice iniziata 🏁"
+                # - service: *DEFAULT_NOTIFY
+                #   data:
+                #     title: "-- Attenzione --"
+                #     message:  "Lavatrice iniziata 🏁"
+                # - service: *DEFAULT_SERVICE_TTS
+                #   data:
+                #     entity_id: *DEFAULT_MEDIA_PLAYER_GOOGLE
+                #     message:  "Lavatrice iniziata"
+                # - service: notify.alexa_media
+                #   data:
+                #     message:  "Lavatrice iniziata"
+                #     target: *DEFAULT_MEDIA_PLAYER_ALEXA 
+                #     data:
+                #       type: announce    
                 - service: input_number.set_value
                   target:
                     entity_id: input_number.lavatrice_energia_iniziale
                   data:
-                    value: *CONF_ENERGY_ENTITY
-              # ## NOTIFICHE TELEGRAM, COMPANION, GOOGLE, ALEXA ###
-              # - service: *DEFAULT_NOTIFY_MOBILE
-              #   data:
-              #     title: "-- Attenzione --"
-              #     message:  "Lavatrice 💧 iniziata"
-              # - service: *DEFAULT_NOTIFY
-              #   data:
-              #     title: "-- Attenzione --"
-              #     message:  "Lavatrice 💧 iniziata"
-              # - service: *DEFAULT_SERVICE_TTS
-              #   data:
-              #     entity_id: *DEFAULT_MEDIA_PLAYER_GOOGLE
-              #     message:  "Lavatrice iniziata"
-              # - service: notify.alexa_media
-              #   data:
-              #     message:  "Lavatrice iniziata"
-              #     target: *DEFAULT_MEDIA_PLAYER_ALEXA 
-              #     data:
-              #       type: announce                    
+                    value: "{{ states(energy_plug) }}"
                 - alias: Check Grocy
                   choose:
                     - conditions: "{{ grocy_utilization == 'on' }}"
@@ -701,98 +741,53 @@
             - alias: Status -> Svuotare
               conditions: "{{ trigger.to_state.state == 'Svuotare'}}"
               sequence:
-                - delay: 
-                    seconds: 2 #importante per il calcolo della durata
-                - repeat:
-                    until: "{{ repeat.index > alert_number-1 or is_state('input_boolean.lavatrice_cancella_notifiche','on') }}"
+                - alias: "Repeat the sequence UNTIL the conditions are true"
+                  repeat:
                     sequence:
                       - service: script.my_notify
                         data:
                           title: "-- Attenzione --"
                           message: >
-                            Lavatrice finita, i panni sono pronti per essere stesi. Consumati oggi {{ states('sensor.lavatrice_oggi_energy') | round(2, default=0) }} kWh
+                            Lavatrice finita 🏁, i panni sono pronti per essere stesi. Consumati oggi {{ states('sensor.lavatrice_oggi_energy') | round(2, default=0) }} kWh
                             {% if grocy_utilization == 'on' %}
                               Disponibili {{ states.sensor.grocy_stock.attributes['products'][0]['available_amount'] |int * 10}} ml
                             {% endif %}
-                          notify: notify.telegram, notify.mobile_app_mi_9, notify.mobile_app_a10
+                          notify: notify.telegram, notify.mobile_app_mi_9
                           google: 1
-                          mobile:
+                          mobile: 
+                            tag: "{{id}}"
+                            group: "{{id}}"
+                            # Android Specific
+                            ttl: "{{ iif(critical, 0, 3600000) }}"
+                            priority: "{{ iif(critical, 'high', 'normal') }}"
+                            # iOS Specific
+                            push:
+                              interruption-level: "{{ iif(critical, 'critical', 'active') }}"
+                            # Actions
                             actions:
-                            - action: *CONF_SILENCE
-                              title: Silenzia Notifiche
-                              destructive: true
+                              - action: "{{ack_mobile}}"
+                                title: "Silenzia Notifiche"
+                                destructive: true
                           telegram:
+                            # Actions
                             inline_keyboard:
-                            -  '{{ "\U0001F527" }} Silenzia Notifiche:/silence-washingmachine'
-                      # ## NOTIFICHE TELEGRAM, COMPANION, GOOGLE, ALEXA ###
-                      # - service: *DEFAULT_NOTIFY_MOBILE
-                      #   data:
-                      #     title: "-- Attenzione --"
-                      #     message: >
-                      #       Lavatrice 💧 finita, i panni sono pronti per essere stesi. Consumati oggi {{ states('sensor.lavatrice_oggi_energy') | round(2, default=0) }} kWh
-                      #       {% if grocy_utilization == 'on' %}
-                      #         Disponibili {{ states.sensor.grocy_stock.attributes['products'][0]['available_amount'] |int * 10}} ml
-                      #       {% endif %}
-                      #     data:
-                      #       actions:
-                      #       - action: *CONF_SILENCE
-                      #         title: Silenzia Notifiche
-                      #         destructive: true
-                      # - service: *DEFAULT_NOTIFY
-                      #   data:
-                      #     title: "-- Attenzione --"
-                      #     message: >
-                      #       Lavatrice 💧 finita, i panni sono pronti per essere stesi. Consumati oggi {{ states('sensor.lavatrice_oggi_energy') | round(2, default=0) }} kWh
-                      #       {% if grocy_utilization == 'on' %}
-                      #         Disponibili {{ states.sensor.grocy_stock.attributes['products'][0]['available_amount'] |int * 10}} ml
-                      #       {% endif %}
-                      #     data:
-                      #       inline_keyboard:
-                      #         -  '{{ "\U0001F527" }} Silenzia Notifiche:/silence-washingmachine'
-                      # - service: *DEFAULT_SERVICE_TTS
-                      #   data:
-                      #     entity_id: *DEFAULT_MEDIA_PLAYER_GOOGLE
-                      #     message: >
-                      #       Lavatrice finita, i panni sono pronti per essere stesi. Consumati oggi {{ states('sensor.lavatrice_oggi_energy') | round(2, default=0) }} kWh
-                      #       {% if grocy_utilization == 'on' %}
-                      #         Disponibili {{ states.sensor.grocy_stock.attributes['products'][0]['available_amount'] |int * 10}} ml
-                      #       {% endif %}
-                      # - service: notify.alexa_media
-                      #   data:
-                      #     message: >
-                      #       Lavatrice finita, i panni sono pronti per essere stesi. Consumati oggi {{ states('sensor.lavatrice_oggi_energy') | round(2, default=0) }} kWh
-                      #       {% if grocy_utilization == 'on' %}
-                      #         Disponibili {{ states.sensor.grocy_stock.attributes['products'][0]['available_amount'] |int * 10}} ml
-                      #       {% endif %}
-                      #     target: *DEFAULT_MEDIA_PLAYER_ALEXA 
-                      #     data:
-                      #       type: announce  
-                      - delay:
-                          minutes: *DELAY_NOTIFICATION ## How long to silence notifications when requested as part of the actionable notification.
-                - service: input_boolean.turn_off
-                  target:
-                    entity_id: input_boolean.lavatrice_cancella_notifiche
-
-  #################################################################
-  # When we open the washing machine door, stop the "clothes in" status and 
-  # we don't spam people that the washing machine has finished
-    - alias: Lavatrice apertura oblo
-      trigger:
-      - platform: state
-        entity_id: binary_sensor.door_lavatrice_contact
-        to: 'on'
-        for: 00:00:10
-      condition:
-        - condition: state
-          entity_id: sensor.washing_machine_status
-          state: "Svuotare"
-      action:
-        - service: input_boolean.turn_off
-          target:
-            entity_id: input_boolean.lavatrice_cancella_notifiche
-
-  #################################################################
-  #                                                               #
-  #                     END OF CONFIGURATION FILE                 #
-  #                                                               #
-  #################################################################
+                            -  "🔧Silenzia Notifiche:/{{ack_mobile}}"
+                      - wait_for_trigger:
+                        - platform: event
+                          event_type: mobile_app_notification_action
+                          event_data:
+                            action: "{{ack_mobile}}"
+                        - platform: event
+                          event_type: telegram_callback
+                          event_data:
+                            data:  "/{{ack_mobile}}"
+                        timeout:
+                          minutes: *CONF_DELAY_NOTIFICATION  # intervallo tra le notifiche
+                    until: "{{  repeat.index > alert_number-1 or wait.remaining > 0 }}"
+                ### SOSTITUIRE SE NON SI VUOLE IL CENTRO NOTIFICHE ##
+                - service: script.my_notify
+                  data:
+                    title: "-- Attenzione --"
+                    notify: notify.telegram, notify.mobile_app_mi_9
+                    message: "Notifica periodica di fine lavaggio panni cancellata"
+                    google: 1
