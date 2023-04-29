@@ -26,7 +26,7 @@ base_button:
       [font-size: *CONF_FONT_SIZE_MEDIUM, justify-self: center]
 ###########################################################
 device_button_vertical:
-  template: ['base_button','feedback_click']
+  template: 'base_button'
   show_state: true
   show_label: true
   color: auto
