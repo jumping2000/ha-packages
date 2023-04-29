@@ -48,7 +48,7 @@ device_button_vertical:
       - grid-template-rows: auto auto auto # auto min-content 
 ###########################################################
 device_button_vertical_icon:
-  template: ['base_button','feedback_click']
+  template: 'base_button'
   show_state: true
   show_label: true
   color: auto
