@@ -20,13 +20,15 @@
 
 **Ti piace questo package? Lascia una stella su Github e supportami per realizzarne altri!** <a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="20"></a>
 
+[![Websitebadge]][website] [![Forum][forumbadge]][forum] [![telegrambadge]][telegram] [![facebookbadge]][facebook] 
+
 ## Introduzione
 
 L'articolo riprende quanto avevamo già scritto nel 2020 con l'articolo **[Elettrodomestici Smart](https://hassiohelp.eu/2020/04/05/elettrodomestici-smart-con-home-assistant/)** che ha introdotto:
 1. un package per poter monitorare lo stato degli elettrodomestici non smart utilizzando una presa o dispositivo in grado di effettuare delle misurazione dei livelli di potenza, 
 2. una card Lovelace con effetti grafici CSS ed informazioni di funzionamento. 
 
-In particolare in questa **edizione 2023** useremo alcuni custom ricchi di funzionalità come [Button Card](https://github.com/custom-cards/button-card) ed [ApexChart Card](https://github.com/RomRider/apexcharts-card) che oramai sono diventati dei veri e propri classici delle interfacce sviluppate per Home Assistant e introdurremo ulteriori elementi sia a livello di dati disponibili che a livello di grafica, ma la perla che rende l'uso del package veramente superiore sotto tutti punti di vista rispetto a pacchetti analoghi, è l'utilizzo di una "macchina a stati finiti" [FSM](https://it.wikipedia.org/wiki/Automa_a_stati_finiti) sviluppata in ESPHome che restituisce lo stato del dispositivo in maniera molto precisa. Ovviamente è disponibile anche la versione _lite_ per chi non vuole cimentarsi nella configurazione ESPHOME della presa smart ed utilizzare i dati messi a disposizione dalla presa. 
+In particolare in questa **edizione 2023** useremo alcuni custom ricchi di funzionalità come [Button Card](https://github.com/custom-cards/button-card) ed [ApexChart Card](https://github.com/RomRider/apexcharts-card) che oramai sono diventati dei veri e propri classici delle interfacce sviluppate per Home Assistant e introdurremo ulteriori elementi sia a livello di dati disponibili che a livello di grafica, ma la perla che rende l'uso del package veramente superiore sotto tutti punti di vista rispetto a pacchetti analoghi, è l'utilizzo di una "macchina a stati finiti" [FSM](https://it.wikipedia.org/wiki/Automa_a_stati_finiti) sviluppata in ESPHome che restituisce lo stato del dispositivo in maniera molto precisa. Ovviamente è disponibile anche la versione _lite_ per chi non vuole cimentarsi nella configurazione ESPHOME della presa smart ed utilizzare i dati messi a disposizione dalla presa. In questo caso un fantastico [Blueprint](https://www.home-assistant.io/docs/automation/using_blueprints/) semplificherà la configurazione e contemporaneamente darà ottima precisione nella rilevazione delle fasi.
 
 Riepiloghiamo i punti di forza di questo pacchetto sono:
 1. Adattabile per l'uso su tablet, smartphone, PC;
@@ -41,7 +43,7 @@ Riepiloghiamo i punti di forza di questo pacchetto sono:
 
 ## Prerequisiti 
 
-Per poter utilizzare il packages occorrono alcune card e alcune configurazioni abbastanza comuni, le card e i custom sono disponibili sul community store [HACS](https://hacs.xyz/) , sul sito [HassioHelp.eu](https://hassiohelp.eu) sono presenti numerose guide, prestate particolare attenzione alla data di rilascio della guida, alcune sono datate e potrebbero essere da ricontrollare, in questo caso il gruppo Telegram [Hassiohelp](https://t.me/HassioHelp) è un validissimo aiuto.
+Per poter utilizzare il packages occorrono alcune card e alcune configurazioni abbastanza comuni, le card e i custom sono disponibili sul community store [HACS](https://hacs.xyz/) , sul sito [HassioHelp.eu](https://hassiohelp.eu) sono presenti numerose guide, prestate particolare attenzione alla data di rilascio della guida, alcune sono datate e potrebbero essere da ricontrollare, in questo caso il gruppo Telegram [HassioHelp](https://t.me/HassioHelp) è un validissimo aiuto.
 
 | Card/Custom | Uso |
 | :---: | --- |
@@ -49,11 +51,11 @@ Per poter utilizzare il packages occorrono alcune card e alcune configurazioni a
 | **[ApexChart Card](https://github.com/RomRider/apexcharts-card)** | Obbligatorio |
 | **[Browser Mod](https://github.com/thomasloven/hass-browser_mod)** | Obbligatorio |
 | **[Card Mod](https://github.com/thomasloven/lovelace-card-mod)** | Obbligatorio |
-| **[Layout Card](https://github.com/thomasloven/lovelace-layout-card)** | Facoltativo |
-| **[Bar Card](https://github.com/custom-cards/bar-card)** | Facoltativo |
-| **[Multiple Entity Row](https://github.com/benct/lovelace-multiple-entity-row)** | Facoltativo |
+| **[Layout Card](https://github.com/thomasloven/lovelace-layout-card)** | Usato ma non indispensabile |
+| **[Bar Card](https://github.com/custom-cards/bar-card)** | Usato ma non indispensabile |
+| **[Multiple Entity Row](https://github.com/benct/lovelace-multiple-entity-row)** | Usato ma non indispensabile |
 
-L'utilizzo delle card _facoltative_ permette una migliore visualizzazione delle informazioni soprattutto con i dispositivi smartphone ma nulla vieta di poterle rimuovere utilizzando dei layout più scomodi ma comunque fruibili (questo vale per la Layout Card e la Multiple Entity Row). La rimozione dei componenti custom e dl relativo adattamento del codice YAML è lasciato al lettore "evoluto" in grado di procedere in autonomia.
+L'utilizzo delle card _non indispensabili_ permette una migliore visualizzazione delle informazioni soprattutto con i dispositivi smartphone ma nulla vieta di poterle rimuovere utilizzando dei layout più scomodi ma comunque fruibili (questo vale per la Layout Card e la Multiple Entity Row). La rimozione dei componenti custom e dl relativo adattamento del codice YAML è lasciato al lettore "evoluto" in grado di procedere in autonomia.
 
 | Configurazioni obbligatorie |
 | :---: |
@@ -61,10 +63,11 @@ L'utilizzo delle card _facoltative_ permette una migliore visualizzazione delle 
 Per poter procedere con l'installazione del package ci sono alcuni passi da effettuare:
 * abilitare i packages come descritto qui: [Packages](https://www.home-assistant.io/docs/configuration/packages/);
 * configurare Home Assistant per avere i sensori di tempo e di data come spiegato qui: [Time & Date](https://www.home-assistant.io/integrations/time_date/) o nelle guide [HassioHelp](https://hassiohelp.eu);
-* configurare il sensore che restituisce il costo dell'energia (a breve ci sarà package accessorio ad hoc) scegliendo tra un sensore che recupera direttamente il PUN oppure un hekper input_number configurabile;
+* configurare il sensore che restituisce il costo dell'energia (a breve ci sarà package accessorio ad hoc) scegliendo tra un sensore che recupera direttamente il PUN oppure un helper input_number configurabile;
 * impostazione dei servizi di notifica: ad esempio [Telegram](https://www.home-assistant.io/integrations/telegram/), [Google](https://www.home-assistant.io/integrations/google_assistant/), [Mobile App](https://companion.home-assistant.io/) la scelta migliore rimane sempre l'uso del [Centro Notifiche](https://github.com/caiosweet/Package-Notification-HUB-AppDaemon) che centralizza la configurazione di tutti i servizi di notifica.
+* per la versione _lite_ configurare il blueprint ad hoc.
 
-| Guide Hassiohelp |
+| Guide HassioHelp |
 | :---: |
 
 Ecco alcune guide pubblicate da [HassioHelp.eu](https://hassiohelp.eu) che sicuramente sono meno aggiornate della documentazione ufficiale ma restano valide: 
@@ -86,9 +89,9 @@ Ecco alcune guide pubblicate da [HassioHelp.eu](https://hassiohelp.eu) che sicur
 
 E' fondamentale avere una presa, o un relay “smart” (come la famiglia Shelly PM) o altro sistema smart basato su pinza amperometrica come Shelly EM o PZEM che restituisca la ***potenza assorbita in watt/Kw***  della lavatrice. Per ottenere il massimo risultato ed utilizzare quindi la FSM occorre un dispositivo in grado di essere configurato con il firmware ESPHome, se non è possibile ci sono due alternative:
 1. utilizzare una versione ridotta (_lite_) del package;
-2. adattare le automazioni già sviluppate nll'articolo del 2020 al proprio caso.
+2. adattare le automazioni già sviluppate nell'articolo del 2020 al proprio caso.
 
-Nel repository su Github sono presenti due packages già pronti per l'uso, la versione ***FSM*** e la versione ***lite***, che utilizza una FSM semplificata e realizzata con le automazioni YAML.
+Nel repository su Github sono presenti due packages già pronti per l'uso, la versione ***FSM*** e la versione ***lite***, che utilizza una FSM semplificata e realizzata con un blueprint.
 
 ## Funzionamento
 
@@ -151,7 +154,7 @@ Il package espone una grande serie di dati, funzionalità, grafici e configurazi
 * Numero dei cicli giornalieri, settimanali, mensili ed annuali di lavaggio effettuati 
 * Durata dei cicli giornalieri, settimanali, mensili ed annuali di lavaggio effettuati
 * Numero e durata totale dei cicli effettuati
-* Durata e costi dell'ultimo lavaggio
+* Durata, energia e costo dell'ultimo lavaggio
 
 **Grafici**
 * Grafico X-Y della potenza consumata
@@ -204,8 +207,8 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 
 <table align="center">
 	<tr>
-	    <th>Info Card</th>
-      <th>Energy Card</th>
+	    <th>🎫 Info Card 🎫</th>
+      <th>☢ Energy Card ☢</th>
 	</tr>
     <tr>
         <td><div align=center><img width = 400 src="img/lavatrice_3.png"/></div></td>
@@ -225,7 +228,10 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 | Download |
 | :---: |
 
-[Github](https://github.com/jumping2000/ha-packages/elettrodomestici_2023) permette di effettuare il completo download dei file che costituiscono il pacchetto, quindi file yaml e immagini. Per quanto riguarda il package la scelta è tra la versione _FSM_ e la versione _lite_, quindi l'utente dovrà cancellare la versione che non interessa.
+[Github](https://github.com/jumping2000/ha-packages/elettrodomestici_2023) permette di effettuare il completo download dei file che costituiscono il pacchetto, quindi file yaml e immagini. Una volta inserito tutto nella propria installazione di Home Assistant seguendo le indicazioni presenti nel seguito, occorre seguire i passi base per procedere alla configurazione:
+1. Scegliere tra i package in versione _FSM_ o in versione _lite_, l'utente dovrà cancellare i file YAML che non sono di interesse.
+2. Scegliere tra la grafica Lovelace in formato _YAML_ o _Storage_, l'utente dovrà cancellare i file YAML che non sono di interesse.
+3.  solo per chi usa la versione _Lite_, procedere alla configurazione del [Blueprint FSM](https://github.com/jumping2000/ha-templates/tree/main/blueprints/fsm)  
 
 | Struttura dei file |
 | :---: |
@@ -233,7 +239,8 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 La struttura dei file è rappresentata di seguito, quindi occorre rispettare la posizione dei file nel filesystem come da schema sottostante, in alternativa l'utente esperto può riposizionare i files nella maniera che più preferisce. 
 L'unica eccezione è la card Lovelace che può essere posizionata nelle viste - [View Lovelace](https://www.home-assistant.io/dashboards/views/) - già presenti nella propria configurazione.
 
-Per fare in modo che la _custom button-card_ possa utilizzare i templates, occorre inserire la seguente configurazione in `ui-lovelace.yaml`. Per ulteriori informazioni fatre riferimento alla documentazione della card custom [Configuring templates](https://github.com/custom-cards/button-card#configuration-templates).
+Per fare in modo che la _custom button-card_ possa utilizzare i templates, occorre inserire la seguente configurazione in `ui-lovelace.yaml`. Per ulteriori informazioni fate riferimento alla documentazione della card custom [Configuring templates](https://github.com/custom-cards/button-card#configuration-templates).
+
 
 ```yaml
 ##ui-lovelace.yaml
@@ -242,7 +249,7 @@ button_card_templates:
   !include_dir_merge_named button_card_templates
 ```
 
-Per chi usa la modalità [storage](https://www.home-assistant.io/dashboards/dashboards/) è presente un file ad hoc che include tutta la parte Lovelace ( NON ANCORA DISPONIBILE)
+Per chi usa la modalità [storage](https://www.home-assistant.io/dashboards/dashboards/) è presente un unico file (**card_lavatrice_lovelace.yaml**) che include la parte Lovelace.
 
 ```bash
 .
@@ -263,7 +270,10 @@ Per chi usa la modalità [storage](https://www.home-assistant.io/dashboards/dash
 │   │
 │   ├── lovelace/
 │   │   └── card_elettrodomestici/
-│   │       └── washing_machine_card.yaml
+│   │       ├── lavatrice_button_1.yaml
+│   │       ├── lavatrice_button_5.yaml
+|   |       ├── card_lavatrice_storage.yaml
+│   │       └── card_lavatrice.yaml
 |   |
 │   ├── packages/
 │   │   └── elettrodomestici/
@@ -303,7 +313,7 @@ Per i **servizi di notifica** sono da configurare i seguenti parametri, con le e
 * _MEDIA PLAYER Google: &DEFAULT_MEDIA_PLAYER_GOOGLE_ deve inserire un'entità media player Google Home, ad esempio _media_player.google_sala;
 * _SERVICE TTS: &DEFAULT_SERVICE_TTS_ dove inserire il servizio TTS, ad esempio _tts.google_translate_say_.
 
-Andando nel dettaglio i seguenti sono i parametri che si possono modificare, quindi **l'utilizzatore deve necessariamente inserire la correttà entità**:, gli altri presenti non sono da cambiare:
+Andando nel dettaglio i seguenti sono i parametri che si possono modificare, quindi **l'utilizzatore deve necessariamente inserire la corretta entità**:, gli altri presenti non sono da cambiare:
 * _PLUG LAVATRICE SWITCH: &CONF_SWITCH_ENTITY_ dove inserire l'entità _switch_ che comanda la presa smart;
 * _PLUG LAVATRICE POTENZA (W): &CONF_POWER_ENTITY_ dove inserire l'entità _sensor_ che espone la potenza;
 * _PLUG LAVATRICE ENERGIA (kWh): &CONF_ENERGY_ENTITY_ dove inserire l'entità _sensor_ che espone l'energia;
@@ -313,22 +323,15 @@ Andando nel dettaglio i seguenti sono i parametri che si possono modificare, qui
 * _GROCY AMMORBIDENTE (mm): &CONF_AMMORBIDENTE_AMOUNT_ dove inserire la quantità di ammorbidente;
 * _RITARDO TRA LE VARIE NOTIFICHE IN MINUTI: &DELAY_NOTIFICATION_ indica quanti minuti passano tra una notifica ed un altra.
 
-**Per il package _lite_ i parametri da configurare sono:**
-* _POTENZA SOGLIA DI AVVIO (W): &CONF_POWER_START_ : soglia di potenza che indica l'avvio del lavaggio;
-* _POTENZA SOGLIA DI FINE (W): &CONF_POWER_END_: soglia di potenza che indica la fine del lavaggio;
-* _POTENZA SOGLIA RISCALDAMENTO ACQUA (W): &CONF_POWER_RINSE 1000_: soglia di potenza che indica lo stato di riscaldamento dell'acqua di lavaggio, usata per gli stati di **Lavaggio** e **Risciacquo**.
-* _TEMPO SOGLIA RISCIAQUO ACQUA (minuti): &CONF_TIME_RINSE 1_ il tempo di permanenza per la transizione nello stato **Risciacquo**;
-* TEMPO INIZIO LAVATRICE (minuti): &CONF_TIME_START 1: indica il tempo di permanenza per la transizione nello  **Lavaggio**;
-* TEMPO COMPLETAMENTO LAVATRICE (minuti): &CONF_TIME_END 3
-indica il tempo di permanenza per la transizione nello stato **Svuotare**;
-* _TEMPO RITORNO AD IDLE LAVATRICE (minuti): &CONF_TIME_IDLE 5_: indica il tempo necessario per la transizione nello stato iniziale **Idle**
+**Per il package _lite_ i parametri da configurare sono tutti compresi nel blueprint.**
+
 
 Altri parametri di configurazione sono presenti nella card Lovelace:
 * "_Ripetizioni Notifica_" indica il numero di ripetizioni della notifica di fine lavaggio.
 * "_Cicli di avviso manutenzione_" indica dopo quanti cicli il sistema manda una notifica per effettuare operazioni di manutenzione (esempio lavaggio con anticalcare).
 * "_Lavatrice Grocy_": per selezionare se si utilizza l'ERP [Grocy](https://grocy.info/) per tenere conto dei consumi.
 
-| Lovelace |
+| Lovelace - YAML |
 | :---: |
 
 Anche nella parte lovelace è stato fatto un uso estensivo degli [anchor](https://github.com/thomasloven/hass-config/wiki/Misc-tricks) in modo da centralizzare le impostazioni da personalizzare, purtroppo questo tipo di modifica è possibile solo con la modalità lovelace YAML, per la modalità storage non è possibile inserire _anchor_.
@@ -370,12 +373,17 @@ Il codice da modificare è il seguente, nella parte "_variables_"; nulla vieta, 
 | Template button card |
 | :---: |
 
-Per utilizzare i button-card templates occorre procedere alla seguente configurazione nel proprio file ui-lovelace.yaml o in altro se avete configurate più interfacce Lovelace in modalità YAML.
+Come riportato nel paragrafo di  [Installazione](#installazione) per i button-card templates occorre procedere alla seguente configurazione nel proprio file `ui-lovelace.yaml` o in altro file, se avete configurate più interfacce Lovelace in modalità YAML.
 
 ```yaml
 button_card_templates:
-  !include_dir_merge_named /button_card_templates/pkg_elettrodomestici
+  !include_dir_merge_named /button_card_templates
 ```
+
+| Lovelace - Storage |
+| :---: |
+
+Chi usa questa modalità potrà cambiare da UI gli aspetti che più gli interessano.
 
 
 | Principali entità |
@@ -486,3 +494,18 @@ Per la parte FSM in ESPHOME Mikhail Diatchenko ha realizzato un ottimo component
 | :---: |
 
 **Ti piace questo package? Lascia una stella su Github e supportami per realizzarne altri!** <a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="20"></a>
+
+[![Websitebadge]][website] [![Forum][forumbadge]][forum] [![telegrambadge]][telegram] [![facebookbadge]][facebook] 
+
+<!-- ✨ _special_ ✨ -->
+[website]: https://hassiohelp.eu/
+[Websitebadge]: https://img.shields.io/website?down_message=Offline&label=HssioHelp&logoColor=blue&up_message=Online&url=https%3A%2F%2Fhassiohelp.eu
+
+[telegram]: https://t.me/HassioHelp
+[telegrambadge]: https://img.shields.io/badge/Chat-Telegram-blue?logo=Telegram
+
+[facebook]: https://www.facebook.com/groups/2062381507393179/
+[facebookbadge]: https://img.shields.io/badge/Group-Facebook-blue?logo=Facebook
+
+[forum]: https://forum.hassiohelp.eu/
+[forumbadge]: https://img.shields.io/badge/HassioHelp-Forum-blue?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA0ppVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8%2BIDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODcxMjY2QzY5RUIzMTFFQUEwREVGQzE4OTI4Njk5NDkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODcxMjY2QzU5RUIzMTFFQUEwREVGQzE4OTI4Njk5NDkiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDo0MWVhZDAwNC05ZWFmLTExZWEtOGY3ZS1mNzQ3Zjc1MjgyNGIiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDo0MWVhZDAwNC05ZWFmLTExZWEtOGY3ZS1mNzQ3Zjc1MjgyNGIiLz4gPC9yZGY6RGVzY3JpcHRpb24%2BIDwvcmRmOlJERj4gPC94OnhtcG1ldGE%2BIDw/eHBhY2tldCBlbmQ9InIiPz4xQPr3AAADq0lEQVR42rRVW2wMURj%2Bz5lL7V27KG26KIuUEJemdalu3VN3Ei/ipSWUuIV4FB4kHrwo8VLRROJBgkYElZCi4olG4rVoROOSbTa0u7pzO/6Z2Zmd3Z2uevBn/8zsf/7zff/tnKGMMRi/pjM6/j08oKiqCm1tbTA4OAhuoqkS8KKPVjceOcgJngkfnl%2B5JiWH0pQvcfUPhULQ0dEBPp8PDBZZlqGyshLGFKG0fHHr/QfNlxnbjFp7uOcl8VVVj%2BXu9XohkUgY2NRpdJMpc5qWN5971zu7ftsWkSAX2iKLYg3NZ/t6Kxbu2Oi2x4g8IxSKSDR2tLXh2JOn3nAkKv9GAzPtyigS%2BSdV1B3sejhv09lTxTBcCXjRK9buu96%2BZG/7dUYEryK59EXWewNcza7zl%2Br237kpessC4yIITIlGGk88666OtR6VMFKmZhZY9sGsdw1ATgFU1O7et%2Brki56JVUtqsl4kl0CVUjB57vo1Tad7X4Wj9U1S0vRj8HfRSQKVC5auPN7zctqiPTs1Rz2pBV6xcOuq%2BkOPusVAeZWxDg5wl%2Bhz1vW%2BpBFMDIYXt9y%2BF6lr2a6kR7IEmipDeFYsRkVewFcTyAXcBtNMhTxCTTErUxZdu96qLW8varhFsyrnQCQOYNXU8qBp//4TH/jkHZ3UCTXFoncQGKciP1SiN1JDVY2IJwgEjq3jYMVsZgC/HSBw9RnA8CgBjmS3MkdefE638sCV0WGQk9/QXYNRicH%2B7eWwYUGpOT4oq%2Bfq0Upw4SEPVOCLnwOWp5o%2BgskfWEoZe8Qg6CGwcp7XWFVxTc0UYdlMrLmQsP8zVuQcWFNiORFCTSvRQTWQs6W101SRXE7/xiDSBeC5BKywRLx/KqbuA44TYUQS4HHfsLHEcZyhulP32zjEUwL2ACuPt24%2BR0HhnONJBA8IoRlG/4P4/%2B57FTTyC9bUMAQk8OJ9Am69VsHjC2cOJbPaU0iQn4DxrjnSwVwp4eF2XwC63uBVLCchpXgQPAiUUrM8xBwlfeqs%2Bc7JwFn//KHKtAI8IkVejFgIgY8p2etEB7cPDbF32wSE8pwx926XTx6pAcPxxmFlzIo2o/qPy84sb4JTSMb7v3qiGFhJIaAzw1wbkmh8tu4IrqKm4v347V1qmvQGKvjJjEyf7v/pX3GmrGp%2BtT73UDyRHCPLMBDKwUj801dl4P7Fwc8fh0rLwiaBrp2dN2Do%2Bxfb%2Bd%2BE2GwEe%2BEPTYaW1gNQUiKaBP9T/ggwAJik5dEKYSC3AAAAAElFTkSuQmCC
