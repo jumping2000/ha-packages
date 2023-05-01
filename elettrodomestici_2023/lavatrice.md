@@ -470,7 +470,9 @@ stateDiagram-v2
   Risciacquo --> Svuotare: CLEANING
   Svuotare --> Idle: OPENING
 ```
+
 <br>
+
 La parte di **calibrazione** é piuttosto noiosa ma di vitale importanza per avere dei dati di potenza che si avvicinano il più possibile alla realtà, esistono alcuni siti che spiegano come effettuare questa operazione:
 * https://www.danielmartingonzalez.com/en/calibrate-sensors-esphome/
 * https://frenck.dev/calibrating-an-esphome-flashed-power-plug/
