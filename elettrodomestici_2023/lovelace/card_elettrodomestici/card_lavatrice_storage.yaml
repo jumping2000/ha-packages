@@ -11,7 +11,7 @@
 # LAVATRICE_STATUS: "sensor.washing_machine_status"
 # PROGRAM_LAVATRICE_STATUS: "input_select.lavatrice_program"
 ###########################################################
-# SFONDO_IMMAGINE: "/local/images/devices/sfondo_black.png"
+# SFONDO_IMMAGINE: "/local/local/hassiohelp/pkg_elettrodomestici/sfondo_black.png"
 # GRANDEZZA_CARATTERI_BASE: "12px"
 # GRANDEZZA_CARATTERI_APEX: "10px"
 # ALTEZZA_LINEA: "24px"
@@ -94,7 +94,7 @@ custom_fields:
                 } [stato] }};
           border-radius: 0px 0px 0px 0px;
         }
-      image: /local/images/devices/sfondo_black.png
+      image: /local/local/hassiohelp/pkg_elettrodomestici/sfondo_black.png
       elements:
   #######################################
   # inserire lo switch della lavatrice  #
