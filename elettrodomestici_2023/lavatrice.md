@@ -101,7 +101,7 @@ Vediamo in dettaglio quali sono gli stati per la lavatrice, le transizioni da un
 
 | Stato | Caratteristiche |
 | :---: | --- |
-| **Idle** | Stato spento della della lavatrice | 
+| **Idle** | Stato iniziale a riposo della lavatrice | 
 | **Riempimento** | Stato iniziale del lavaggio con il carico dell'acqua |
 | **Lavaggio** | Avvio del programma con il riscaldamento dell'acqua e lavaggio dei panni vero e proprio |
 | **Risciacquo** | Fase di risciacquo in cui sono eliminati i residui di detersivo |
@@ -114,22 +114,18 @@ Questo stati sono calcolati nella versione FSM _full esphome_ del package e nell
 
 Ovviamente la versione FSM realizzata con ESPHOME sarà più precisa, _se opportunamente configurata con cura con i dati di potenza della propria lavatrice_, perché lo stato della lavatrice dipenderà da un'analisi più fine della potenza assorbita e degli stati. 
 
-Per la versione _lite_ la FSM è la seguente:
-<br>
+Per la versione _lite_ gli stati dell'automa sono quattro, nulla vieta di personalizzare i nomi degli stati andando ad agire sull'apposita entità `input_select`.
 
-```mermaid
-stateDiagram-v2
-  direction LR
-  [*] --> Idle
-  Idle --> Lavaggio: POWER/TIME_1
-  Lavaggio --> Risciacquo: POWER/TIME_2
-  Risciacquo --> Lavaggio: POWER/TIME_3
-  Risciacquo --> Svuotare: POWER/TIME_4
-  Lavaggio --> Svuotare: POWER/TIME_4
-  Svuotare --> Idle: TIME_1
-```
+| Stato | Caratteristiche |
+| :---: | --- |
+| **Idle** | Stato iniziale a riposo della lavatrice | 
+| **Lavaggio** | Avvio del programma con il riscaldamento dell'acqua e lavaggio dei panni vero e proprio |
+| **Risciacquo** | Fase di risciacquo in cui sono eliminati i residui di detersivo |
+| **Svuotare** | Stato finale del programma di lavaggio |
+
 
 <br>
+
 Anche chi possiede una lavatrice smart che espone in HA lo stato dell'elettrodomestico potrà utilizzare il package aggiustando il codice in maniera minimale adattandolo ai dati esposti dall'integrazione smart, vediamo come nel seguente paragrafo.
 
 ---
@@ -150,6 +146,7 @@ A titolo di esempio l'integrazione [Home Connect](https://www.home-assistant.io/
 Il package espone una grande serie di dati, funzionalità, grafici e configurazioni, proviamo a riassumerle:
 
 **Dati**
+
 * Dati giornalieri, settimanali, mensili ed annuali di energia (kWh) consumata e relativo costo in €
 * Numero dei cicli giornalieri, settimanali, mensili ed annuali di lavaggio effettuati 
 * Durata dei cicli giornalieri, settimanali, mensili ed annuali di lavaggio effettuati
@@ -157,6 +154,7 @@ Il package espone una grande serie di dati, funzionalità, grafici e configurazi
 * Durata, energia e costo dell'ultimo lavaggio
 
 **Grafici**
+
 * Grafico X-Y della potenza consumata
 * Grafico a barre dei cicli di funzionamento per programmare la manutenzione
 * Grafico a istogramma dell'energia consumata negli ultimi 30 giorni
@@ -164,6 +162,7 @@ Il package espone una grande serie di dati, funzionalità, grafici e configurazi
 
 
 **Funzionalità presenti**
+
 * Timer con vari programmi lavatrice per tenere sotto controllo il tempo trascorso
 * Integrazione con [Grocy](https://grocy.info/) per tenere traccia delle quantità di detersivo ed ammorbidente utilizzati
 * _Actionable Notification_ configurabili con Telegram e Companion app alla fine del ciclo di lavaggio
@@ -207,16 +206,16 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 
 <table align="center">
 	<tr>
-	    <th>🎫 Info Card 🎫</th>
-      <th>☢ Energy Card ☢</th>
+	    <th><center>🎫 Info Card 🎫</center></th>
+      <th><center>☢ Energy Card ☢</th>
 	</tr>
     <tr>
         <td><div align=center><img width = 400 src="img/lavatrice_3.png"/></div></td>
         <td><div align=center><img width = 400 src="img/lavatrice_4.png"/></div></td>
     </tr>
 	<tr>
-	    <th>🌀 Centrifuga in corso 🌀</th>
-      <th>🎽 E' l'ora di tendere i panni 🎽 </th>
+	    <th><center>🌀 Centrifuga in corso 🌀</center></th>
+      <th><center>🎽 E' l'ora di tendere i panni 🎽</center></th>
 	</tr>
     <tr>
         <td><div align=center><img width = 400 src="img/centrifuga.png"/></div></td>
@@ -231,7 +230,9 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 [Github](https://github.com/jumping2000/ha-packages/elettrodomestici_2023) permette di effettuare il completo download dei file che costituiscono il pacchetto, quindi file yaml e immagini. Una volta inserito tutto nella propria installazione di Home Assistant seguendo le indicazioni presenti nel seguito, occorre seguire i passi base per procedere alla configurazione:
 1. Scegliere tra i package in versione _FSM_ o in versione _lite_, l'utente dovrà cancellare i file YAML che non sono di interesse.
 2. Scegliere tra la grafica Lovelace in formato _YAML_ o _Storage_, l'utente dovrà cancellare i file YAML che non sono di interesse.
-3.  solo per chi usa la versione _Lite_, procedere alla configurazione del [Blueprint FSM](https://github.com/jumping2000/ha-templates/tree/main/blueprints/fsm)  
+3.  solo per chi usa la versione _lite_, procedere alla configurazione del [Blueprint FSM](https://github.com/jumping2000/ha-templates/tree/main/blueprints/fsm). Qui occorre indicare i sensori relativi a potenza ed energia, i servizi di notifica e le due entità relative allo stato della lavatrice che nel package sono i seguenti, anche se poi ogni utilizzatore  è libero di cambiare:
+    * `input_select.washing_machine_status.yaml`
+    * `sensor.washing_machine_status.yaml`
 
 | Struttura dei file |
 | :---: |
@@ -239,7 +240,7 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 La struttura dei file è rappresentata di seguito, quindi occorre rispettare la posizione dei file nel filesystem come da schema sottostante, in alternativa l'utente esperto può riposizionare i files nella maniera che più preferisce. 
 L'unica eccezione è la card Lovelace che può essere posizionata nelle viste - [View Lovelace](https://www.home-assistant.io/dashboards/views/) - già presenti nella propria configurazione.
 
-Per fare in modo che la _custom button-card_ possa utilizzare i templates, occorre inserire la seguente configurazione in `ui-lovelace.yaml`. Per ulteriori informazioni fate riferimento alla documentazione della card custom [Configuring templates](https://github.com/custom-cards/button-card#configuration-templates).
+Per chi usa la modalità *Lovelace YAML* occorre fare in modo che la _custom button-card_ possa utilizzare i templates: quindi bisogna inserire la seguente configurazione in `ui-lovelace.yaml`. Per ulteriori informazioni fate riferimento alla documentazione della card custom [Configuring templates](https://github.com/custom-cards/button-card#configuration-templates).
 
 
 ```yaml
@@ -249,7 +250,7 @@ button_card_templates:
   !include_dir_merge_named button_card_templates
 ```
 
-Per chi usa la modalità [storage](https://www.home-assistant.io/dashboards/dashboards/) è presente un unico file (**card_lavatrice_lovelace.yaml**) che include la parte Lovelace.
+Per chi usa la modalità [storage](https://www.home-assistant.io/dashboards/dashboards/) è presente un unico file (**card_lavatrice_storage.yaml**) che include la parte Lovelace.
 
 ```bash
 .
@@ -399,12 +400,9 @@ Di seguito sono elencate le principali entità e il loro ruolo all'interno del p
 * `input_number.lavatrice_ripetizioni_notifica`: numero di ripetizioni della notifiche a fine lavaggio;
 * `input_number.lavatrice_avviso_manutenzione`: numero di cicli di manutenzione dopo i quali **HA** invia una notifica di avviso;
 * `input_number.costo_energia`: costo dell'energia in EUR/kWh configurato dall'urgente se non si vuole il sensore scraping;
-* `automation.lavatrice_status`: è la principale automazione del package che notifica gli eventi di cambio di stato;
+* `automation.lavatrice_status`: è la principale automazione del package "FSM full" che notifica gli eventi di cambio di stato;
 * `automation.avviso_manutenzione_lavatrice`: notifica l'avvertimento per fare le operazioni di manutenzione programmata;
 * `automation.lavatrice_program`: è l'automazione che permette il cambio di programma;
-* `automation.lavatrice_fsm_washing`: è l'automazione della versione _lite_ interessata all'avvio dell'automa (macchina);
-* `automation.lavatrice_fsm_rinse`: è l'automazione della versione _lite_ che sottende ai cambi di stato tra lavaggio e risciacquo;
-* `automation.lavatrice_fsm_finish`: è l'automazione della versione _lite_ che ha il compito di riprtare allo stato iniziale l'automa.
 
 
 | ESPHome |
@@ -454,7 +452,8 @@ state_machine:
     diagram: mermaid
 ```
 <br>
-Questo è il diagramma FSM.
+
+Questo è il diagramma FSM della versione **full** realizzata con ESPHOME.
 
 ```mermaid
 stateDiagram-v2
@@ -473,6 +472,22 @@ stateDiagram-v2
 
 <br>
 
+Mentre il diagramma FSM della versione **lite** è il seguente.
+
+```mermaid
+stateDiagram-v2
+  direction LR
+  [*] --> Idle
+  Idle --> Lavaggio: POWER/TIME_1
+  Lavaggio --> Risciacquo: POWER/TIME_2
+  Risciacquo --> Lavaggio: POWER/TIME_3
+  Risciacquo --> Svuotare: POWER/TIME_4
+  Lavaggio --> Svuotare: POWER/TIME_4
+  Svuotare --> Idle: TIME_1
+```
+
+<br>
+
 La parte di **calibrazione** é piuttosto noiosa ma di vitale importanza per avere dei dati di potenza che si avvicinano il più possibile alla realtà, esistono alcuni siti che spiegano come effettuare questa operazione:
 * https://www.danielmartingonzalez.com/en/calibrate-sensors-esphome/
 * https://frenck.dev/calibrating-an-esphome-flashed-power-plug/
@@ -484,7 +499,7 @@ Con questo package abbiamo visto come combinare insieme diversi elementi:
 * una grafica accattivante con effetti visuali
 * un uso moderno dei dati statistici di HA
 
-Il risultato sembra piacevole , lasciate pure le vostre impressioni sui nostri canali social.
+Il risultato sembra piacevole, lasciate pure le vostre impressioni sui nostri canali social.
 
 | Ispirazione e ringraziamenti |
 | :---: |
