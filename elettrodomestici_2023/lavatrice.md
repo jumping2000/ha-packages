@@ -470,6 +470,7 @@ stateDiagram-v2
   Svuotare --> Idle: OPENING
 ```
 
+
 <br>
 
 Mentre il diagramma FSM della versione **lite** è il seguente.
@@ -482,7 +483,6 @@ stateDiagram-v2
   Lavaggio --> Risciacquo: POWER/TIME_2
   Risciacquo --> Lavaggio: POWER/TIME_3
   Risciacquo --> Svuotare: POWER/TIME_4
-  Lavaggio --> Svuotare: POWER/TIME_4
   Svuotare --> Idle: TIME_1
 ```
 
@@ -495,7 +495,8 @@ La parte di **calibrazione** é piuttosto noiosa ma di vitale importanza per ave
 
 ## Conclusioni
 Con questo package abbiamo visto come combinare insieme diversi elementi:
-* una raffinata modellazione dei consumi elettrici della lavatrice
+* una raffinata modellazione dei consumi elettrici della lavatrice (Esphome FSM)
+* un blueprint per semplificare la configurazione (FSM lite)
 * una grafica accattivante con effetti visuali
 * un uso moderno dei dati statistici di HA
 
@@ -504,7 +505,7 @@ Il risultato sembra piacevole, lasciate pure le vostre impressioni sui nostri ca
 | Ispirazione e ringraziamenti |
 | :---: |
 
-L'idea alla base diq eusto package è sempre l'ottimo lavoro di [Phil Hawthorne](https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/) del 2017 ma sempre fonte di ispirazioni per tutti i lavori di questo tipo.
+L'idea alla base di questo package è sempre l'ottimo lavoro di [Phil Hawthorne](https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/) del 2017 ma sempre fonte di ispirazioni per tutti i lavori di questo tipo. Per la parte FSM realizzata con blueprint esiste auna buona discussion nel forum di [HA](https://community.home-assistant.io/t/detect-and-monitor-the-state-of-an-appliance-based-on-its-power-consumption-v2-1-1-updated/421670).
 Per la parte FSM in ESPHOME Mikhail Diatchenko ha realizzato un ottimo componente: [ESPHome State Machine](https://github.com/muxa/esphome-state-machine).
 
 | Supporto |
