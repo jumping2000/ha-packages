@@ -1,9 +1,9 @@
 
 | 📡 Elettrodomestici Smart 📶|
 | :---: |
-| [Lavatrice 💧](lavatrice.md) - 2023.4.4. RELEASED|
+| [Lavatrice 💧](lavatrice.md) - **2023.4.4 RELEASED**|
 | [Lavastoviglie 🍽](#lavastoviglie) - NOT YET RELEASED| 
-| [Forno 👨‍🍳](#forno) - NOT YET RELEASED|
+| [Forno 👨‍🍳](#forno) - **2023.4.5 RELEASED**|
 | [Asciugatrice 🌀](#asciugatrice) - NOT YET RELEASED|
 | [Inverter ☀](#inverter) - NOT YET RELEASED|
 | [Condizionatore 🌪](#condizionatore) - NOT YET RELEASED|
