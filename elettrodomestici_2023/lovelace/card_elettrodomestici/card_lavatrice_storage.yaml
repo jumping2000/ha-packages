@@ -11,7 +11,7 @@
 # LAVATRICE_STATUS: "sensor.washing_machine_status"
 # PROGRAM_LAVATRICE_STATUS: "input_select.lavatrice_program"
 ###########################################################
-# SFONDO_IMMAGINE: "/local/local/hassiohelp/pkg_elettrodomestici/sfondo_black.png"
+# SFONDO_IMMAGINE: "/local/hassiohelp/pkg_elettrodomestici/sfondo_black.png"
 # GRANDEZZA_CARATTERI_BASE: "12px"
 # GRANDEZZA_CARATTERI_APEX: "10px"
 # ALTEZZA_LINEA: "24px"
@@ -94,14 +94,14 @@ custom_fields:
                 } [stato] }};
           border-radius: 0px 0px 0px 0px;
         }
-      image: /local/local/hassiohelp/pkg_elettrodomestici/sfondo_black.png
+      image: /local/hassiohelp/pkg_elettrodomestici/sfondo_black.png
       elements:
   #######################################
   # inserire lo switch della lavatrice  #
   #######################################
         - type: image
           entity: switch.plug_lavatrice 
-          image: /local/images/devices/lavatrice.png
+          image: /local/hassiohelp/pkg_elettrodomestici/lavatrice.png
           state_filter:
             'off': brightness(50%) saturate(0.5) opacity(1.0)
             'on': brightness(100%)
@@ -114,7 +114,7 @@ custom_fields:
   ###
         - type: image
           entity: sensor.washing_machine_status 
-          image: /local/images/devices/lavatrice_oblo.png
+          image: /local/hassiohelp/pkg_elettrodomestici/lavatrice_oblo.png
           state_filter:
             Idle: opacity(0.0)
             Riempimento: opacity(0.0)
@@ -130,7 +130,7 @@ custom_fields:
   ###
         - type: image
           entity: sensor.washing_machine_status 
-          image: /local/images/devices/lavatrice_panni.png
+          image: /local/hassiohelp/pkg_elettrodomestici/lavatrice_panni.png
           state_filter:
             Idle: opacity(0.0)
             Riempimento: null
