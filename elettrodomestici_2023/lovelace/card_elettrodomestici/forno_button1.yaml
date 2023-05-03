@@ -1,0 +1,149 @@
+              type: custom:layout-card
+              layout_type: grid #custom:grid-layout
+              layout:
+                grid-template-columns: 50% 50%
+                grid-template-rows: auto
+                margin: 0px 0px 0px 0px
+                grid-template-areas: |
+                  "colonna1 colonna2"
+                mediaquery:
+                  "(max-width: 600px)":
+                    grid-template-columns: 100%
+                    grid-template-areas: |
+                      "colonna1"
+                      "colonna2"
+              cards:
+                - type: vertical-stack
+                  view_layout:
+                    grid-area: colonna1
+                  cards:
+                  - type: entities
+                    show_header_toggle: false
+                    state_color: true
+                    entities:
+                      - entity: sensor.forno_cost
+                        type: custom:multiple-entity-row
+                        secondary_info: last-changed
+                        show_state: false
+                        name: Oggi
+                        entities:
+                          - entity: sensor.forno_oggi_cicli
+                            name: Cotture
+                          - entity: sensor.forno_oggi_runtime
+                            name: Durata
+                          - entity: sensor.forno_oggi_energy
+                            name: Energia
+                          - attribute: oggi_cost
+                            name: Costo
+                            unit: '€'
+                      - entity: sensor.forno_cost
+                        type: custom:multiple-entity-row
+                        secondary_info: last-changed
+                        show_state: false
+                        name: Settimana
+                        entities:
+                          - entity: sensor.forno_settimana_cicli
+                            name: Cotture
+                          - entity: sensor.forno_settimana_runtime
+                            name: Durata
+                          - entity: sensor.forno_settimana_energy
+                            name: Energia
+                          - attribute: settimana_cost
+                            name: Costo
+                            unit: '€'
+                      - entity: sensor.forno_cost
+                        type: custom:multiple-entity-row
+                        secondary_info: last-changed
+                        show_state: false
+                        name: Mese
+                        entities:
+                          - entity: sensor.forno_mese_cicli
+                            name: Cotture
+                          - entity: sensor.forno_mese_runtime
+                            name: Durata
+                          - entity: sensor.forno_mese_energy
+                            name: Energia
+                          - attribute: mese_cost
+                            name: Costo
+                            unit: '€'
+                      - entity: sensor.forno_cost
+                        type: custom:multiple-entity-row
+                        secondary_info: last-changed
+                        show_state: false
+                        name: Anno
+                        entities:
+                          - entity: sensor.forno_anno_cicli
+                            name: Cotture
+                          - entity: sensor.forno_anno_runtime
+                            name: Durata
+                          - entity: sensor.forno_anno_energy
+                            name: Energia
+                          - attribute: anno_cost
+                            name: Costo
+                            unit: '€'
+                      - type: divider
+                      - entity: button.plug_forno_restart
+                      - type: button
+                        icon: mdi:restore-alert
+                        name: Reset Cicli / Energia
+                        action_name: Reset
+                        tap_action:
+                          action: call-service
+                          service: script.reset_forno_cicli
+                      - type: button
+                        icon: mdi:restore-alert
+                        name: Reset Valori Totali
+                        action_name: Reset
+                        tap_action:
+                          action: call-service
+                          service: script.reset_forno_totale
+                - type: vertical-stack
+                  view_layout:
+                    grid-area: colonna2
+                  cards:
+                  - type: entities
+                    show_header_toggle: false
+                    state_color: true
+                    entities:
+                      - entity: sensor.forno_oggi_runtime
+                      - entity: sensor.forno_ultimo_runtime
+                        type: custom:multiple-entity-row
+                        show_state: false
+                        name: Ultimo
+                        style:
+                          hui-generic-entity-row:
+                            $: |
+                              state-badge {
+                                {% set COLOR = "orange" if is_state("binary_sensor.oven_status","on")  %}              
+                                color: {{COLOR}};
+                              }
+                            # .: |
+                            #   div.entity:nth-child(1) state-badge {
+                            #     {% set COLOR = "#14ce17" if is_state("binary_sensor.oven_status"","on") else "#bdbbbb" %}              
+                            #     color: {{COLOR}};
+                            #   }  
+                        entities:
+                          - entity: sensor.forno_ultimo_runtime
+                            name: Durata
+                          - entity: sensor.forno_run_energy
+                            name: Energia
+                            unit: kWh
+                          - entity: sensor.forno_cost
+                            name: Costo
+                      - entity: counter.cicli_cottura_forno
+                        type: custom:multiple-entity-row
+                        show_state: false
+                        name: Totali
+                        entities:
+                          - entity: counter.cicli_cottura_forno
+                            name: Cicli
+                          - entity: sensor.forno_total_runtime
+                            name: Durata
+                            unit: h
+                          - entity: sensor.plug_forno_total_energy
+                            name: Energia
+                      - type: divider
+                      - entity: binary_sensor.oven_maintenance
+                      - entity: sensor.forno_modulo_manutenzione
+                      - entity: input_number.forno_ripetizioni_notifica
+                      - entity: input_number.forno_avviso_manutenzione
