@@ -1,0 +1,490 @@
+####################################################
+#                                                  #
+#                     FORNO                        #
+#                                                  #
+####################################################
+dummy_entity:
+##   
+  SFONDO_IMMAGINE: &CONF_BACKGROUND_IMAGE "/local/hassiohelp/pkg_elettrodomestici/sfondo_black.png" 
+  GRANDEZZA_CARATTERI_BASE: &CONF_FONT_SIZE "12px"
+  GRANDEZZA_CARATTERI_APEX: &CONF_FONT_SIZE_APEX "10px"
+  ALTEZZA_LINEA: &CONF_LINE_HEIGHT "24px"
+  COLORSCHEME_RGB_RED: &CONF_COLOR_RED "#bf212f"
+  COLORSCHEME_RGB_YELLOW: &CONF_COLOR_YELLOW "#f9a73e"
+  COLORSCHEME_RGB_GREEN2: &CONF_COLOR_GREEN2 "#006f3c"
+  COLORSCHEME_RGB_GREEN: &CONF_COLOR_GREEN "#27b376"
+  COLORSCHEME_RGB_BLUE: &CONF_COLOR_BLUE "#264b96"
+##
+  PLUG_FORNO_SWITCH: &CONF_SWITCH_FORNO "switch.plug_forno"
+  PLUG_FORNO_POTENZA_(W): &CONF_POWER_FORNO "sensor.plug_forno_power"
+  PLUG_FORNO_ENERGIA_(kWh): &CONF_ENERGY_FORNO "sensor.plug_forno_energy"
+  PLUG_FORNO_CORRENTE_(A): &CONF_CURRENT_FORNO "sensor.plug_forno_current"
+  PLUG_FORNO_TENSIONE_(V): &CONF_VOLTAGE_FORNO "sensor.plug_forno_voltage"
+  PLUG_FORNO_POT_APPRENTE_(var): &CONF_APPARENT_FORNO "sensor.plug_forno_apparent_power"
+  PLUG_FORNO_POT_REATTIVA_(VA): &CONF_REACTIVE_FORNO "sensor.plug_forno_reactive_power"
+  CONTEGGIO_MANUTENZIONI_FORNO: &CONF_MAINTENANCE_FORNO "sensor.forno_modulo_manutenzione"
+  ##
+  FORNO_STATUS: &CONF_STATUS_FORNO "sensor.oven_status"
+  FORNO_STATUS_BINARY: &CONF_BINARY_FORNO "binary_sensor.oven_status"
+  PROGRAM_FORNO_STATUS: &CONF_PROGRAM_FORNO "input_select.forno_program"
+
+###########################################################
+## PICTURE + BUTTON FORNO
+###########################################################
+  - type: 'custom:button-card'
+    view_layout:
+      grid-area: bottom
+    template: container
+    custom_fields:
+    #######################################
+    ## PICTURE CARD
+    #######################################
+      pictures:
+        card:
+          type: picture-elements
+          style: |
+            @keyframes smoke {
+              100% {
+                transform: translatey(-180px) scaley(1.5) scalex(1.5);
+                filter: blur(15px);
+            }
+              0% {
+                transform: translatey(0) scaley(0.5) scalex(0.5);
+                filter: blur(5px);
+            }
+            }
+            @keyframes cook {
+              0% 100% { filter: saturate(1); }
+              50% { filter: saturate(0); }
+            }
+
+            ha-card {
+              --my-cook: {% if is_state('sensor.oven_status', 'Riscaldamento') or is_state('sensor.oven_status', 'Mantenimento')%} cook 1800ms infinite {% endif %};
+              --my-smoke: {% if is_state('sensor.oven_status', 'Mantenimento') %} smoke 2.5s infinite {% endif %};
+              border-radius: 0px 0px 0px 0px;
+            }
+          image: *CONF_BACKGROUND_IMAGE
+          elements:
+      #--my-smoke: {% if is_state('sensor.oven_status', 'Idle') %} smoke 2.5s infinite {% endif %};
+      #######################################
+      # inserire lo switch del forno        #
+      #######################################
+            - type: image
+              entity: *CONF_SWITCH_FORNO
+              image: /local/hassiohelp/pkg_elettrodomestici/forno.png
+              state_filter:
+                'off': brightness(50%) saturate(0.5) opacity(1.0)
+                'on': brightness(100%)
+              style:
+                left: 22%
+                top: 48.5% #58
+                width: 28%
+      #######################################
+            - type: image
+              entity: *CONF_STATUS_FORNO
+              image: /local/hassiohelp/pkg_elettrodomestici/forno_chicken.png
+              state_filter:
+                #'Off': opacity(0.0)
+                Riscaldamento: null
+                Mantenimento: null
+                Idle: opacity(0.0)
+              style:
+                transform: 'translate(0%,0%)'
+                animation: var(--my-cook)
+                left: 12%
+                top: 29% #43%
+                width: 21%
+      #######################################
+            - type: image
+              entity: *CONF_STATUS_FORNO
+              image: /local/hassiohelp/pkg_elettrodomestici/forno_smoke.png
+              state_filter:
+                'Off': opacity(0.0)
+                Riscaldamento: opacity(0.0)
+                Mantenimento: null #opacity(0.0)
+                Idle: opacity(0.0) #null
+              style:
+                transform: 'translate(0%,0%)'
+                animation: var(--my-smoke)
+                left: 12%
+                top: 30% #35
+                width: 25%
+      #######################################
+      ## POWER LABEL                        #
+      #######################################
+            - type: state-label
+              entity: *CONF_POWER_FORNO 
+              prefix: '⚡ '
+              style:
+                top: 0%
+                left: 32%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE
+                line-height: *CONF_LINE_HEIGHT
+                padding: 0px 14px
+                
+      #######################################
+      ### ENERGY LABEL
+      #######################################
+            - type: state-label
+              entity: *CONF_ENERGY_FORNO
+              prefix: '🏭 '
+              style:
+                top: 0%
+                left: 52%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE
+                line-height: *CONF_LINE_HEIGHT
+                padding: 0px 14px
+            - type: state-label
+              entity: sensor.forno_cost
+              attribute: oggi_cost
+              prefix: '💰 '
+              suffix: ' €'
+              style:
+                top: 0%
+                left: 78%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE
+                line-height: *CONF_LINE_HEIGHT
+                padding: 0px 14px
+      #######################################
+      ### STATUS LABEL
+      #######################################
+            - type: state-label
+              entity: *CONF_STATUS_FORNO
+              prefix: 'Stato: '
+              style:
+                top: 10%
+                left: 36%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE 
+                font-weight: bold
+                color: *CONF_COLOR_GREEN
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 2px
+      #######################################
+      ### BINARY STATUS
+      #######################################
+            - type: state-label
+              entity: *CONF_BINARY_FORNO
+              style:
+                top: 10%
+                left: 65%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE 
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 22px
+            - type: state-icon
+              entity: *CONF_BINARY_FORNO
+              state-color: true
+              style:
+                top: 10% #0
+                left: 64% #0
+                transform: scale(0.8)
+                line-height: *CONF_LINE_HEIGHT
+                padding: 0px 2px
+      #######################################
+      ### MAINTENANCE LABEL
+      #######################################
+            - type: state-label
+              entity: *CONF_MAINTENANCE_FORNO
+              prefix: 'Cicli: '
+              style:
+                top: 10%
+                left: 84%
+                pointer-events: none
+                font-size: *CONF_FONT_SIZE  # 14px
+                line-height: *CONF_LINE_HEIGHT #24px
+                transform: initial
+                padding: 2px 2px
+      #######################################
+      ## GRAFICO
+      #######################################
+      # inserire il sensore potenza         #
+      #######################################
+            - type: 'custom:apexcharts-card'
+              style:
+                '--card-background-color': 'rgba(0, 0, 0, 0.0)'
+                '--ha-card-border-width': '0px'
+                '--ha-card-box-shadow': 'none'
+                top: 60%
+                left: 60%
+                width: 50%
+                font-size: *CONF_FONT_SIZE_APEX
+              experimental:
+                color_threshold: true
+              apex_config:
+                chart:
+                  height: 120px
+                title:
+                  style:
+                    fontSize: *CONF_FONT_SIZE_APEX
+                    fontFamily: Segoe UI Light              
+                yaxis:
+                  forceNiceScale: true
+                  decimalsInFloat: 0
+                  labels:
+                    style:
+                      fontSize: *CONF_FONT_SIZE_APEX
+                      fontFamily: Segoe UI Light
+                xaxis:
+                  axisBorder:
+                    show: true
+                  labels:
+                    show: false
+                    style:
+                      fontSize: *CONF_FONT_SIZE_APEX
+                      fontFamily: Segoe UI Light
+                grid:
+                  show: true
+                  borderColor: rgba(112, 135, 164, 0.5)
+              graph_span: 2h
+              span:
+                start: minute
+                offset: '-2h'
+              show:
+                last_updated: false
+              header:
+                standard_format: false
+                show: false
+                show_states: false
+                colorize_states: true
+                title: 'Potenza'
+              series:
+                - entity: *CONF_POWER_FORNO
+                  name: Potenza
+                  type: line #area
+                  stroke_width: 2 #0
+                  curve: stepline
+                  group_by:
+                    func: last
+                    fill: last
+                    duration: 5m
+                  show:
+                    header_color_threshold: true
+                    extremas: true
+                    name_in_header: false
+                    legend_value: false
+                  opacity: 0.8
+                  color_threshold:
+                    - color: *CONF_COLOR_GREEN
+                      value: 500
+                    - color: *CONF_COLOR_GREEN2
+                      value: 1000
+                    - color: *CONF_COLOR_YELLOW
+                      value: 1500
+                    - color: *CONF_COLOR_RED
+                      value: 2300
+            #######################################
+            ## GRAFICO MANUTENZIONE
+            #######################################
+            - type: custom:bar-card
+              style:
+                '--card-background-color': 'transparent'
+                '--ha-card-border-radius': '5px'
+                '--ha-card-box-shadow': 'none'
+                top: 56%
+                left: 91%
+                width: 60px
+                height: 115px
+              stack: horizontal
+              direction: up
+              positions:
+                name: 'off'
+                value: 'off'
+                indicator: 'off'
+                minmax: 'off'
+                icon: 'off'
+              columns: 1
+              entities:
+                - entity: *CONF_MAINTENANCE_FORNO
+                  max: 50
+                  severity:
+                    - color: *CONF_COLOR_GREEN
+                      from: 0
+                      to: 19
+                    - color: *CONF_COLOR_YELLOW
+                      from: 20
+                      to: 39
+                    - color: *CONF_COLOR_RED
+                      from: 40
+                      to: 50
+      #######################################
+      ### Programma
+      #######################################
+            - type: state-label
+              entity: *CONF_PROGRAM_FORNO
+              prefix: 'Tempo Cottura: '
+              style:
+                left: 5% 
+                bottom: -3%
+                font-size: *CONF_FONT_SIZE 
+                line-height: *CONF_LINE_HEIGHT
+                transform: initial
+                padding: 2px 2px
+            - type: icon
+              icon: mdi:arrow-left-drop-circle-outline
+              tap_action:
+                action: call-service
+                service: input_select.select_previous
+                service_data:
+                  entity_id: *CONF_PROGRAM_FORNO
+              style:
+                left: 50%
+                bottom: 0%
+                transform: initial
+                line-height: *CONF_LINE_HEIGHT 
+                padding: 2px 2px
+            - type: icon
+              icon: mdi:arrow-right-drop-circle-outline
+              tap_action:
+                action: call-service
+                service: input_select.select_next
+                service_data:
+                  entity_id: *CONF_PROGRAM_FORNO
+              style:
+                left: 56%
+                bottom: 0%
+                transform: initial
+                line-height: *CONF_LINE_HEIGHT 
+                padding: 2px 2px
+      ### tempo rimasto
+            - type: state-label
+              entity: sensor.oven_time_left
+              style:
+                bottom: -3%
+                right: 6% #0
+                pointer-events: none
+                font-size: *CONF_FONT_SIZE 
+                transform: initial
+                line-height: *CONF_LINE_HEIGHT 
+                padding: 2px 2px
+            - type: icon
+              icon: mdi:progress-clock
+              entity: *CONF_STATUS_FORNO
+              style:
+                bottom: 0%
+                right: 1% #0
+                transform: initial
+                line-height: *CONF_LINE_HEIGHT 
+                padding: 2px 2px
+      #######################################
+      ## BUTTON
+      #######################################
+      buttons:
+        card:
+          type: custom:mod-card
+          card_mod:
+            style: |
+              :host {
+                --grid-card-gap: 0px;
+              }
+          card:
+            type: grid
+            columns: 5
+            square: false
+            cards:
+              ###########################################################
+              ## BOTTONI IN BASSO
+              ###########################################################
+              ### 1 ###
+              - type: custom:button-card
+                template: device_button_vertical_icon
+                name: Info
+                icon: mdi:information
+                variables:
+                  border_radius: 0px 0px 0px 20px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+                tap_action:
+                  action: fire-dom-event
+                  browser_mod:
+                    service: browser_mod.popup
+                    data:
+                      style: |-
+                        --popup-min-width: 950px; 
+                        --popup-max-width: 1050px;
+                        --popup-border-radius: var(--ha-card-border-radius);
+                      title: Dati Forno
+                        #size: wide #--popup-background-color: var(--primary-background-color);
+                        # ha-dialog$: |
+                        #   .mdc-dialog .mdc-dialog__content {
+                        #       padding-top: 0px !important;
+                        #       -webkit-padding-before: 0px !important;
+                        #       }
+                      content: !include smart_devices/forno_button1.yaml
+              ### 2 ###
+              - type: custom:button-card
+                template: device_button_vertical
+                name: Settimana
+                entity: sensor.forno_settimana_energy
+                label: >
+                  [[[ return states['sensor.forno_cost'].attributes.settimana_cost + ' €'; ]]]
+                variables:
+                  border_radius: 0px 0px 0px 0px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+              ### 3 ###
+              - type: custom:button-card 
+                template: device_button_vertical
+                name: Mese
+                entity: sensor.forno_mese_energy
+                label: >
+                  [[[ return states['sensor.forno_cost'].attributes.mese_cost + ' €'; ]]]
+                variables:
+                  border_radius: 0px 0px 0px 0px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+              ### 4 ###
+              - type: custom:button-card
+                template: device_button_vertical
+                name: Anno
+                entity: sensor.forno_anno_energy
+                label: >
+                  [[[ return states['sensor.forno_cost'].attributes.anno_cost + ' €' ; ]]]
+                variables:
+                  border_radius: 0px 0px 0px 0px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+              ### 5 ###
+              - type: "custom:button-card"
+                template: device_button_vertical_icon
+                name: Forno
+                entity: switch.plug_forno
+                icon: mdi:stove
+                variables:
+                  border_radius: 0px 0px 20px 0px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+                show_state: false
+                show_label: false
+                styles:
+                  icon:
+                    - color: >
+                        [[[
+                          if (states['switch.plug_forno'].state== 'on')
+                            return "#27b376";
+                          return "#bf212f";
+                        ]]]
+                hold_action:
+                  action: fire-dom-event
+                  browser_mod:
+                    service: browser_mod.popup
+                    data:
+                      style: |-
+                        --popup-min-width: 950px; 
+                        --popup-max-width: 1050px;
+                        --popup-border-radius: var(--ha-card-border-radius);
+                      title: Energia forno
+                      content: !include smart_devices/forno_button5.yaml
