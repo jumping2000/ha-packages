@@ -1,4 +1,4 @@
-################## DA PERSONALIZZARE ######################
+############## ENTITA PLUG DA PERSONALIZZARE ##############
 # PLUG_LAVATRICE_SWITCH: "switch.plug_lavatrice"
 # PLUG_LAVATRICE_POTENZA_(W): "sensor.plug_lavatrice_power"
 # PLUG_LAVATRICE_ENERGIA_(kWh): "sensor.plug_lavatrice_energy"
