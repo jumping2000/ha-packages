@@ -21,8 +21,6 @@
                     show_header_toggle: false
                     state_color: true
                     entities:
-                      # - type: section
-                      #   label: Statistiche Consumi
                       - entity: sensor.lavatrice_cost
                         type: custom:multiple-entity-row
                         show_state: false
@@ -35,7 +33,7 @@
                             name: Durata
                           - entity: sensor.lavatrice_oggi_energy
                             name: Energia
-                          - attribute: lavatrice_oggi_cost
+                          - attribute: oggi_cost
                             name: Costo
                             unit: '€'
                       - entity: sensor.lavatrice_cost
@@ -50,7 +48,7 @@
                             name: Durata
                           - entity: sensor.lavatrice_settimana_energy
                             name: Energia
-                          - attribute: lavatrice_settimana_cost
+                          - attribute: settimana_cost
                             name: Costo
                             unit: '€'
                       - entity: sensor.lavatrice_cost
@@ -65,7 +63,7 @@
                             name: Durata
                           - entity: sensor.lavatrice_mese_energy
                             name: Energia
-                          - attribute: lavatrice_mese_cost
+                          - attribute: mese_cost
                             name: Costo
                             unit: '€'
                       - entity: sensor.lavatrice_cost
@@ -80,7 +78,7 @@
                             name: Durata
                           - entity: sensor.lavatrice_anno_energy
                             name: Energia
-                          - attribute: lavatrice_anno_cost
+                          - attribute: anno_cost
                             name: Costo
                             unit: '€'
                       - type: divider
@@ -112,12 +110,19 @@
                         type: custom:multiple-entity-row
                         show_state: false
                         name: Ultimo
+                        style:
+                          hui-generic-entity-row:
+                            $: |
+                              state-badge {
+                                {% set COLOR = "orange" if is_state("binary_sensor.washing_machine_status","on")  %}              
+                                color: {{COLOR}};
+                              }
                         entities:
                           - entity: sensor.lavatrice_ultimo_runtime
                             name: Durata
-                            format: duration
                           - entity: sensor.lavatrice_run_energy
                             name: Energia
+                            unit: kWh
                           - entity: sensor.lavatrice_cost
                             name: Costo
                       - entity: counter.cicli_lavaggio_lavatrice
@@ -129,6 +134,7 @@
                             name: Cicli
                           - entity: sensor.lavatrice_total_runtime
                             name: Durata
+                            unit: h
                           - entity: sensor.plug_lavatrice_total_energy
                             name: Energia
                       - type: divider
