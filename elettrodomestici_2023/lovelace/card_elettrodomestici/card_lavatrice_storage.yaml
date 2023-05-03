@@ -1,4 +1,4 @@
-###########################################################
+################## DA PERSONALIZZARE ######################
 # PLUG_LAVATRICE_SWITCH: "switch.plug_lavatrice"
 # PLUG_LAVATRICE_POTENZA_(W): "sensor.plug_lavatrice_power"
 # PLUG_LAVATRICE_ENERGIA_(kWh): "sensor.plug_lavatrice_energy"
@@ -6,7 +6,7 @@
 # PLUG_LAVATRICE_TENSIONE_(V): "sensor.plug_lavatrice_voltage"
 # PLUG_LAVATRICE_POT_APPARENTE_(var): "sensor.plug_lavatrice_apparent_power"
 # PLUG_LAVATRICE_POT_REATTIVA_(VA): "sensor.plug_lavatrice_reactive_power"
-# BINARY_SENSOR_PORTA_LAVATRICE: "binary_sensor.door_lavatrice_contact"
+###########################################################
 # CONTEGGIO_MANUTENZIONI_LAVATRICE: "sensor.lavatrice_modulo_manutenzione"
 # LAVATRICE_STATUS: "sensor.washing_machine_status"
 # PROGRAM_LAVATRICE_STATUS: "input_select.lavatrice_program"
