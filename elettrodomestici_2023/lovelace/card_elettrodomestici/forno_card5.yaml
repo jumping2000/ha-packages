@@ -1,0 +1,179 @@
+                type: vertical-stack
+                cards:
+                  - type: custom:bar-card
+                    style: |
+                        ha-card {
+                          border-radius: 0px;
+                          box-shadow: none;
+                          background-image: none;
+                          background-color: transparent; 
+                          color: black
+                        }
+                    positions:
+                      name: inside
+                      value: inside
+                      #indicator: inside
+                      minmax: 'off'
+                      icon: 'off'
+                    height: 40px
+                    columns: 4
+                    entities:
+                      - entity: "sensor.plug_forno_apparent_power"
+                        name: Potenza apparente
+                        max: 2000
+                        severity:
+                          - color: rgb(26,204,147,0.8)
+                            from: 0
+                            to: 99.9
+                          - color: rgb(206,133,0,0.8)
+                            from: 100
+                            to: 399.9
+                          - color: rgb(163,0,0,0.8)
+                            from: 400
+                            to: 1999
+                      - entity: "sensor.plug_forno_reactive_power"
+                        name: Potenza Reattiva
+                        max: 2000
+                        severity:
+                          - color: rgb(26,204,147,0.8)
+                            from: 0
+                            to: 99.9
+                          - color: rgb(206,133,0,0.8)
+                            from: 100
+                            to: 399.9
+                          - color: rgb(163,0,0,0.8)
+                            from: 400
+                            to: 1999
+                      - entity: "sensor.plug_forno_voltage"
+                        name: Tensione
+                        max: 255
+                        severity:
+                          - color: rgb(26,204,147,0.8)
+                            from: 230
+                            to: 249
+                          - color: rgb(206,133,0,0.8)
+                            from: 220
+                            to: 229
+                          - color: rgb(163,0,0,0.80)
+                            from: 250
+                            to: 255
+                      - entity: "sensor.plug_forno_current"
+                        name: Corrente
+                        max: 10
+                        severity:
+                          - color: rgb(26,204,147,0.8)
+                            from: 1
+                            to: 5.9
+                          - color: rgb(206,133,0,0.8)
+                            from: 6
+                            to: 7.9
+                          - color: rgb(163,0,0,0.8)
+                            from: 8
+                            to: 10
+                  - type: grid
+                    square: false
+                    columns: 5
+                    cards:
+                      - type: statistic
+                        entity: sensor.plug_forno_energy
+                        name: Mese corrente
+                        unit: kWh
+                        period:
+                          calendar:
+                            period: month
+                        stat_type: change
+                      - type: statistic
+                        entity: sensor.plug_forno_energy
+                        name: Mese - 1
+                        unit: kWh
+                        period:
+                          calendar:
+                            period: month
+                            offset: -1
+                        stat_type: change
+                      - type: statistic
+                        entity: sensor.plug_forno_energy
+                        name: Mese - 2
+                        unit: kWh
+                        period:
+                          calendar:
+                            period: month
+                            offset: -2
+                        stat_type: change
+                      - type: statistic
+                        entity: sensor.plug_forno_energy
+                        name: Mese - 3
+                        unit: kWh
+                        period:
+                          calendar:
+                            period: month
+                            offset: -3
+                        stat_type: change
+                      - type: statistic
+                        entity: sensor.plug_forno_energy
+                        name: Mese - 4
+                        unit: kWh
+                        period:
+                          calendar:
+                            period: month
+                            offset: -4
+                        stat_type: change
+                  - type: custom:apexcharts-card
+                    experimental:
+                      color_threshold: true
+                    apex_config:
+                      chart:
+                        height: 200px
+                      dataLabels:
+                        enabled: true
+                        dropShadow:
+                          enabled: true
+                      yaxis:
+                        forceNiceScale: true
+                        labels:
+                          style:
+                            fontSize: 10px
+                            fontFamily: Segoe UI Light
+                      xaxis:
+                        axisBorder:
+                          show: true
+                        labels:
+                          show: false
+                          style:
+                            fontSize: 10px
+                            fontFamily: Segoe UI Light
+                      grid:
+                        show: true
+                        borderColor: rgba(112, 135, 164, 0.5)
+                    show:
+                      last_updated: false
+                    header:
+                      standard_format: false
+                      show: true
+                      show_states: true
+                      colorize_states: true
+                      title: Consumo giornaliero - ultimi 30 giorni
+                    graph_span: 30d
+                    update_interval: 1h
+                    series:
+                      - entity: sensor.plug_forno_energy
+                        type: column
+                        statistics:
+                          type: state
+                          period: day
+                          align: start
+                        show:
+                          datalabels: true
+                          header_color_threshold: true
+                          name_in_header: false
+                          legend_value: false
+                        opacity: 0.8
+                        color_threshold:
+                          - color: "#27b376"
+                            value: 0.5
+                          - color: "#006f3c"
+                            value: 1
+                          - color: "#fl9a73e"
+                            value: 1.5
+                          - color: "#bf212f"
+                            value: 2.0
