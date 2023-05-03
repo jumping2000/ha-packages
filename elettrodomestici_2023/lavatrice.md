@@ -387,7 +387,16 @@ button_card_templates:
 | Lovelace - Storage |
 | :---: |
 
-Chi usa questa modalità potrà cambiare da UI gli aspetti che più gli interessano.
+Chi usa questa modalità potrà caricare l'intero file di configurazione dell'interfaccia grafica nella UI e variare sempre da UI gli aspetti che più interessano.
+
+<table align="center">
+	<tr>
+	    <th> 🚀 Modalità UI storage 🚀</th>
+	</tr>
+  <tr>
+      <td><div align=center><img width = "500" src="img/storage_mode.png"/></div></td>
+  </tr>
+</table>
 
 
 | Principali entità |
