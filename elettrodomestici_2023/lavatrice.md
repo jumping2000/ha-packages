@@ -230,9 +230,12 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 [Github](https://github.com/jumping2000/ha-packages/elettrodomestici_2023) permette di effettuare il completo download dei file che costituiscono il pacchetto, quindi file yaml e immagini. Una volta inserito tutto nella propria installazione di Home Assistant seguendo le indicazioni presenti nel seguito, occorre seguire i passi base per procedere alla configurazione:
 1. Scegliere tra i package in versione _FSM_ o in versione _lite_, l'utente dovrà cancellare i file YAML che non sono di interesse.
 2. Scegliere tra la grafica Lovelace in formato _YAML_ o _Storage_, l'utente dovrà cancellare i file YAML che non sono di interesse.
-3.  solo per chi usa la versione _lite_, procedere alla configurazione del [Blueprint FSM](https://github.com/jumping2000/ha-templates/tree/main/blueprints/fsm). Qui occorre indicare i sensori relativi a potenza ed energia, i servizi di notifica e le due entità relative allo stato della lavatrice che nel package sono i seguenti, anche se poi ogni utilizzatore  è libero di cambiare:
+3.  solo per chi usa la versione _lite_, procedere alla configurazione del [Blueprint FSM](https://github.com/jumping2000/ha-templates/tree/main/blueprints/fsm). Qui occorre indicare i sensori relativi a potenza ed energia, i servizi di notifica, alcuni helper e due entità relative allo stato della lavatrice che nel package sono i seguenti, anche se poi ogni utilizzatore  è libero di cambiarli:
     * `input_select.washing_machine_status.yaml`
     * `sensor.washing_machine_status.yaml`
+    * `input_boolean.lavatrice_runtime`
+    * `input_number.lavatrice_energia_iniziale`
+    * `counter.cicli_lavaggio_lavatrice`
 
 | Struttura dei file |
 | :---: |
