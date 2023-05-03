@@ -365,7 +365,7 @@ Come riportato nel paragrafo di  [Installazione](#installazione) per i button-ca
 
 ```yaml
 button_card_templates:
-  !include_dir_merge_named /button_card_templates
+  !include_dir_merge_named button_card_templates
 ```
 
 | Lovelace - Storage |
