@@ -29,8 +29,8 @@ dummy_entity:
   PROGRAM_LAVATRICE_STATUS: &CONF_PROGRAM_LAVATRICE "input_select.lavatrice_program"
 ###########################################################
 #icon: mdi:washing-machine
-#title: Energia
-#path: energy
+#title: Lavatrice
+#path: lavatrice
 #- type: vertical-stack
 #  cards:
 ###########################################################
