@@ -27,7 +27,12 @@ dummy_entity:
   ##
   LAVATRICE_STATUS: &CONF_STATUS_LAVATRICE "sensor.washing_machine_status"
   PROGRAM_LAVATRICE_STATUS: &CONF_PROGRAM_LAVATRICE "input_select.lavatrice_program"
-##
+###########################################################
+#icon: mdi:washing-machine
+#title: Energia
+#path: energy
+#- type: vertical-stack
+#  cards:
 ###########################################################
 ## PICTURE + BUTTON LAVATRICE
 ###########################################################
