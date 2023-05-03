@@ -22,7 +22,7 @@ dummy_entity:
   PLUG_LAVATRICE_TENSIONE_(V): &CONF_VOLTAGE_LAVATRICE "sensor.plug_lavatrice_voltage"
   PLUG_LAVATRICE_POT_APPARENTE_(var): &CONF_APPARENT_LAVATRICE "sensor.plug_lavatrice_apparent_power"
   PLUG_LAVATRICE_POT_REATTIVA_(VA): &CONF_REACTIVE_LAVATRICE "sensor.plug_lavatrice_reactive_power"
-  BINARY_SENSOR_PORTA_LAVATRICE: &CONF_OBLO_LAVATRICE "binary_sensor.door_lavatrice_contact"
+  BINARY_SENSOR_STATUS_LAVATRICE: &CONF_BINARY_LAVATRICE "binary_sensor.washing_machine_status"
   CONTEGGIO_MANUTENZIONI_LAVATRICE: &CONF_MAINTENANCE_LAVATRICE "sensor.lavatrice_modulo_manutenzione"
   ##
   LAVATRICE_STATUS: &CONF_STATUS_LAVATRICE "sensor.washing_machine_status"
