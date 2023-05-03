@@ -1,0 +1,531 @@
+  #################################################################
+  #                                                               #
+  #                    Packages/Forno e Cucina                    #
+  #                                                               #
+  #################################################################
+  ## package_forno:
+  ## INFO 📦
+  ##  😅 Gianpi [hassiohelp.eu]
+  ##  📅 01/05/2023 - 2023.4.5
+  ##  📌 INFORMATION provided by plug and energy meter
+  ##  📂 PATH IMAGE /config/www/hassiohelp/pkg_elettrodomestici
+  ##  🎁 THANKS TO: https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/
+  ##  🎫 INFO https://www.elettro-domestici.com/articoli-elettrodomestici.asp?id=286
+  ##  🛠  BLUEPRINT https://github.com/jumping2000/ha-templates/blob/main/blueprints/fsm/fsm_lite.yaml
+  ##--------------------------------------------------------------|
+
+  #################################################################
+  #                                                               #
+  #                          Customize                            #
+  #                                                               #
+  #################################################################
+  homeassistant:
+    customize:
+
+      #############################################################
+      ## CUSTOMIZE NODE ANCHORS
+      #############################################################
+      package.node_anchors:
+        customize: &customize
+          package: "Oven 🌍"
+          site: "hassiohelp.eu 🌐"
+          author: "Gianpi"
+          version: "2023.4.5"
+          
+        expose: &expose
+          <<: *customize
+          haaska_hidden: false
+          homebridge_hidden: false
+
+        ##---------------------- IMPOSTAZIONI DEL PACKAGE ----------------------##
+        ## NOTIFICATION
+        SCRIPT Centro notifiche: &DEFAULT_SCRIPT "script.my_notify"
+        SERVIZIO Notify: &DEFAULT_NOTIFY "notify.telegram"
+        SERVIZIO Mobile: &DEFAULT_NOTIFY_MOBILE "notify.mobile_app_mi_9"
+        MEDIA PLAYER Alexa: &DEFAULT_MEDIA_PLAYER_ALEXA "media_player.sala"
+        MEDIA PLAYER Google: &DEFAULT_MEDIA_PLAYER_GOOGLE "media_player.cucina"
+        SERIVICE TTS: &DEFAULT_SERVICE_TTS "tts.google_translate_say"
+        ## CONFIGURATION
+        PLUG FORNO SWITCH: &CONF_SWITCH_ENTITY "switch.plug_forno"
+        PLUG FORNO POTENZA (W): &CONF_POWER_ENTITY "sensor.plug_forno_power"
+        PLUG FORNO ENERGIA (kWh): &CONF_ENERGY_ENTITY "sensor.plug_forno_energy"
+        #
+        RITARDO TRA LE VARIE NOTIFICHE: &CONF_DELAY_NOTIFICATION 5
+        ## NON CAMBIARE ##
+        SILENZIAMENTO: &CONF_ID_FORNO "oven"
+        COUNTER CICLI COTTURA: &CONF_CICLI_TOTALE "counter.cicli_cottura_forno"
+        DURATA COTTURE OGGI: &CONF_OGGI_RUNTIME "sensor.forno_oggi_runtime"
+        ##---------------------- FINE IMPOSTAZIONI PACKAGE ---------------------##
+
+      ################################################
+      ## Sensor
+      ################################################
+      sensor.oven_status:
+        <<: *customize
+        icon: mdi:toaster-oven
+        friendly_name: "Stato Forno"
+
+      binary_sensor.oven_status:
+        <<: *customize
+        icon: mdi:stove
+        friendly_name: "Forno ON/OFF"
+
+      binary_sensor.oven_maintenance:
+        <<: *customize
+        icon: mdi:alert-box
+        friendly_name: "Avviso Manutenzione"
+
+      sensor.oven_time_left:
+        <<: *customize
+        icon: mdi:timer-sand
+        friendly_name: "Fine prevista in "
+
+      sensor.forno_modulo_manutenzione:
+        <<: *customize
+        icon: mdi:progress-clock
+        friendly_name: "Cicli Man. effettuati"
+
+      sensor.forno_oggi_runtime:
+        <<: *customize
+        friendly_name: Durata cotture oggi
+
+      sensor.forno_ieri_runtime:
+        <<: *customize
+        friendly_name: Durata cotture ieri
+
+      sensor.forno_ultimo_runtime:
+        <<: *customize
+        friendly_name: Durata ultima cottura
+
+      sensor.forno_oggi_energy:
+        <<: *customize
+        icon: mdi:transmission-tower-import
+        friendly_name: "Energia oggi"
+
+      sensor.forno_settimana_energy:
+        <<: *customize
+        icon: mdi:transmission-tower-import
+        friendly_name: "Energia settimanale"
+
+      sensor.forno_mese_energy:
+        <<: *customize
+        icon: mdi:transmission-tower-import
+        friendly_name: "Energia mensile"
+
+      sensor.forno_anno_energy:
+        <<: *customize
+        icon: mdi:transmission-tower-import
+        friendly_name: "Energia annuale"
+
+      sensor.forno_cost:
+        <<: *customize
+        icon: mdi:currency-eur
+        friendly_name: "Costo"
+
+      sensor.forno_total_runtime:
+        <<: *customize
+        friendly_name: "Total Runtime"
+        icon: mdi:chart-areaspline
+
+      sensor.forno_oggi_cicli:
+        <<: *customize
+        icon: mdi:autorenew
+        friendly_name: "Cotture oggi"
+
+      sensor.forno_settimana_cicli:
+        <<: *customize
+        icon: mdi:autorenew
+        friendly_name: "Cotture settimanali"
+
+      sensor.forno_mese_cicli:
+        <<: *customize
+        icon: mdi:autorenew
+        friendly_name: "Cotture mensili"
+
+      sensor.forno_anno_cicli:
+        <<: *customize
+        icon: mdi:autorenew
+        friendly_name: "Cotture annuali"
+
+  #################################################################
+  #                                                               #
+  #                 INPUT BOOLEAN SELECT DATETIME                 #
+  #                                                               #
+  #################################################################  
+  input_select:
+      oven_status:
+      name: Stato Forno
+      options:
+        - Idle
+        - Riscaldamento
+        - Mantenimento
+        - Raffreddamento
+      initial: Idle
+
+    forno_program:
+      name: Programma Forno
+      options:
+        - Pane # 30 min
+        - Pizza #35 min
+        - Lasagne # 40
+        - Pasta al forno #80
+        - Arrosto # 60
+        - Agnello # 50 min
+        - Polpette #30
+        - Patate #65
+        - Verdure #80
+        - Torta di mele #55
+        - Crostata #45
+        - Ciambellone #40
+        - 'Off'
+
+  input_datetime:
+    forno_time_end:
+      name: End time
+      has_time: true
+      has_date: true
+
+  input_number:
+    forno_runtime:
+      name: Runtime totale forno
+      min: 0
+      max: 1000
+      step: 0.01
+      mode: box
+      icon: mdi:chart-areaspline
+    forno_energia_iniziale:
+      name: Energia iniziale forno
+      min: 0
+      max: 1000
+      step: 0.01
+      mode: box
+      icon: mdi:chart-areaspline
+    forno_ripetizioni_notifica:
+      name: Numero ripetizioni notifica
+      min: 1
+      max: 10
+      step: 1
+      icon: mdi:voicemail
+    forno_avviso_manutenzione:
+      name: Cicli di avviso di manutenzione
+      min: 10
+      max: 100
+      step: 5
+      icon: mdi:bullhorn
+
+  input_boolean:
+    forno_runtime:
+      name: Durata accensione forno
+      icon: mdi:timer-sand
+      initial: "off"
+
+  #################################################################
+  #                                                               #
+  #                           COUNTER                             #
+  #                                                               #
+  #################################################################
+  counter:
+    cicli_cottura_forno:
+      name: Cicli cottura forno
+      step: 1
+      restore: true
+      icon: mdi:counter
+  
+  #################################################################
+  #                                                               #
+  #                           SENSOR                              #
+  #                                                               #
+  #################################################################
+  ## DA INSERIRE NEL RECORDER binary_sensor.oven_status ##
+  sensor:
+    - platform: history_stats
+      name: Forno ultimo runtime
+      entity_id: binary_sensor.oven_status
+      state: "on"
+      type: time
+      start: " {{ as_timestamp(states.input_boolean.forno_runtime.last_changed) | default }}"
+      end: "{{ now() }}"
+
+    - platform: history_stats
+      name: Forno oggi runtime
+      entity_id: binary_sensor.oven_status
+      state: "on"
+      type: time
+      start: " {{ now().replace(hour=0).replace(minute=0).replace(second=0) }} "
+      end: "{{ now() }}"
+
+  #################################################################
+  #                                                               #
+  #                           TEMPLATE                            #
+  #                                                               #
+  #################################################################
+  template:
+    - trigger:
+        - platform: state
+          entity_id: sensor.oven_status
+          to: "Idle"
+      sensor:
+        - name: forno_run_energy
+          state: >
+            {% set sensore_energia = "sensor.plug_forno_energy"%}
+            {% set value1 =  states('input_number.forno_energia_iniziale') |float(default=0) %}
+            {% set value2 =  states(sensore_energia) |float(default=0) %}
+            {{ (value2 - value1)|round(2,default=0)}}
+          availability: >
+            {% set sensore_energia = "sensor.plug_forno_energy" %}
+            {{ states(sensore_energia) not in ['unavailable', 'unknown', 'None'] }}
+
+    - sensor:
+      - name: oven_status
+        state: "{{ states('input_select.oven_status') }}"
+
+      - name: forno_total_runtime
+        state: >
+          {% set value =  states('input_number.forno_runtime') %}
+          {%  if ((value|float % 1)|round(2) * 60)|int >9  %}
+            {{ value|int }}:{{ ((value|float % 1)|round(2) * 60)|int(default=0) }}:00
+          {%  else %}
+            {{ value|int }}:0{{ ((value|float % 1)|round(2) * 60)|int(default=0) }}:00
+          {%  endif %}
+        availability: >
+          {{ states('input_number.fornoruntime') not in ['unavailable', 'unknown', 'None'] }}
+
+      - name: forno_modulo_manutenzione
+        state: >
+          {%- set value1 =  states('counter.cicli_cottura_forno') | int(default=0) -%}
+          {%- set value2 =  states('input_number.forno_avviso_manutenzione') | int(default=0) -%}
+          {{ value1 % value2 if value2 !=0 else 0 }}
+        availability: >
+          {{ states('counter.cicli_cottura_forno') not in ['unavailable', 'unknown', 'None'] }}
+
+      - name: oven_time_left
+        state: >-
+          {% set timer = ((states.input_datetime.forno_time_end.attributes.timestamp - as_timestamp(now())) / 60 ) | round(0) | default %}
+          {% if states('sensor.oven_status') != 'Idle' %}
+            {{ timer if timer>0 else 0  }} min
+          {% else %}
+            {% set program = states('input_select.forno_program') | default("Off") %}
+            {% set dict_time_program = {
+              'Pane': '00:30:00',
+              'Pizza': '00:40:00',
+              'Lasagne': '00:40:00',
+              'Pasta al forno': '01:20:00',
+              'Arrosto': '01:00:00',
+              'Agnello': '00:50:00',
+              'Polpette': '00:30:00',
+              'Patate': '01:05:00',
+              'Verdure': '01:20:00',
+              'Torta di mele': '00:55:00',
+              'Crostata': '00:45:00',
+              'Ciambellone': '00:40:00',
+              'Off': '00:00:00' } %}
+            {{ dict_time_program[program] if program in dict_time_program }}
+          {% endif %}
+        availability: >
+          {{ states('input_datetime.forno_time_end') not in ['unavailable', 'unknown', 'None'] }}
+
+      - name: forno_cost
+        state: "{{(states('sensor.forno_run_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+        attributes:
+          oggi_cost: "{{(states('sensor.forno_oggi_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          settimana_cost: "{{(states('sensor.forno_settimana_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          mese_cost: "{{(states('sensor.forno_mese_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          anno_cost: "{{(states('sensor.forno_anno_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+        unit_of_measurement: '€'
+        device_class: monetary
+        availability: >
+          {{ states('sensor.forno_oggi_energy') not in ['unavailable', 'unknown', 'None'] }}
+
+    - binary_sensor:
+      - name: oven_status
+        device_class: power
+        state: >
+          {{ states('sensor.oven_status') in ['Riscaldamento','Mantenimento','Raffreddamento'] }}
+        availability: >
+          {{ states('sensor.oven_status') not in ['unavailable', 'unknown', 'None'] }}
+
+      - name: oven_maintenance
+        device_class: problem
+        state: >
+          {%- set value1 =  states('counter.cicli_cottura_forno') | int(default=0) -%}
+          {%- set value2 =  states('input_number.forno_avviso_manutenzione') | int(default=0) -%}
+          {{ (value1 % value2 == 0) if value2 !=0 else False}}
+        availability: >
+          {{ states('counter.cicli_cottura_forno') not in ['unavailable', 'unknown', 'None'] }}
+
+  #################################################################
+  #                                                               #
+  #                      UTILITY METER                            #
+  #                                                               #
+  #################################################################
+  utility_meter:
+  ## CICLI COTTURA FORNO ##
+    forno_oggi_cicli:
+      source: *CONF_CICLI_TOTALE
+      cycle: daily
+    forno_settimana_cicli:
+      source: *CONF_CICLI_TOTALE
+      cycle: weekly
+    forno_mese_cicli:
+      source: *CONF_CICLI_TOTALE
+      cycle: monthly
+    forno_anno_cicli:
+      source: *CONF_CICLI_TOTALE
+      cycle: yearly
+  ## ENERGIA FORNO ##
+    forno_oggi_energy:
+      source: *CONF_ENERGY_ENTITY
+      cycle: daily
+    forno_settimana_energy:
+      source: *CONF_ENERGY_ENTITY
+      cycle: weekly
+    forno_mese_energy:
+      source: *CONF_ENERGY_ENTITY
+      cycle: monthly
+    forno_anno_energy:
+      source: *CONF_ENERGY_ENTITY
+      cycle: yearly
+  ## DURATA FORNO ##
+    forno_settimana_runtime:
+      source: *CONF_OGGI_RUNTIME
+      cycle: weekly
+    forno_mese_runtime:
+      source: *CONF_OGGI_RUNTIME 
+      cycle: monthly
+    forno_anno_runtime:
+      source: *CONF_OGGI_RUNTIME 
+      cycle: yearly
+
+  #################################################################
+  #                                                               #
+  #                          SCRIPT                               #
+  #                                                               #
+  #################################################################
+  script:
+    reset_forno_cicli:
+      sequence:
+        - alias: "Reset cotture forno"
+          service: utility_meter.calibrate
+          data:
+            value: '0'
+          target:
+            entity_id: 
+            - sensor.forno_settimana_cicli
+            - sensor.forno_mese_cicli
+            - sensor.forno_anno_cicli
+            - sensor.forno_settimana_energy
+            - sensor.forno_mese_energy
+            - sensor.forno_anno_energy
+            - sensor.forno_settimana_runtime
+            - sensor.forno_mese_runtime
+            - sensor.forno_anno_runtime
+
+    reset_forno_totale:
+      sequence:
+        - alias: "Reset cicli totale"
+          service: counter.reset
+          target:
+            entity_id: *CONF_CICLI_TOTALE
+        - alias: "Reset runtime totale"
+          service: input_number.set_value
+          data:
+            value: 0
+          target:
+            entity_id: input_number.forno_runtime 
+
+  #################################################################
+  #                                                               #
+  #                          AUTOMATION                           #
+  #                                                               #
+  #################################################################
+  automation:
+  ## INSERIRE il SENSORE DI DURATA ##
+    - alias: "Durata totale accensione forno"
+      trigger:
+        platform: time
+        at: "23:59"
+      action:
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.forno_runtime
+          data:
+            value: "{{ states('input_number.forno_runtime') | float(default=0) + states('sensor.forno_oggi_runtime') | float(default=0) }}"
+  
+  #################################################################
+  ## la durata dei tempi di cottura è da personalizzare
+    - alias: Forno Program
+      mode: queued
+      trigger:
+      - platform: state
+        entity_id: input_select.forno_program
+      - platform: state
+        entity_id: sensor.oven_status
+        not_to: "Idle"
+      action:
+      - service: input_datetime.set_datetime
+        target:
+          entity_id: input_datetime.forno_time_end
+        data:
+          time: >-
+            {% set program = states('input_select.forno_program') %}
+            {% set dict_time_program = {
+              'Pane': '00:30:00',
+              'Pizza': '00:35:00',
+              'Lasagne': '00:40:00',
+              'Pasta al forno': '01:20:00',
+              'Arrosto': '01:00:00',
+              'Agnello': '00:50:00',
+              'Polpette': '00:30:00',
+              'Patate': '01:05:00',
+              'Verdure': '01:20:00',
+              'Torta di mele': '00:55:00',
+              'Crostata': '00:45:00',
+              'Ciambellone': '00:40:00',
+              'Off': '00:00:00' } %}
+            {% set t = now().timestamp() %}
+            {% set sec = strptime(dict_time_program[program], "%H:%M:%S").hour*3600 + strptime(dict_time_program[program], "%H:%M:%S").minute*60  %}
+            {{ (t+sec) | timestamp_custom("%H:%M:%S", true) }}
+          date: >-
+            {{ now().timestamp() | timestamp_custom("%Y-%m-%d", true)  }}
+
+  #################################################################
+    - alias: Avviso manutenzione forno
+      mode: queued
+      trigger:
+        - platform: template
+          value_template: "{{ states('counter.cicli_cottura_forno')|int(default=0) %  states('input_number.forno_avviso_manutenzione')|int(default=0) == 0 }}"
+          for: "00:01:00"
+      action:
+        - variables:
+            avvisi_manutenzione: " {{ states('input_number.forno_avviso_manutenzione') }} "
+        - service: script.my_notify
+          data:
+            title: "-- Attenzione --"
+            notify: notify.telegram, notify.mobile_app_mi_9
+            message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di cottura, è l'ora di fare mautenzione al forno"
+            google: 1
+        ### NOTIFICHE TELEGRAM, COMPANION, GOOGLE, ALEXA ###
+        # - service: *DEFAULT_NOTIFY_MOBILE
+        #   data:
+        #     title: "-- Attenzione --"
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di cottura 🥯, è l'ora di fare manutenzione 🔧 alla lavatrice"
+        # - service: *DEFAULT_NOTIFY
+        #   data:
+        #     title: "-- Attenzione --"
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di cottura 🥯, è l'ora di fare manutenzione 🔧 alla lavatrice"
+        # - service: *DEFAULT_SERVICE_TTS
+        #   data:
+        #     entity_id: *DEFAULT_MEDIA_PLAYER_GOOGLE
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di cottura, è l'ora di fare manutenzione alla lavatrice"
+        # - service: notify.alexa_media
+        #   data:
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di cottura, è l'ora di fare manutenzione alla lavatrice"
+        #     target: *DEFAULT_MEDIA_PLAYER_ALEXA 
+        #     data:
+        #       type: announce
+
+  #################################################################
+  #                                                               #
+  #                     END OF CONFIGURATION FILE                 #
+  #                                                               #
+  #################################################################
