@@ -27,7 +27,12 @@ dummy_entity:
   FORNO_STATUS: &CONF_STATUS_FORNO "sensor.oven_status"
   FORNO_STATUS_BINARY: &CONF_BINARY_FORNO "binary_sensor.oven_status"
   PROGRAM_FORNO_STATUS: &CONF_PROGRAM_FORNO "input_select.forno_program"
-
+###########################################################
+#icon: mdi:oven
+#title: Forno
+#path: forno
+#- type: vertical-stack
+#  cards:
 ###########################################################
 ## PICTURE + BUTTON FORNO
 ###########################################################
