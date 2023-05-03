@@ -146,58 +146,44 @@ dummy_entity:
       #######################################
             - type: state-label
               entity: *CONF_POWER_LAVATRICE 
+              prefix: '⚡ '
               style:
                 top: 0%
-                left: 36%
+                left: 32%
                 pointer-events: none
                 transform: initial
                 font-size: *CONF_FONT_SIZE 
                 line-height: *CONF_LINE_HEIGHT
                 padding: 0px 14px
-                color: "var(--primary-text-color)"
-            - type: icon
-              icon: mdi:flash
-              style:
-                top: 0%
-                left: 36%
-                pointer-events: none
-                transform: scale(0.8)
-                line-height: *CONF_LINE_HEIGHT
-                padding: 7px 2px
                 color: "var(--primary-text-color)"
       #######################################
       ### ENERGY LABEL
       #######################################
             - type: state-label
               entity: *CONF_ENERGY_LAVATRICE 
-              prefix: 'Oggi: '
+              prefix: '🏭 '
               style:
                 top: 0%
-                left: 55%
+                left: 52%
                 pointer-events: none
                 transform: initial
                 font-size: *CONF_FONT_SIZE 
                 line-height: *CONF_LINE_HEIGHT
                 padding: 0px 14px
+                color: "var(--primary-text-color)"
             - type: state-label
-              entity: sensor.lavatrice_oggi_cost
+              entity: sensor.lavatrice_cost
+              attribute: oggi_cost
+              prefix: '💰 '
+              suffix: ' €'
               style:
                 top: 0%
-                left: 84%
+                left: 78%
                 pointer-events: none
                 transform: initial
                 font-size: *CONF_FONT_SIZE 
                 line-height: *CONF_LINE_HEIGHT
                 padding: 0px 14px
-            - type: icon
-              icon: mdi:circle-slice-3
-              style:
-                top: 0%
-                left: 54%
-                pointer-events: none
-                transform: scale(0.8)
-                line-height: *CONF_LINE_HEIGHT
-                padding: 7px 2px
       #######################################
       ### STATUS LABEL
       #######################################
