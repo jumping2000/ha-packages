@@ -1,0 +1,355 @@
+#################################################################
+#                                                               #
+#                             Oven                              #
+#                                                               #
+#################################################################
+## INFO 📦
+##  😅 Gianpi [hassiohelp.eu]
+##  📅 01/08/2022
+##  📌 Information provided power, voltage, current, PF, etc fcoming from plug Sonoff Pow R2
+##  📂 PATH IMAGE
+## 
+## With FSM (Finite State Machine) for oven control
+##
+## FSM https://github.com/muxa/esphome-state-machine
+##
+## SONOFF POW R2
+## https://www.esphome-devices.com/devices/BlitzWolf-BW-SHP2-Power-Monitoring-Plug
+## CALIBRAZIONE:
+## https://investio.pro/review-of-blitzwolf-bw-shp2-wi-fi-outlet-with-energy-monitoring-esphome-firmware-for-home-assistant/
+## TOTAL ENERGY
+## https://github.com/athom-tech/athom-configs/blob/main/athom-smart-plug-v2.yaml
+## https://github.com/esphome/feature-requests/issues/1693
+#################################################################
+substitutions:
+  device_name: "plug-forno"
+  sensor_name: "Plug Forno"
+  id_name: "plug_forno"
+  device_description: "Sonoff POW R2 Power Monitoring Plug"
+  ############# SENSOR ##############
+  standard_throttle: "60s" #for power, voltage, current sensor
+  delta_power: "1"
+  #current_res: "0.00180" # Higher value gives lower watt readout
+  #voltage_div: "736" # Lower value gives lower voltage readout
+  update_interval: 120s ## for other sensor
+  ############## FORNO ##############
+  standard_time: "5s"
+  min_power_threshold: "11"
+  medium_power_threshold: "40" 
+  max_power_threshold: "100"
+  ###################################
+#
+packages:
+  device_base: !include common/device_base.yaml
+esphome:
+  name: ${device_name}
+  comment: ${device_description}
+esp8266:
+  board: esp01_1m
+#
+wifi:
+  manual_ip:
+    static_ip: 192.168.1.56
+    gateway: 192.168.1.1
+    subnet: 255.255.255.0
+#
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+###########################
+logger:
+  baud_rate: 0
+##
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+##
+globals:
+  - id: total_energy
+    type: float
+    restore_value: yes
+    initial_value: '0.0'
+##### STATE MACHINE ####
+external_components:
+  - source:
+      type: git
+      url: https://github.com/muxa/esphome-state-machine
+##
+state_machine:
+  - name: Forno State Machine
+    states:
+      - "Idle"
+      - "Riscaldamento"
+      - "Mantenimento"
+      - "Raffreddamento"
+    inputs:
+      - name: POWER_LOW
+        transitions:
+          - Riscaldamento -> Mantenimento
+      - name: POWER_HIGH
+        transitions:
+          - Idle -> Riscaldamento
+          - Mantenimento -> Riscaldamento
+      - name: COOLING
+        transitions:
+          - Riscaldamento -> Raffreddamento
+          - Mantenimento -> Raffreddamento
+      - name: COOLING_PLUS
+        transitions:
+          - Raffreddamento -> Idle
+          - Mantenimento -> Idle
+    diagram: mermaid
+########################
+# Text sensors with state
+text_sensor:
+  - platform: state_machine
+    name: Oven Status
+    icon: mdi:stove
+########################
+sensor:
+# Reports the Current, Voltage, Energy and Power used by the plugged-in device
+  - platform: cse7766
+    update_interval: 10s
+    current:
+      id: my_current
+      name: ${sensor_name} Current
+      icon: mdi:current-ac
+      unit_of_measurement: A
+      accuracy_decimals: 2
+      filters:
+        - or:
+          - throttle: ${standard_throttle} #60s
+          - delta: 0.1
+        - lambda: if (x < 0.060) return 0.0; else return x;   #For the chip will report less than 3w power when no load is connected
+    voltage:
+      id: my_voltage
+      name: ${sensor_name} Voltage
+      icon: mdi:sine-wave
+      unit_of_measurement: V
+      accuracy_decimals: 1
+      filters:
+        - calibrate_linear:
+            # Map 0.0 (from sensor) to 0.0 (true value)
+            - 0.0 -> 0.0
+            - 240 -> 237.8 # Relay off no load
+        - or:
+          - throttle: ${standard_throttle} #60s
+          - delta: 3.0
+    power:
+      id: my_power
+      name: ${sensor_name} Power
+      icon: mdi:flash-outline
+      unit_of_measurement: W
+      filters:
+        - or:
+          - throttle: ${standard_throttle} #60s
+          - delta: ${delta_power}
+      on_value:  # on_value_range:
+        - if:
+            condition:
+              for:
+                time: ${standard_time} #5 sec
+                condition:
+                  sensor.in_range:
+                    id: my_power
+                    below: ${medium_power_threshold} #40
+                    above: ${min_power_threshold} #11
+            then:
+              - state_machine.transition: COOLING
+              - logger.log: "Transizione COOLING"
+        - if:
+            condition:
+              for:
+                time: ${standard_time} #5 sec
+                condition:
+                  sensor.in_range:
+                    id: my_power
+                    below: ${min_power_threshold} #11
+            then:
+              - state_machine.transition: COOLING_PLUS
+              - logger.log: "Transizione COOLING_PLUS"
+        - if:
+            condition:
+              for:
+                time: ${standard_time} #5 sec
+                condition:
+                  sensor.in_range:
+                    id: my_power
+                    above: ${medium_power_threshold} #40
+                    below: ${max_power_threshold} #100
+            then:
+              - state_machine.transition: POWER_LOW
+              - logger.log: "Transizione POWER_LOW"
+        - if:
+            condition:
+              for:
+                time: ${standard_time} #5 sec
+                condition:
+                  sensor.in_range:
+                    id: my_power
+                    above: ${max_power_threshold} #100
+            then:
+              - state_machine.transition: POWER_HIGH
+              - logger.log: "Transizione POWER_HIGH"
+    energy:
+      id: my_energy
+      name: ${sensor_name} Total Energy
+      internal: true
+      icon: mdi:circle-slice-8
+      unit_of_measurement: kWh
+      filters:
+        - or:
+          - throttle: ${standard_throttle} #60s
+          - delta: ${delta_power} #1
+        - multiply: 0.001
+      on_value:
+        then:
+          - lambda: |-
+              static float previous_energy_value = 0.0;
+              float current_energy_value = id(my_energy).state;
+              id(total_energy) += current_energy_value - previous_energy_value;
+              previous_energy_value = current_energy_value;
+
+  - platform: template
+    name: ${sensor_name} Total Energy
+    lambda: |-
+      return id(total_energy);
+    update_interval: 10s
+    unit_of_measurement: kWh
+    device_class: "energy"
+    state_class: "total_increasing"
+    icon:  mdi:circle-slice-8 #"mdi:lightning-bolt"
+    accuracy_decimals: 3
+    filters:
+      - or:
+        - throttle: ${standard_throttle} #60s
+        - delta: ${delta_power} #1
+
+  # Reports the total day Energy so-far each day, resets at midnight, see https://esphome.io/components/sensor/total_daily_energy.html
+  - platform: total_daily_energy
+    name: ${sensor_name} Energy
+    icon: mdi:circle-slice-3
+    power_id: my_power
+    filters:
+      - multiply: 0.001
+    unit_of_measurement: kWh
+
+  # Reports the apparent, reactive power and Power factor
+  - platform: template
+    name: ${sensor_name} PF
+    lambda: |-
+      if (id(my_current).state > 0) return id(my_power).state / (id(my_voltage).state * id(my_current).state);
+      else return 0;
+    update_interval: 10s
+    state_class: measurement
+    device_class: "power_factor"
+    accuracy_decimals: 1
+    unit_of_measurement: "%"
+    icon: "mdi:angle-acute"
+    filters:
+      - or:
+        - throttle: ${standard_throttle} #60s
+        - delta: ${delta_power} #1
+
+  - platform: template
+    name: "${sensor_name} Apparent Power"
+    lambda: |-
+      return id(my_voltage).state * id(my_current).state;
+    update_interval: 10s
+    state_class: "measurement"
+    device_class: "apparent_power"
+    #device_class: "power"
+    accuracy_decimals: 1
+    unit_of_measurement: "VA"
+    icon: "mdi:speedometer"
+    filters:
+      - or:
+        - throttle: ${standard_throttle} #60s
+        - delta: ${delta_power}
+
+  - platform: template
+    name: "${sensor_name} Reactive Power"
+    lambda: |-
+      if (id(my_current).state > 0) return sqrt(abs(id(my_voltage).state * id(my_current).state * id(my_voltage).state * id(my_current).state - id(my_power).state * id(my_power).state));
+      else return 0;
+    update_interval: 10s
+    state_class: "measurement"
+    device_class: "reactive_power"
+    #device_class: "power"
+    accuracy_decimals: 1
+    unit_of_measurement: "var"
+    icon: "mdi:speedometer"
+    filters:
+      - or:
+        - throttle: ${standard_throttle} #60s
+        - delta: ${delta_power}
+########
+binary_sensor:
+# Button on the front is pressed and then toggle relay
+  - platform: gpio
+    device_class: power
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: ${sensor_name} Button # Name to make button visible in HA
+    on_press:
+      - switch.toggle: relay
+########
+switch:
+# Relay itself
+  - platform: gpio
+    name: ${sensor_name}
+    pin: GPIO12
+    id: relay
+    restore_mode: RESTORE_DEFAULT_ON #Try to restore relay state after reboot/power-loss event.
+    #RESTORE_DEFAULT_OFF (Default) - Attempt to restore state and default to OFF if not possible to restore. Uses flash write cycles.
+    #RESTORE_DEFAULT_ON - Attempt to restore state and default to ON. Uses flash write cycles.
+    #ALWAYS_OFF - Always initialize the pin as OFF on bootup. Does not use flash write cycles.
+    #ALWAYS_ON - Always initialize the pin as ON on bootup. Does not use flash write cycles.
+    on_turn_on: # Action when relay is turned on
+      - script.execute: led_power_on
+    on_turn_off: # Action when relay is turned off
+      - script.execute: led_relay_off
+########
+output:
+  # Output GPIOs for blue led
+  - platform: esp8266_pwm
+    id: ${id_name}_blue_output
+    pin:
+      number: GPIO013
+      inverted: True
+########
+light:
+  - platform: monochromatic
+    name: ${sensor_name} Light
+    output: ${id_name}_blue_output
+    id: ${id_name}_blue_led
+########
+# Blink the blue light if we aren't connected to WiFi. Could use https://esphome.io/components/status_led.html instead but then we couldn't use the blue light for other things as well.
+# Only if not connected after 30s
+interval:
+  - interval: 2000ms
+    then:
+      - if:
+          condition:
+            for:
+              time: 30s
+              condition:
+                not:
+                  wifi.connected:
+          then:
+            - light.turn_on:
+                id: ${id_name}_blue_led
+                brightness: 100%
+########
+script:
+  - id: led_relay_off # Normal operation when relay is off
+    then:
+      - light.turn_off:
+          id: ${id_name}_blue_led
+  - id: led_power_on # Normal operation when relay is on
+    then:
+      - light.turn_on:
+          id: ${id_name}_blue_led
+          brightness: 80%
