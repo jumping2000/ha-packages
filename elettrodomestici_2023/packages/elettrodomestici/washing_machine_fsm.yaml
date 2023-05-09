@@ -29,7 +29,7 @@
           package: "Washing Machine 🌍"
           site: "hassiohelp.eu 🌐"
           author: "Gianpi"
-          version: "2023.4.3"
+          version: "2023.4.6"
           
         expose: &expose
           <<: *customize
@@ -291,7 +291,7 @@
       entity_id: binary_sensor.washing_machine_status
       state: "on"
       type: time
-      start: "{{ as_timestamp(states['input_boolean.lavatrice_runtime'].last_changed,'1970-01-01 00:00:00.00+00:00')}}"
+      start: "{{ as_timestamp(states['input_boolean.lavatrice_runtime'].last_changed | default, 0)}}"
       end: "{{ now() }}"
 
     - platform: history_stats
