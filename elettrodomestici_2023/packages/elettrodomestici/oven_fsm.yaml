@@ -234,7 +234,7 @@
       entity_id: binary_sensor.oven_status
       state: "on"
       type: time
-      start: "{{ as_timestamp(states['input_boolean.forno_runtime'].last_changed,'1970-01-01 00:00:00.00+00:00')}}"
+      start: "{{ as_timestamp(states['input_boolean.forno_runtime'].last_changed | default, 0)}}"
       end: "{{ now() }}"
 
     - platform: history_stats
