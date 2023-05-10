@@ -1,7 +1,7 @@
 | 📡 Elettrodomestici Smart 📶| Versione
 | :---: | --- |
 | [Lavatrice 💧](lavatrice.md)|**RELEASED in 2023.4.2**|
-| [Lavastoviglie 🍽](#lavastoviglie)|NOT YET RELEASED| 
+| [Lavastoviglie 🍽](lavastoviglie.md)|**RELEASED in 2023.5.1**| 
 | [Forno 👨‍🍳](forno.md)|**RELEASED in 2023.4.5**|
 | [Asciugatrice 🌀](#asciugatrice)|NOT YET RELEASED| 
 | [Inverter ☀](#inverter)|NOT YET RELEASED| 
