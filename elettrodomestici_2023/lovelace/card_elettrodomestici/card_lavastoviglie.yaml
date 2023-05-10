@@ -1,0 +1,38 @@
+####################################################
+#                                                  #
+#                  LAVASTOVIGLIE                   #
+#                                                  #
+####################################################
+dummy_entity:
+##   
+  SFONDO_IMMAGINE: &CONF_BACKGROUND_IMAGE "/local/hassiohelp/pkg_elettrodomestici/sfondo_black.png" 
+  GRANDEZZA_CARATTERI_BASE: &CONF_FONT_SIZE "12px"
+  GRANDEZZA_CARATTERI_APEX: &CONF_FONT_SIZE_APEX "10px"
+  ALTEZZA_LINEA: &CONF_LINE_HEIGHT "24px"
+  COLORSCHEME_RGB_RED: &CONF_COLOR_RED "#bf212f"
+  COLORSCHEME_RGB_YELLOW: &CONF_COLOR_YELLOW "#f9a73e"
+  COLORSCHEME_RGB_GREEN2: &CONF_COLOR_GREEN2 "#006f3c"
+  COLORSCHEME_RGB_GREEN: &CONF_COLOR_GREEN "#27b376"
+  COLORSCHEME_RGB_BLUE: &CONF_COLOR_BLUE "#264b96"
+##
+  PLUG_LAVASTOVIGLIE_SWITCH: &CONF_SWITCH_LAVASTOVIGLIE "switch.plug_lavastoviglie"
+  PLUG_LAVASTOVIGLIE_POTENZA_(W): &CONF_POWER_LAVASTOVIGLIE "sensor.plug_lavastoviglie_power"
+  PLUG_LAVASTOVIGLIE_ENERGIA_(kWh): &CONF_ENERGY_LAVASTOVIGLIE "sensor.plug_lavastoviglie_energy"
+  PLUG_LAVASTOVIGLIE_CORRENTE_(A): &CONF_CURRENT_LAVASTOVIGLIE "sensor.plug_lavastoviglie_current"
+  PLUG_LAVASTOVIGLIE_TENSIONE_(V): &CONF_VOLTAGE_LAVASTOVIGLIE "sensor.plug_lavastoviglie_voltage"
+  PLUG_LAVASTOVIGLIE_POT_APPRENTE_(var): &CONF_APPARENT_LAVASTOVIGLIE "sensor.plug_lavastoviglie_apparent_power"
+  PLUG_LAVASTOVIGLIE_POT_REATTIVA_(VA): &CONF_REACTIVE_LAVASTOVIGLIE "sensor.plug_lavastoviglie_reactive_power"
+  CONTEGGIO_MANUTENZIONI_LAVASTOVIGLIE: &CONF_MAINTENANCE_LAVASTOVIGLIE "sensor.lavastoviglie_modulo_manutenzione"
+##
+  LAVASTOVIGLIE_STATUS: &CONF_STATUS_LAVASTOVIGLIE "sensor.oven_status"
+  LAVASTOVIGLIE_STATUS_BINARY: &CONF_BINARY_LAVASTOVIGLIE "binary_sensor.oven_status"
+  PROGRAM_LAVASTOVIGLIE_STATUS: &CONF_PROGRAM_LAVASTOVIGLIE "input_select.lavastoviglie_program"
+###########################################################
+#icon: mdi:dishwasher
+#title: Lavastoviglie
+#path: lavastoviglie
+#- type: vertical-stack
+#  cards:
+###########################################################
+## PICTURE + BUTTON LAVASTOVIGLIE
+###########################################################
