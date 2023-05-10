@@ -1,0 +1,712 @@
+  #################################################################
+  #                                                               #
+  #                    Packages/Dishwashwer                       #
+  #                                                               #
+  #################################################################
+  ## package_lavastoviglie:
+  ## INFO 📦
+  ##  😅 Gianpi [hassiohelp.eu]
+  ##  📅 01/04/2023 - 2023.5.1
+  ##  📌 INFORMATION provided by plug and energy meter
+  ##  📂 PATH IMAGE /config/www/hassiohelp/elettrodomestici
+  ##  🎁 THANKS TO: https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/
+  ##  🎫 INFO https://www.elettro-domestici.com/articoli-elettrodomestici.asp?id=286
+  ##--------------------------------------------------------------|
+
+  #################################################################
+  #                                                               #
+  #                          Customize                            #
+  #                                                               #
+  #################################################################
+  homeassistant:
+    customize:
+
+      #############################################################
+      ## CUSTOMIZE NODE ANCHORS
+      #############################################################
+      package.node_anchors:
+        customize: &customize
+          package: "Dishwasher 🌍"
+          site: "hassiohelp.eu 🌐"
+          author: "Gianpi"
+          version: "2023.5.1"
+          
+        expose: &expose
+          <<: *customize
+          haaska_hidden: false
+          homebridge_hidden: false
+
+        ##---------------------- IMPOSTAZIONI DEL PACKAGE ----------------------##
+        ## NOTIFICATION
+        SCRIPT Centro notifiche: &DEFAULT_SCRIPT "script.my_notify"
+        SERVIZIO Notify: &DEFAULT_NOTIFY "notify.telegram"
+        SERVIZIO Mobile: &DEFAULT_NOTIFY_MOBILE "notify.mobile_app_mi_9"
+        MEDIA PLAYER Alexa: &DEFAULT_MEDIA_PLAYER_ALEXA "media_player.sala"
+        MEDIA PLAYER Google: &DEFAULT_MEDIA_PLAYER_GOOGLE "media_player.cucina"
+        SERIVICE TTS: &DEFAULT_SERVICE_TTS "tts.google_translate_say"
+        
+        ## CONFIGURATION
+        PLUG LAVASTOVIGLIE SWITCH: &CONF_SWITCH_ENTITY "switch.plug_lavastoviglie"
+        PLUG LAVASTOVIGLIE POTENZA (W): &CONF_POWER_ENTITY "sensor.plug_lavastoviglie_power"
+        PLUG LAVASTOVIGLIE ENERGIA (kWh): &CONF_ENERGY_ENTITY "sensor.plug_lavastoviglie_energy"
+        ##
+        ## DA CONFIGURARE SECONDO I PROPRI DATI
+        GROCY DETERSIVO ID: &CONF_TABLET_ID 1
+        GROCY QUANTITA' DETERSIVO (mm o unità): &CONF_TABLET_AMOUNT 50
+        ##
+        RITARDO TRA LE VARIE NOTIFICHE IN MINUTI: &CONF_DELAY_NOTIFICATION 5
+        ## NON CAMBIARE ##
+        SILENZIAMENTO NOTIFICHE: &CONF_ID_LAVASTOVIGLIE "dishwasher"
+        COUNTER CICLI LAVAGGIO: &CONF_CICLI_TOTALE "counter.cicli_lavaggio_lavastoviglie"
+        DURATA LAVAGGIO OGGI: &CONF_OGGI_RUNTIME "sensor.lavastoviglie_oggi_runtime"
+
+        ##### COSTO DELL'ENERGIA - INSERIRE IL COSTO DELL'ENERGIA
+        # occore scegliere tra il sensore scrape oppurel'helper input_number.costo_energia
+        COSTO ENERGIA F1: &CONF_COSTO_ENERGIA "sensor.pun_f1"
+        #COSTO ENERGIA F1: &CONF_COSTO_ENERGIA "sensor.sen_f1"
+        #COSTO ENERGIA F1: &CONF_COSTO_ENERGIA "input_number.costo_energia"
+
+        ##---------------------- FINE IMPOSTAZIONI PACKAGE ---------------------##
+
+      ################################################
+      ## sensor
+      ################################################
+      sensor.dishwasher_status:
+        <<: *customize
+        icon: mdi:dishwasher
+        friendly_name: "Stato lavastoviglie"
+        
+      binary_sensor.dishwasher_status:
+        <<: *customize
+        icon: mdi:dishwasher
+        friendly_name: "Lavastoviglie ON/OFF"
+
+      binary_sensor.dishwasher_maintenance:
+        <<: *customize
+        icon: mdi:dishwasher-alert
+        friendly_name: "Avviso Manutenzione"
+
+      sensor.dishwasher_time_left:
+        <<: *customize
+        icon: mdi:progress-clock
+        friendly_name: "Fine prevista in "
+
+      sensor.lavastoviglie_modulo_manutenzione:
+        <<: *customize
+        icon: mdi:progress-clock
+        friendly_name: "Cicli man. effettuati"
+      
+      sensor.lavastoviglie_oggi_runtime:
+        <<: *customize
+        friendly_name: Durata lavaggi oggi
+
+      sensor.lavastoviglie_ieri_runtime:
+        <<: *customize
+        friendly_name: Durata lavaggi ieri
+
+      sensor.lavastoviglie_ultimo_runtime:
+        <<: *customize
+        friendly_name: Durata ultimo lavaggio
+
+      sensor.lavastoviglie_oggi_cicli:
+        <<: *customize
+        icon: mdi:autorenew
+        friendly_name: "Cicli oggi"
+
+      sensor.lavastoviglie_settimana_cicli:
+        <<: *customize
+        icon: mdi:autorenew
+        friendly_name: "Cicli settimanali"
+
+      sensor.lavastoviglie_mese_cicli:
+        <<: *customize
+        icon: mdi:autorenew
+        friendly_name: "Cicli mensili"
+
+      sensor.lavastoviglie_anno_cicli:
+        <<: *customize
+        icon: mdi:autorenew
+        friendly_name: "Cicli annuali"
+
+      sensor.lavastoviglie_oggi_energy:
+        <<: *customize
+        icon: mdi:transmission-tower-import
+        friendly_name: "Energia oggi"
+
+      sensor.lavastoviglie_settimana_energy:
+        <<: *customize
+        icon: mdi:transmission-tower-import
+        friendly_name: "Energia settimanale"
+
+      sensor.lavastoviglie_mese_energy:
+        <<: *customize
+        icon: mdi:transmission-tower-import
+        friendly_name: "Energia mensile"
+
+      sensor.lavastoviglie_anno_energy:
+        <<: *customize
+        icon: mdi:transmission-tower-import
+        friendly_name: "Energia annuale"
+
+      sensor.lavastovigliecost:
+        <<: *customize
+        icon: mdi:currency-eur
+        friendly_name: "Costo"
+
+      sensor.lavastoviglie_total_runtime:
+        <<: *customize
+        friendly_name: "Total Runtime"
+        icon: mdi:chart-areaspline
+        
+  #################################################################
+  #                                                               #
+  #                 INPUT BOOLEAN SELECT DATETIME                 #
+  #                                                               #
+  #################################################################  
+  input_select:
+
+    lavastoviglie_program:
+      name: Programma Lavastoviglie
+      options:
+        - Eco #3,2
+        - Intensivo #1,10
+        - Normale #1,4
+        - Ammollo #0,4
+        - 'Off'
+      initial: Eco
+
+  input_datetime:
+    lavastoviglie_time_end:
+      name: End time
+      has_time: true
+      has_date: true
+
+  input_number:
+    lavastoviglie_runtime:
+      name: Runtime totale lavastoviglie
+      min: 0
+      max: 1000
+      step: 0.01
+      mode: box
+      icon: mdi:chart-areaspline
+    lavastoviglie_ripetizioni_notifica:
+      name: Numero ripetizioni notifica
+      min: 1
+      max: 10
+      step: 1
+      icon: mdi:voicemail
+    lavastoviglie_avviso_manutenzione:
+      name: Avviso di manutenzione
+      min: 10
+      max: 100
+      step: 5
+      icon: mdi:bullhorn
+
+  input_boolean:
+    lavastoviglie_grocy_utilization:
+      name: Lavastoviglie Grocy
+      icon: mdi:fridge
+    lavastoviglie_runtime:
+      name: Durata ciclo di lavaggio
+      icon: mdi:timer-sand
+      initial: "off"
+
+  #################################################################
+  #                                                               #
+  #                           COUNTER                             #
+  #                                                               #
+  #################################################################
+  counter:
+    cicli_lavaggio_lavastoviglie:
+      name: Cicli totali lavastoviglie
+      step: 1
+      restore: true
+      icon: mdi:counter
+
+  #################################################################
+  #                                                               #
+  #                            SENSOR                             #
+  #                                                               #
+  #################################################################  
+  ## binary_sensor.dishwasher_status DA INSERIRE NEL RECORDER ##
+  sensor:
+    - platform: history_stats
+      name: Lavastoviglie ultimo runtime
+      entity_id: binary_sensor.dishwasher_status
+      state: "on"
+      type: time
+      start: "{{ as_timestamp(states['input_boolean.lavastoviglie_runtime'].last_changed | default, 0)}}"
+      #       start: "{{ as_timestamp(states.input_boolean.lavastoviglie_runtime.last_changed, now() | timestamp_custom('%c')) }}"
+      end: "{{ now() }}"
+
+    - platform: history_stats
+      name: Lavastoviglie oggi runtime
+      entity_id: binary_sensor.dishwasher_status
+      state: "on"
+      type: time
+      start: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
+      end: "{{ now() }}"
+
+  #################################################################
+  #                                                               #
+  #                          TEMPLATE                             #
+  #                                                               #
+  #################################################################
+  ### personalizzare l'entità di energia in "sensore_energia" ###
+  template:
+    - trigger:
+        - platform: state
+          entity_id: sensor.dishwasher_status
+          to: "Asciugatura"
+      sensor:
+        - name: lavastoviglie_run_energy
+          state: >
+            {% set sensore_energia = "sensor.plug_lavastoviglie_energy"%}
+            {% set value1 =  states('input_number.lavastoviglie_energia_iniziale') |float(default=0) %}
+            {% set value2 =  states(sensore_energia) |float(default=0) %}
+            {{ (value2 - value1)|round(2,default=0)}}
+          availability: >
+            {% set sensore_energia = "sensor.plug_lavastoviglie_energy" %}
+            {{ states(sensore_energia) not in ['unavailable', 'unknown', 'None'] }}
+
+    - sensor:
+      - name: lavastoviglie_total_runtime
+        state: >
+          {% set value =  states('input_number.forno_runtime') %}
+          {%  if ((value|float % 1)|round(2) * 60)|int >9  %}
+            {{ value|int }}:{{ ((value|float % 1)|round(2) * 60)|int(default=0) }}:00
+          {%  else %}
+            {{ value|int }}:0{{ ((value|float % 1)|round(2) * 60)|int(default=0) }}:00
+          {%  endif %}
+        availability: >
+          {{ states('input_number.lavastoviglie_runtime') not in ['unavailable', 'unknown', 'None'] }}
+
+
+      - name: lavastoviglie_modulo_manutenzione
+        state: >
+          {%- set value1 =  states('counter.cicli_lavaggio_lavastoviglie') | int(default=0) -%}
+          {%- set value2 =  states('input_number.lavastoviglie_avviso_manutenzione') | int(default=0) -%}
+          {{ value1 % value2 if value2 !=0 else 0 }}
+        availability: >
+          {{ states('counter.cicli_lavaggio_lastoviglie') not in ['unavailable', 'unknown', 'None'] }}
+
+
+      - name: dishwasher_time_left
+        state: >
+          {% set timer = ((states.input_datetime.lavastoviglie_time_end.attributes.timestamp - as_timestamp(now())) / 60 ) | round(0) %}
+          {% if states('sensor.dishwasher_status') != 'Idle' %}
+            {{ timer if timer>0 else 0  }} min
+          {% else %}
+            {% set program = states('input_select.lavastoviglie_program') | default("Off") %}
+            {% set dict_time_program = {
+              'Eco': '02:20:00',
+              'Intensivo': '02:30:00',
+              'Normale': '02:00:00',
+              'Ammollo': '00:10:00',
+              'Off': '00:00:00' } %}
+            {{ dict_time_program[program] if program in dict_time_program else '00:00:00'}}
+          {% endif %}
+        availability: >
+          {{ states('input_datetime.lavastoviglie_time_end') not in ['unavailable', 'unknown', 'None'] }}
+
+      - name: lavastoviglie_cost
+        state: "{{(states('sensor.lavastoviglie_run_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+        attributes:
+          oggi_cost: "{{(states('sensor.lavastoviglie_oggi_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          settimana_cost: "{{(states('sensor.lavastoviglie_settimana_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          mese_cost: "{{(states('sensor.lavastoviglie_mese_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          anno_cost: "{{(states('sensor.lavastoviglie_anno_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+        unit_of_measurement: '€'
+        device_class: monetary
+        availability: >
+          {{ states('sensor.lavastoviglie_oggi_energy') not in ['unavailable', 'unknown', 'None'] }}
+
+
+      # - name: dishwasher_info
+      #   state: >
+      #     {%- macro as_formatted_elapsed_time(now, other_date_time) %}
+      #     {% set duration = as_timestamp(now) - as_timestamp(other_date_time) %}
+      #     {% set seconds = (duration % 60) | int %}
+      #     {% set minutes = ((duration / 60) | int) % 60 %}
+      #     {% set hours = (duration / 3600) | int %}
+      #     {{ [hours, "ore", minutes, "minuti", seconds, "secondi"] | join(' ') }}
+      #     {%- endmacro %}
+      #     {% if states('binary_sensor.dishwasher_status') == 'on' %}
+      #       {{ as_formatted_elapsed_time(now(), states.input_boolean.dishwasher_clothes_in.last_changed) }} 
+      #     {% else %}
+      #       {{ 'dishwasher is off' }}
+      #     {% endif %}
+
+    - binary_sensor:
+      - name: dishwasher_status
+        device_class: power
+        state: >
+          {{ True if states('sensor.dishwasher_status') in ['Prelavaggio','Lavaggio','Risciacquo','Asciugatura'] else False}}
+        availability: >
+          {{ states('sensor.dishwasher_status') not in ['unavailable', 'unknown', 'None'] }}
+
+      - name: dishwasher_maintenance
+        device_class: problem
+        state: >
+          {%- set value1 =  states('counter.cicli_lavaggio_lavastoviglie') | int(default=0) -%}
+          {%- set value2 =  states('input_number.lavastoviglie_avviso_manutenzione') | int(default=0) -%}
+          {{ (value1 % value2 == 0) if value2 !=0 else False}}
+        availability: >
+          {{ states('counter.cicli_lavaggio_lavastoviglie') not in ['unavailable', 'unknown', 'None'] }}
+
+  #################################################################
+  #                                                               #
+  #                      UTILITY METER                            #
+  #                                                               #
+  #################################################################
+  ## CICLI LAVAGGIO ##
+  utility_meter:
+    lavastoviglie_oggi_cicli:
+      source: *CONF_CICLI_TOTALE
+      cycle: daily
+    lavastoviglie_settimana_cicli:
+      source: *CONF_CICLI_TOTALE
+      cycle: weekly
+    lavastoviglie_mese_cicli:
+      source: *CONF_CICLI_TOTALE
+      cycle: monthly
+    lavastoviglie_anno_cicli:
+      source: *CONF_CICLI_TOTALE
+      cycle: yearly
+  ## ENERGIA lavastoviglie ##
+    lavastoviglie_oggi_energy:
+      source: *CONF_ENERGY_ENTITY
+      cycle: daily
+    lavastoviglie_settimana_energy:
+      source: *CONF_ENERGY_ENTITY
+      cycle: weekly
+    lavastoviglie_mese_energy:
+      source: *CONF_ENERGY_ENTITY
+      cycle: monthly
+    lavastoviglie_anno_energy:
+      source: *CONF_ENERGY_ENTITY
+      cycle: yearly
+  ## LAVASTOVIGLIE RUNTIME ##
+    lavastoviglie_settimana_runtime:
+      source: *CONF_OGGI_RUNTIME
+      cycle: weekly
+    lavastoviglie_mese_runtime:
+      source: *CONF_OGGI_RUNTIME
+      cycle: monthly
+    lavastoviglie_anno_runtime:
+      source: *CONF_OGGI_RUNTIME
+      cycle: yearly
+
+  #################################################################
+  #                                                               #
+  #                          SCRIPT                               #
+  #                                                               #
+  #################################################################
+  script:
+    reset_contatori_lavastoviglie:
+      sequence:
+        - alias: "Reset contatori lavastoviglie"
+          service: utility_meter.calibrate
+          data:
+            value: '0'
+          target:
+            entity_id: 
+            - sensor.lavastoviglie_settimana_cicli
+            - sensor.lavastoviglie_mese_cicli
+            - sensor.lavastoviglie_anno_cicli
+            - sensor.lavastoviglie_settimana_energy
+            - sensor.lavastoviglie_mese_energy
+            - sensor.lavastoviglie_anno_energy
+            - sensor.lavastoviglie_settimana_runtime
+            - sensor.lavastoviglie_mese_runtime
+            - sensor.lavastoviglie_anno_runtime
+
+    reset_lavastoviglie_totale:
+      sequence:
+        - alias: "Reset cicli totale"
+          service: counter.reset
+          target:
+            entity_id: *CONF_CICLI_TOTALE
+        - alias: "Reset runtime totale"
+          service: input_number.set_value
+          data:
+            value: 0
+          target:
+            entity_id: input_number.lavastoviglie_runtime 
+
+  #################################################################
+  #                                                               #
+  #                          AUTOMATION                           #
+  #                                                               #
+  #################################################################
+  automation:
+  ## INSERIRE il SENSORE DI DURATA ##
+    - alias: "Durata totale accensione lavastoviglie"
+      trigger:
+        platform: time
+        at: "23:59"
+      action:
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.lavastoviglie_runtime
+          data:
+            value: "{{ states('input_number.lavastoviglie_runtime') | float(default=0) + states('sensor.lavastoviglie_oggi_runtime') | float(default=0) }}"
+  
+  #################################################################
+  ## la durata dei programmi è da personalizzare
+    - alias: Lavastoviglie Program
+      trigger:
+        - platform: state
+          entity_id: input_select.lavastoviglie_program
+        - platform: state
+          entity_id: sensor.dishwasher_status
+          to: "Prelavaggio"
+      action:
+        - service: input_datetime.set_datetime
+          entity_id: input_datetime.lavastoviglie_time_end
+          data:
+            time: >-
+              {% set program = states('input_select.lavastoviglie_program') %}
+              {% set dict_time_program = {
+                  'Eco': '02:20:00',
+                  'Intensivo': '02:30:00',
+                  'Normale': '02:00:00',
+                  'Ammollo': '00:10:00',
+                  'Off': '00:00:00' } %}
+              {% set t = now().timestamp() %}
+              {% set sec = strptime(dict_time_program[program], "%H:%M:%S").hour*3600 + strptime(dict_time_program[program], "%H:%M:%S").minute*60  %}
+              {{ (t+sec | default(0) | int(0)) | timestamp_custom("%H:%M:%S", true) }}
+            date: >-
+              {{ now().timestamp() | timestamp_custom("%Y-%m-%d", true)  }}
+
+  #################################################################
+    - alias: Avviso manutenzione lavastoviglie
+      trigger:
+        - platform: template
+          value_template: "{{ states('counter.cicli_lavaggio_lavastoviglie')|int(default=0) %  states('input_number.lavastoviglie_avviso_manutenzione')|int(default=0) == 0 }}"
+          for: "00:01:00"
+      action:
+        - variables:
+            avvisi_manutenzione: " {{ states('input_number.lavastoviglie_avviso_manutenzione') }} "
+        - service: script.my_notify
+          data:
+            title: "-- Attenzione --"
+            notify: notify.telegram, notify.mobile_app_mi_9
+            message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di lavaggio, è l'ora di fare mautenzione alla lavastoviglie!"
+            google: 1
+        ### NOTIFICHE TELEGRAM, COMPANION, GOOGLE, ALEXA ###
+        # - service: *DEFAULT_NOTIFY_MOBILE
+        #   data:
+        #     title: "-- Attenzione --"
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di lavaggio 💧, è l'ora di fare mautenzione 🔧 alla lavastoviglie"
+        # - service: *DEFAULT_NOTIFY
+        #   data:
+        #     title: "-- Attenzione --"
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di lavaggio 💧, è l'ora di fare mautenzione 🔧 alla lavastoviglie"
+        # - service: *DEFAULT_SERVICE_TTS
+        #   data:
+        #     entity_id: *DEFAULT_MEDIA_PLAYER_GOOGLE
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di lavaggio, è l'ora di fare mautenzione alla lavastoviglie"
+        # - service: notify.alexa_media
+        #   data:
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di lavaggio, è l'ora di fare mautenzione alla lavastoviglie"
+        #     target: *DEFAULT_MEDIA_PLAYER_ALEXA 
+        #     data:
+        #       type: announce
+  #################################################################
+    - alias: Lavastoviglie Status
+      trigger:
+        - platform: state
+          entity_id: sensor.dishwasher_status
+      action:
+        - variables:
+            grocy_utilization: " {{ states('input_boolean.lavastoviglie_grocy_utilization') }} "
+            alert_number: " {{ states('input_number.lavastoviglie_ripetizioni_notifica') }} "
+            energy_plug: *CONF_ENERGY_ENTITY
+            critical: "on"
+            id: *CONF_ID_LAVASTOVIGLIE
+            ack_mobile: "{{'silence-'+id}}"
+        - if:
+            - alias: "se non sono in IDLE e PRELAVAGGIO"
+              condition: template
+              value_template: "{{ trigger.to_state.state in ['Lavaggio','Risciacquo','Asciugatura'] }}"
+          then:
+            - alias: "Indico lo stato della lavastoviglie!"
+              service: script.my_notify
+              data:
+                title: "-- Attenzione --"
+                message: " La lavastoviglie 🍽 🍴 è in fase di {{ trigger.to_state.state|lower }} "
+                google: 1
+                notify: notify.telegram, notify.mobile_app_mi_9
+            # ## NOTIFICHE TELEGRAM, COMPANION, GOOGLE, ALEXA ###
+            # - service: *DEFAULT_NOTIFY_MOBILE
+            #   data:
+            #     title: "-- Attenzione --"
+            #     message: "La lavastoviglie 🍽 è in fase di {{ trigger.to_state.state|lower }}"
+            # - service: *DEFAULT_NOTIFY
+            #   data:
+            #     title: "-- Attenzione --"
+            #     message: "La lavastoviglie 🍽 è in fase di {{ trigger.to_state.state|lower }}"
+            # - service: *DEFAULT_SERVICE_TTS
+            #   data:
+            #     entity_id: *DEFAULT_MEDIA_PLAYER_GOOGLE
+            #     message: "La lavastoviglie è in fase di {{ trigger.to_state.state|lower }}"
+            # - service: notify.alexa_media
+            #   data:
+            #     message: "La lavastoviglie è in fase di {{ trigger.to_state.state|lower }}"
+            #     target: *DEFAULT_MEDIA_PLAYER_ALEXA 
+            #     data:
+            #       type: announce
+        - alias: Check the state
+          choose:
+            - alias: Status --> Prelavaggio
+              conditions: "{{ trigger.to_state.state == 'Prelavaggio'}}"
+              sequence:
+                - service: input_boolean.turn_off
+                  target:
+                    entity_id: input_boolean.lavastoviglie_runtime
+                - service: input_boolean.turn_on
+                  target:
+                    entity_id: input_boolean.lavastoviglie_runtime
+                - service: counter.increment
+                  target:
+                    entity_id: *CONF_CICLI_TOTALE
+                - service: script.my_notify
+                  data:
+                    title: "-- Attenzione --"
+                    message: "Lavastoviglie iniziata"
+                    google: 1
+              # ## NOTIFICHE TELEGRAM, COMPANION, GOOGLE, ALEXA ###
+              # - service: *DEFAULT_NOTIFY_MOBILE
+              #   data:
+              #     title: "-- Attenzione --"
+              #     message:  "lavastoviglie iniziata 🏁"
+              # - service: *DEFAULT_NOTIFY
+              #   data:
+              #     title: "-- Attenzione --"
+              #     message:  "lavastoviglie iniziata 🏁"
+              # - service: *DEFAULT_SERVICE_TTS
+              #   data:
+              #     entity_id: *DEFAULT_MEDIA_PLAYER_GOOGLE
+              #     message:  "lavastoviglie iniziata"
+              # - service: notify.alexa_media
+              #   data:
+              #     message:  "lavastoviglie iniziata"
+              #     target: *DEFAULT_MEDIA_PLAYER_ALEXA 
+              #     data:
+              #       type: announce
+                - service: input_number.set_value
+                  target:
+                    entity_id: input_number.lavastoviglie_energia_iniziale
+                  data:
+                    value: "{{ states(energy_plug) }}" 
+                - alias: Check Grocy
+                  choose:
+                    - conditions: "{{ grocy_utilization == 'on' }}"
+                      sequence:
+                        - service: grocy.consume_product_from_stock
+                          data:
+                            product_id: *CONF_TABLET_ID
+                            amount: *CONF_TABLET_AMOUNT 
+                            transaction_type: CONSUME
+            - alias: Status | Asciugatura --> Idle
+              conditions: "{{ trigger.to_state.state == 'Idle' and trigger.from_state.state == 'Asciugatura'}}"
+              sequence:
+                - alias: "Repeat the sequence UNTIL the conditions are true"
+                  repeat:
+                    sequence:
+                      - service: script.my_notify
+                        data:
+                          title: "-- Attenzione --"
+                          message: >
+                            Lavastoviglie 🏁 finita, i piatti sono pronti per essere messi a posto. Consumati oggi {{ states('sensor.lavastoviglie_oggi_energy') | round(2, default=0) }} kWh
+                            {% if grocy_utilization == 'on' %}
+                              Disponibili di scorta ancora {{ states.sensor.grocy_stock.attributes['products'][0]['available_amount'] |int * 10}} tablet
+                            {% endif %}
+                          google: 1
+                          notify: notify.telegram, notify.mobile_app_mi_9
+                          mobile: 
+                            tag: "{{id}}"
+                            group: "{{id}}"
+                            # Android Specific
+                            ttl: "{{ iif(critical, 0, 3600000) }}"
+                            priority: "{{ iif(critical, 'high', 'normal') }}"
+                            # iOS Specific
+                            push:
+                              interruption-level: "{{ iif(critical, 'critical', 'active') }}"
+                            # Actions
+                            actions:
+                              - action: "{{ack_mobile}}"
+                                title: "Silenzia Notifiche"
+                                destructive: true
+                          telegram:
+                            # Actions
+                            inline_keyboard:
+                            -  "🔧Silenzia Notifiche:/{{ack_mobile}}"
+                      - wait_for_trigger:
+                        - platform: event
+                          event_type: mobile_app_notification_action
+                          event_data:
+                            action: "{{ack_mobile}}"
+                        - platform: event
+                          event_type: telegram_callback
+                          event_data:
+                            data:  "/{{ack_mobile}}"
+                        timeout:
+                          minutes: *CONF_DELAY_NOTIFICATION  # intervallo tra le notifiche
+                    until: "{{  repeat.index > alert_number-1 or wait.remaining > 0 }}"
+                ### SOSTITUIRE SE NON SI VUOLE IL CENTRO NOTIFICHE ##
+                - service: script.my_notify
+                  data:
+                    title: "-- Attenzione --"
+                    notify: notify.telegram, notify.mobile_app_mi_9
+                    message: "Notifica periodica di fine lavaggio piatti cancellata"
+                    google: 1
+                      # ## NOTIFICHE TELEGRAM, COMPANION, GOOGLE, ALEXA ###
+                      # - service: *DEFAULT_NOTIFY_MOBILE
+                      #   data:
+                      #     title: "-- Attenzione --"
+                      #     message: >
+                      #       "lavastoviglie finita 🏁", i panni sono pronti per essere stesi. Consumati oggi {{ states('sensor.lavastoviglie_oggi_energy') | round(2, default=0) }} kWh
+                      #       {% if grocy_utilization == 'on' %}
+                      #         Disponibili {{ states.sensor.grocy_stock.attributes['products'][0]['available_amount'] |int * 10}} tablet
+                      #       {% endif %}
+                      #     data:
+                      #       actions:
+                      #       - action: *CONF_SILENCE
+                      #         title: Silenzia Notifiche
+                      #         destructive: true
+                      # - service: *DEFAULT_NOTIFY
+                      #   data:
+                      #     title: "-- Attenzione --"
+                      #     message: >
+                      #       "lavastoviglie finita 🏁", i panni sono pronti per essere stesi. Consumati oggi {{ states('sensor.lavastoviglie_oggi_energy') | round(2, default=0) }} kWh
+                      #       {% if grocy_utilization == 'on' %}
+                      #         Disponibili {{ states.sensor.grocy_stock.attributes['products'][0]['available_amount'] |int * 10}} tablet
+                      #       {% endif %}
+                      #     data:
+                      #       inline_keyboard:
+                      #         -  '{{ "\U0001F527" }} Silenzia Notifiche:/silence-dishwasher'
+                      # - service: *DEFAULT_SERVICE_TTS
+                      #   data:
+                      #     entity_id: *DEFAULT_MEDIA_PLAYER_GOOGLE
+                      #     message: >
+                      #       lavastoviglie finita, i panni sono pronti per essere stesi. Consumati oggi {{ states('sensor.lavastoviglie_oggi_energy') | round(2, default=0) }} kWh
+                      #       {% if grocy_utilization == 'on' %}
+                      #         Disponibili {{ states.sensor.grocy_stock.attributes['products'][0]['available_amount'] |int * 10}} tablet
+                      #       {% endif %}
+                      # - service: notify.alexa_media
+                      #   data:
+                      #     message: >
+                      #       lavastoviglie finita, i panni sono pronti per essere stesi. Consumati oggi {{ states('sensor.lavatrice_oggi_energy') | round(2, default=0) }} kWh
+                      #       {% if grocy_utilization == 'on' %}
+                      #         Disponibili {{ states.sensor.grocy_stock.attributes['products'][0]['available_amount'] |int * 10}} tablet
+                      #       {% endif %}
+                      #     target: *DEFAULT_MEDIA_PLAYER_ALEXA 
+                      #     data:
+                      #       type: announce  
+  #################################################################
+  #                                                               #
+  #                     END OF CONFIGURATION FILE                 #
+  #                                                               #
+  #################################################################
