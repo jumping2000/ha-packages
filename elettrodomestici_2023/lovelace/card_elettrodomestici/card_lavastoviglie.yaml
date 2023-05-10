@@ -36,3 +36,456 @@ dummy_entity:
 ###########################################################
 ## PICTURE + BUTTON LAVASTOVIGLIE
 ###########################################################
+  - type: 'custom:button-card'
+    view_layout:
+      grid-area: bottom
+    template: container
+    custom_fields:
+    #######################################
+    ## PICTURE CARD
+    #######################################
+      pictures:
+        card:
+          type: picture-elements
+          style: |
+            @keyframes blinker {
+              0% 49% 51% 100% { opacity: 1; }
+              50% { opacity: 0.5; }
+            }
+            ha-card {
+              --my-blinker: {% if (is_state('sensor.dishwasher_status', 'Prelavaggio') or 
+                                  is_state('sensor.dishwasher_status', 'Lavaggio') or
+                                  is_state('sensor.dishwasher_status', 'Risciacquo')) %} 
+                              blinker 800ms infinite 
+                            {% endif %};
+              border-radius: 0px 0px 0px 0px;
+            }
+          image: *CONF_BACKGROUND_IMAGE
+          elements:
+      #######################################
+      # inserire lo switch lavastoviglie    #
+      #######################################
+            - type: image
+              entity: *CONF_SWITCH_LAVASTOVIGLIE
+              image: /local/images/devices/lavastoviglie.png
+              state_filter:
+                'off': brightness(50%) saturate(0.5) opacity(1.0)
+                'on': brightness(100%)
+              style:
+                left: 22%
+                top: 48% #57.5%
+                width: 27%
+              tap_action:
+                action: toggle
+      ### 'Prelavaggio','Lavaggio','Risciacquo','Asciugatura'
+            - type: image
+              entity: *CONF_STATUS_LAVASTOVIGLIE
+              image: /local/images/devices/lavastoviglie_finita.png
+              state_filter:
+                Prelavaggio: opacity(0.0)
+                Lavaggio: opacity(0.0)
+                Risciacquo: opacity(0.0)
+                Asciugatura: null #opacity(0.0)
+                Idle: opacity(0.0) #null
+              style:
+                left: 22.1% #21.5% #27%
+                pointer-events: none
+                top: 48%
+                width: 33.2%
+              tap_action:
+                action: call-service
+                service: switch.toggle
+                service_data:
+                  entity_id: *CONF_SWITCH_LAVASTOVIGLIE
+      ###
+            - type: image
+              entity: *CONF_STATUS_LAVASTOVIGLIE
+              image: /local/images/devices/lavastoviglie_wash.png
+              state_filter:
+                Prelavaggio: null
+                Lavaggio: null
+                Risciacquo: null
+                Asciugatura: opacity(0.0)
+                Idle: opacity(0.0)
+              style:
+                animation: var(--my-blinker)
+                transform: 'translate(0%,0%)'
+                left: 18.4%
+                top: 15%
+                width: 7.5%
+              tap_action:
+                action: call-service
+                service: switch.toggle
+                service_data:
+                  entity_id: *CONF_SWITCH_LAVASTOVIGLIE
+      #######################################
+      ## POWER LABEL
+      #######################################
+            - type: state-label
+              entity: *CONF_POWER_LAVASTOVIGLIE
+              prefix: '⚡ '
+              style:
+                top: 0%
+                left: 32%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE
+                line-height: *CONF_LINE_HEIGHT
+                padding: 0px 14px
+      #######################################
+      ### ENERGY LABEL
+      #######################################
+            - type: state-label
+              entity: *CONF_ENERGY_LAVASTOVIGLIE
+              prefix: '🏭 '
+              style:
+                top: 0%
+                left: 52%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE 
+                line-height: *CONF_LINE_HEIGHT
+                padding: 0px 14px
+            - type: state-label
+              entity: sensor.lavastoviglie_cost
+              attribute: oggi_cost
+              prefix: '💰 '
+              suffix: ' €'
+              style:
+                top: 0%
+                left: 78%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE 
+                line-height: *CONF_LINE_HEIGHT
+      #######################################
+      ### STATUS LABEL
+      #######################################
+            - type: state-label
+              entity: *CONF_STATUS_LAVASTOVIGLIE
+              prefix: 'Stato: '
+              style:
+                top: 10%
+                left: 36%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE 
+                font-weight: bold
+                color: *CONF_COLOR_GREEN
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 2px
+      #######################################
+      ### BINARY STATUS
+      #######################################
+            - type: state-label
+              entity: *CONF_BINARY_LAVASTOVIGLIE
+              style:
+                top: 10%
+                left: 65%
+                pointer-events: none
+                transform: initial
+                font-size: *CONF_FONT_SIZE 
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 22px
+            - type: state-icon
+              entity: *CONF_BINARY_LAVASTOVIGLIE
+              state-color: true
+              style:
+                top: 10% #0
+                left: 64% #0
+                transform: scale(0.8)
+                line-height: *CONF_LINE_HEIGHT
+                padding: 0px 2px
+      #######################################
+      ### MAINTENANCE LABEL
+      #######################################
+            - type: state-label
+              entity: *CONF_MAINTENANCE_LAVASTOVIGLIE
+              prefix: 'Cicli: '
+              style:
+                top: 10%
+                left: 84%
+                pointer-events: none
+                font-size: *CONF_FONT_SIZE  # 14px
+                line-height: *CONF_LINE_HEIGHT #24px
+                transform: initial
+                padding: 2px 2px
+      #######################################
+      ## GRAFICO                           ##
+      #######################################
+      # inserire il sensore potenza         #
+      #######################################
+            - type: 'custom:apexcharts-card'
+              style:
+                '--card-background-color': 'rgba(0, 0, 0, 0.0)'
+                '--ha-card-border-width': '0px'
+                '--ha-card-box-shadow': 'none'
+                top: 60%
+                left: 60%
+                width: 50%
+                font-size: *CONF_FONT_SIZE_APEX
+              experimental:
+                color_threshold: true
+              apex_config:
+                chart:
+                  height: 120px
+                title:
+                  style:
+                    fontSize: *CONF_FONT_SIZE_APEX
+                    fontFamily: Segoe UI Light 
+                yaxis:
+                  forceNiceScale: true
+                  decimalsInFloat: 0
+                  labels:
+                    style:
+                      fontSize: *CONF_FONT_SIZE_APEX
+                      fontFamily: Segoe UI Light
+                xaxis:
+                  axisBorder:
+                    show: true
+                  labels:
+                    show: false
+                    style:
+                      fontSize: *CONF_FONT_SIZE_APEX
+                      fontFamily: Segoe UI Light
+                grid:
+                  show: true
+                  borderColor: rgba(112, 135, 164, 0.5)
+              graph_span: 3h
+              span:
+                start: minute
+                offset: '-3h'
+              show:
+                last_updated: false
+              header:
+                standard_format: false
+                show: false
+                show_states: false
+                colorize_states: true
+                title: 'Potenza'
+              series:
+                - entity: *CONF_POWER_LAVASTOVIGLIE
+                  name: Potenza
+                  type: line #area
+                  stroke_width: 2 #0
+                  curve: stepline
+                  group_by:
+                    func: last
+                    fill: last
+                    duration: 1m
+                  show:
+                    header_color_threshold: true
+                    extremas: true
+                    name_in_header: false
+                    legend_value: false
+                  opacity: 0.8
+                  color_threshold:
+                    - color: *CONF_COLOR_GREEN
+                      value: 500
+                    - color: *CONF_COLOR_GREEN2
+                      value: 1000
+                    - color: *CONF_COLOR_YELLOW
+                      value: 1500
+                    - color: *CONF_COLOR_RED
+                      value: 2300
+      #######################################
+      ## GRAFICO MANUTENZIONE
+      #######################################
+            - type: custom:bar-card
+              style:
+                '--card-background-color': 'transparent'
+                '--ha-card-border-radius': '5px'
+                '--ha-card-box-shadow': 'none'
+                top: 56%
+                left: 91%
+                width: 60px
+                height: 115px
+              stack: horizontal
+              direction: up
+              positions:
+                name: 'off'
+                value: 'off'
+                indicator: 'off'
+                minmax: 'off'
+                icon: 'off'
+              columns: 1
+              entities:
+                - entity: *CONF_MAINTENANCE_LAVASTOVIGLIE
+                  max: 50
+                  severity:
+                    - color: *CONF_COLOR_GREEN
+                      from: 0
+                      to: 19
+                    - color: *CONF_COLOR_YELLOW
+                      from: 20
+                      to: 39
+                    - color: *CONF_COLOR_RED
+                      from: 40
+                      to: 50
+      #######################################
+      ### Programma
+      #######################################
+            - type: state-label
+              entity: *CONF_PROGRAM_LAVASTOVIGLIE
+              prefix: 'Programma: '
+              style:
+                left: 5% 
+                bottom: -3%
+                font-size: *CONF_FONT_SIZE 
+                line-height: *CONF_LINE_HEIGHT
+                transform: initial
+                padding: 2px 2px
+            - type: icon
+              icon: mdi:arrow-left-drop-circle-outline
+              tap_action:
+                action: call-service
+                service: input_select.select_previous
+                service_data:
+                  entity_id: *CONF_PROGRAM_LAVASTOVIGLIE
+              style:
+                left: 50%
+                bottom: 0%
+                transform: initial
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 2px
+            - type: icon
+              icon: mdi:arrow-right-drop-circle-outline
+              tap_action:
+                action: call-service
+                service: input_select.select_next
+                service_data:
+                  entity_id: *CONF_PROGRAM_LAVASTOVIGLIE
+              style:
+                left: 56%
+                bottom: 0%
+                transform: initial
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 2px
+      ### tempo rimasto
+            - type: state-label
+              entity: sensor.dishwasher_time_left
+              style:
+                right: 6%
+                bottom: -3%
+                pointer-events: none
+                font-size: *CONF_FONT_SIZE 
+                transform: initial
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 2px
+            - type: icon
+              icon: mdi:progress-clock
+              entity: *CONF_STATUS_LAVASTOVIGLIE
+              style:
+                bottom: 0%
+                right: 1%
+                transform: initial
+                line-height: *CONF_LINE_HEIGHT
+                padding: 2px 2px
+      #######################################
+      ## BUTTON
+      #######################################
+      buttons:
+        card:
+          type: custom:mod-card
+          card_mod:
+            style: |
+              :host {
+                --grid-card-gap: 0px;
+              }
+          card:
+            type: grid
+            columns: 5
+            square: false
+            cards:
+              ###########################################################
+              ## BOTTONI IN BASSO
+              ###########################################################
+              ### 1 ###
+              - type: custom:button-card
+                template: device_button_vertical_icon
+                name: Info
+                icon: mdi:information
+                variables:
+                  border_radius: 0px 0px 0px 20px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+                tap_action:
+                  action: fire-dom-event
+                  browser_mod:
+                    service: browser_mod.popup
+                    data:
+                      style: |-
+                        --popup-min-width: 950px; 
+                        --popup-max-width: 1050px;
+                        --popup-border-radius: var(--ha-card-border-radius);
+                      title: Dati Lavastoviglie
+                      content: !include lavastoviglie_button1.yaml
+              ### 2 ###
+              - type: custom:button-card
+                template: device_button_vertical
+                name: Settimana
+                entity: sensor.lavastoviglie_settimana_energy
+                label: >
+                  [[[ return states['sensor.lavastoviglie_cost'].attributes.settimana_cost + ' €'; ]]]
+                variables:
+                  border_radius: 0px 0px 0px 0px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+              ### 3 ###
+              - type: custom:button-card 
+                template: device_button_vertical
+                name: Mese
+                entity: sensor.lavastoviglie_mese_energy
+                label: >
+                  [[[ return states['sensor.lavastoviglie_cost'].attributes.mese_cost + ' €'; ]]]
+                variables:
+                  border_radius: 0px 0px 0px 0px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+              ### 4 ###
+              - type: custom:button-card
+                template: device_button_vertical
+                name: Anno
+                entity: sensor.lavastoviglie_anno_energy
+                label: >
+                  [[[ return states['sensor.lavastoviglie_cost'].attributes.anno_cost + ' €' ; ]]]
+                variables:
+                  border_radius: 0px 0px 0px 0px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+              ### 5 ###
+              - type: "custom:button-card"
+                template: device_button_vertical_icon
+                name: Lavastoviglie
+                entity: switch.plug_lavastoviglie
+                icon: mdi:dishwasher
+                variables:
+                  border_radius: 0px 0px 20px 0px
+                  border_color: '#333333'
+                  button_height: 60px
+                  button_background: '#0d0d0d'
+                show_state: false
+                show_label: false
+                styles:
+                  icon:
+                    - color: >
+                        [[[
+                          if (states['switch.plug_lavastoviglie'].state== 'on')
+                            return "#27b376";
+                          return "#bf212f";
+                        ]]]
+                hold_action:
+                  action: fire-dom-event
+                  browser_mod:
+                    service: browser_mod.popup
+                    data:
+                      style: |-
+                        --popup-min-width: 950px; 
+                        --popup-max-width: 1050px;
+                        --popup-border-radius: var(--ha-card-border-radius);
+                      title: Energia Lavastoviglie
+                      content: !include lavastoviglie_button5.yaml
