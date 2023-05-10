@@ -415,28 +415,29 @@ Il **cuore** della configurazione è il seguente codice che riassume gli stati e
 
 ```yaml
 state_machine:
-  - name: lavastoviglie State Machine
+  - name: Lavastoviglie State Machine
     states:
       - "Idle"
-      - "Riscaldamento"
-      - "Mantenimento"
-      - "Raffreddamento"
+      - "Prelavaggio"
+      - "Lavaggio"
+      - "Risciacquo"
+      - "Asciugatura"
     inputs:
-      - name: POWER_LOW
+      - name: POWER_MEDIUM
         transitions:
-          - Riscaldamento -> Mantenimento
+          - Idle -> Prelavaggio
+          - Lavaggio -> Risciacquo
       - name: POWER_HIGH
         transitions:
-          - Idle -> Riscaldamento
-          - Mantenimento -> Riscaldamento
-      - name: COOLING
+          - Prelavaggio -> Lavaggio
+          - Risciacquo -> Lavaggio
+      - name: POWER_LOW
         transitions:
-          - Riscaldamento -> Raffreddamento
-          - Mantenimento -> Raffreddamento
-      - name: COOLING_PLUS
+          - Risciacquo -> Asciugatura
+          - Lavaggio -> Asciugatura
+      - name: DRYING
         transitions:
-          - Raffreddamento -> Idle
-          - Mantenimento -> Idle
+          - Asciugatura -> Idle
     diagram: mermaid
 ```
 <br>
@@ -454,8 +455,6 @@ stateDiagram-v2
   Risciacquo --> Asciugatura: POWER_LOW
   Lavaggio --> Asciugatura: POWER_LOW
   Asciugatura --> Idle: DRYING
-
-INFO Generating C++ source...
 ```
 
 <br>
