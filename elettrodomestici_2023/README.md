@@ -9,6 +9,7 @@
 | [Termostato 🔥](#termostato)|NOT YET RELEASED|
 | [Router 📶](#router)|NOT YET RELEASED|
 
+
 ## Versione attuale: ![GitHub release (latest by date)](https://img.shields.io/github/v/release/jumping2000/ha-packages)
 
 
