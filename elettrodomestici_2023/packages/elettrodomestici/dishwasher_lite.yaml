@@ -300,7 +300,7 @@
           {%- set value2 =  states('input_number.lavastoviglie_avviso_manutenzione') | int(default=0) -%}
           {{ value1 % value2 if value2 !=0 else 0 }}
         availability: >
-          {{ states('counter.cicli_lavaggio_lastoviglie') not in ['unavailable', 'unknown', 'None'] }}
+          {{ states('counter.cicli_lavaggio_lavastoviglie') not in ['unavailable', 'unknown', 'None'] }}
 
       - name: dishwasher_time_left
         state: >
