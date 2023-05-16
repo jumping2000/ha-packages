@@ -245,7 +245,6 @@
       state: "on"
       type: time
       start: "{{ as_timestamp(states['input_boolean.lavastoviglie_runtime'].last_changed | default, 0)}}"
-      #       start: "{{ as_timestamp(states.input_boolean.lavastoviglie_runtime.last_changed, now() | timestamp_custom('%c')) }}"
       end: "{{ now() }}"
 
     - platform: history_stats
