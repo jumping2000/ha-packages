@@ -272,7 +272,7 @@
     - sensor:
       - name: lavastoviglie_total_runtime
         state: >
-          {% set value =  states('input_number.lavastoviglieruntime') %}
+          {% set value =  states('input_number.lavastoviglie_runtime') %}
           {%  if ((value|float % 1)|round(2) * 60)|int >9  %}
             {{ value|int }}:{{ ((value|float % 1)|round(2) * 60)|int(default=0) }}:00
           {%  else %}
