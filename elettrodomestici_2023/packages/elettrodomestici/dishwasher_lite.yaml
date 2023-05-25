@@ -166,7 +166,7 @@
   #################################################################  
   input_select:
     dishwasher_status:
-      name: Stato Lavatrice
+      name: Stato Lavastoviglie
       options:
         - Idle
         - Lavaggio
@@ -279,7 +279,7 @@
 
     - sensor:
       - name: dishwasher_status
-        state: "{{ states('input_select.washing_machine_status') }}"
+        state: "{{ states('input_select.dishwasher_status') }}"
 
       - name: lavastoviglie_total_runtime
         state: >
