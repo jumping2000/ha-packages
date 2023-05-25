@@ -508,18 +508,18 @@
         # - service: *DEFAULT_NOTIFY_MOBILE
         #   data:
         #     title: "-- Attenzione --"
-        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di cottura 🥯, è l'ora di fare manutenzione 🔧 alla lavatrice"
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di cottura 🥯, è l'ora di fare manutenzione 🔧 al forno"
         # - service: *DEFAULT_NOTIFY
         #   data:
         #     title: "-- Attenzione --"
-        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di cottura 🥯, è l'ora di fare manutenzione 🔧 alla lavatrice"
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di cottura 🥯, è l'ora di fare manutenzione 🔧 al forno"
         # - service: *DEFAULT_SERVICE_TTS
         #   data:
         #     entity_id: *DEFAULT_MEDIA_PLAYER_GOOGLE
-        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di cottura, è l'ora di fare manutenzione alla lavatrice"
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di cottura, è l'ora di fare manutenzione alla al forno"
         # - service: notify.alexa_media
         #   data:
-        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di cottura, è l'ora di fare manutenzione alla lavatrice"
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di cottura, è l'ora di fare manutenzione alla al forno"
         #     target: *DEFAULT_MEDIA_PLAYER_ALEXA 
         #     data:
         #       type: announce
