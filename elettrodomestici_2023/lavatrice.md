@@ -182,7 +182,7 @@ Al contrario gli aspetti di configurazione che sono più soggetti a variazioni s
 	</tr>
     <tr>
         <td><div align=center><img width = "450" src="img/lavatrice_1.png"/></div></td>
-        <td><div align=center><img width = 450 src="img/lavatrice_2.png"/></div></td>
+        <td><div align=center><img width = 420 src="img/lavatrice_2.png"/></div></td>
     </tr>
 </table>
 
