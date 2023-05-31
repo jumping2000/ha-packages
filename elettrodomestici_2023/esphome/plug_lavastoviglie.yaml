@@ -288,6 +288,7 @@ switch:
       - script.execute: led_power_on
     on_turn_off: # Action when relay is turned off
       - script.execute: led_relay_off
+    device_class: outlet
 ########
 output:
   # Output GPIOs for blue led
