@@ -7,7 +7,7 @@
 | [Inverter ☀](#inverter)|NOT YET RELEASED| 
 | [Condizionatore 🌪](#condizionatore)|NOT YET RELEASED|
 | [Termostato 🔥](#termostato)|NOT YET RELEASED|
-| [Router 📶](#router)|NOT YET RELEASED|
+| [Router 📶](#router)|COMING SOON!!|
 
 
 ## Versione attuale: ![GitHub release (latest by date)](https://img.shields.io/github/v/release/jumping2000/ha-packages)
