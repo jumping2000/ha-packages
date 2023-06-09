@@ -18,11 +18,7 @@
 
 <br>
 
-<table>
-  <tr>
-      <td><div align=center><img width = "450" src="elettrodomestici_2023/img/star.png"/></div></td>
-  </tr>
-</table>
+<img width = "450" src="elettrodomestici_2023/img/star.png"/>
 
 ---
 
