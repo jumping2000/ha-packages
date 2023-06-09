@@ -12,4 +12,7 @@
 
 ## Versione attuale: ![GitHub release (latest by date)](https://img.shields.io/github/v/release/jumping2000/ha-packages)
 
+<b>Lascia una stella!</b>
+<div><img width = "450" src="img/star.png"/></div>
+
 
