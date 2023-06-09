@@ -207,8 +207,8 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
       <th><center>🍽 Piatti pronti 🍽</center></th>
 	</tr>
     <tr>
-        <td><div align=center><img width = 400 src="img/centrifuga.png"/></div></td>
-        <td><div align=center><img width = 400 src="img/svuotare.png"/></div></td>
+        <td><div align=center><img width = 400 src="img/lavastoviglie_washing.png"/></div></td>
+        <td><div align=center><img width = 400 src="img/lavastoviglie_notifiche.png"/></div></td>
     </tr>
 </table>
 
