@@ -16,6 +16,12 @@
 <br>
 <b>Please support my job and give me a star!</b> <a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="20"></a>
 
+<table align="center">
+  <tr>
+      <td><div align=center><img width = "450" src="img/star.png"/></div></td>
+  </tr>
+</table>
+
 ---
 
 ### :zap: Recent Activity
