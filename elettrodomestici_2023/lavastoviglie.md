@@ -220,8 +220,8 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 1. Scegliere tra i package in versione _FSM_ o in versione _lite_, l'utente dovrà cancellare i file YAML che non sono di interesse.
 2. Scegliere tra la grafica Lovelace in formato _YAML_ o _Storage_, l'utente dovrà cancellare i file YAML che non sono di interesse.
 3.  solo per chi usa la versione _lite_, procedere alla configurazione del [Blueprint FSM](https://github.com/jumping2000/ha-templates/tree/main/blueprints/fsm). Qui occorre indicare i sensori relativi a potenza ed energia, i servizi di notifica, alcuni helper e due entità relative allo stato della lavastoviglie che nel package sono i seguenti, anche se poi ogni utilizzatore  è libero di cambiarli:
-    * `input_select.dishwasher_status.yaml`
-    * `sensor.dishwasher_status.yaml`
+    * `input_select.dishwasher_status`
+    * `sensor.dishwasher_status`
     * `input_boolean.lavastoviglie_runtime`
     * `input_number.lavastoviglie_energia_iniziale`
     * `counter.cicli_cottura_lavastoviglie`
