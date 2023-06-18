@@ -1,5 +1,8 @@
 ## Versione attuale: ![GitHub release (latest by date)](https://img.shields.io/github/v/release/jumping2000/ha-packages)
 
+<b>Se ti piaccio i packages lascia una 🌟 su Github!</b>
+<div><img width = "450" src="img/star.png"/></div>
+
 | 📡 Elettrodomestici Smart 📶| Versione
 | :---: | --- |
 | [Lavatrice 💧](lavatrice.md)|**RELEASED in 2023.4.2**|
@@ -22,8 +25,5 @@
       <td><div align=center><img width = "450" src="img/github_download.png"/></div></td>
   </tr>
 </table>
-
-<b>Lascia una stella!</b>
-<div><img width = "450" src="img/star.png"/></div>
 
 
