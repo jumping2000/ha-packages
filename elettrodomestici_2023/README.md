@@ -22,7 +22,7 @@
 	    <th><center> 🖥 Download 🖥<center></th>
 	</tr>
   <tr>
-      <td><div align=center><img width = "450" src="img/github_download.png"/></div></td>
+      <td><img width = "450" src="img/github_download.png"/></td>
   </tr>
 </table>
 
