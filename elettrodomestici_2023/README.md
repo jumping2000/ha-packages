@@ -17,12 +17,12 @@
 
 ## Download ZIP with all Home Assistant Project!
 
-<table align="center">
+<table>
 	<tr>
 	    <th><center> 🖥 Download 🖥<center></th>
 	</tr>
   <tr>
-      <td><img width = "450" src="img/github_download.png"/></td>
+      <td><img width = "400" src="img/github_download.png"/></td>
   </tr>
 </table>
 
