@@ -39,6 +39,17 @@ Here some packages for Home Assistant:
 
 ---
 
+## Download ZIP with all Home Assistant Project!
+
+<table align="center">
+	<tr>
+	    <th><center> 🖥 Download 🖥<center></th>
+	</tr>
+  <tr>
+      <td><div align=center><img width = "450" src="img/github_download.png"/></div></td>
+  </tr>
+</table>
+
 <!-- ✨ _special_ ✨ -->
 [website]: https://hassiohelp.eu/
 [Websitebadge]: https://img.shields.io/website?down_message=Offline&label=HssioHelp&logoColor=blue&up_message=Online&url=https%3A%2F%2Fhassiohelp.eu
