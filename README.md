@@ -41,12 +41,12 @@ Here some packages for Home Assistant:
 
 ## Download ZIP with all Home Assistant Project!
 
-<table align="center">
+<table>
 	<tr>
 	    <th><center> 🖥 Download 🖥<center></th>
 	</tr>
   <tr>
-      <td><div align=center><img width = "450" src="elettrodomestici_2023/img/github_download.png"/></div></td>
+      <td><div align=center><img width = "400" src="elettrodomestici_2023/img/github_download.png"/></div></td>
   </tr>
 </table>
 
