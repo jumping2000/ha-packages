@@ -6,7 +6,7 @@
   ## package_lavastoviglie:
   ## INFO 📦
   ##  😅 Gianpi [hassiohelp.eu]
-  ##  📅 01/04/2023 - 2023.5.1
+  ##  📅 01/04/2023 - 2023.6.4
   ##  📌 INFORMATION provided by plug and energy meter
   ##  📂 PATH IMAGE /config/www/hassiohelp/elettrodomestici
   ##  🎁 THANKS TO: https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/
@@ -184,6 +184,13 @@
   input_number:
     lavastoviglie_runtime:
       name: Runtime totale lavastoviglie
+      min: 0
+      max: 1000
+      step: 0.01
+      mode: box
+      icon: mdi:chart-areaspline
+    lavastoviglie_energia_iniziale:
+      name: Energia iniziale lavastoviglie
       min: 0
       max: 1000
       step: 0.01
