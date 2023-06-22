@@ -461,7 +461,7 @@ dummy_entity:
               - type: "custom:button-card"
                 template: device_button_vertical_icon
                 name: Lavastoviglie
-                entity: switch.plug_lavastoviglie
+                entity: *CONF_SWITCH_LAVASTOVIGLIE
                 icon: mdi:dishwasher
                 variables:
                   border_radius: 0px 0px 20px 0px
@@ -472,6 +472,7 @@ dummy_entity:
                 show_label: false
                 styles:
                   icon:
+                    ###### ATTENZIONE SOSTITURE ENTITA' #######
                     - color: >
                         [[[
                           if (states['switch.plug_lavastoviglie'].state== 'on')
