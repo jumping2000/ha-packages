@@ -465,7 +465,7 @@ dummy_entity:
               - type: "custom:button-card"
                 template: device_button_vertical_icon
                 name: Forno
-                entity: switch.plug_forno
+                entity: *CONF_SWITCH_FORNO 
                 icon: mdi:stove
                 variables:
                   border_radius: 0px 0px 20px 0px
@@ -477,6 +477,7 @@ dummy_entity:
                 styles:
                   icon:
                     - color: >
+                        ###### ATTENZIONE SOSTITURE ENTITA' #######
                         [[[
                           if (states['switch.plug_forno'].state== 'on')
                             return "#27b376";
