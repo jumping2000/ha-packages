@@ -476,8 +476,8 @@ dummy_entity:
                 show_label: false
                 styles:
                   icon:
+                    ###### ATTENZIONE SOSTITURE ENTITA' #######
                     - color: >
-                        ###### ATTENZIONE SOSTITURE ENTITA' #######
                         [[[
                           if (states['switch.plug_forno'].state== 'on')
                             return "#27b376";
