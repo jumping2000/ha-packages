@@ -24,6 +24,6 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: "${{ github.workspace }}/elettrodomestici_2023.zip"
           asset_name: elettrodomestici_2023.zip
-          tag: ${{ github.ref }}
+          #tag: ${{ github.ref }}
           tag: ${{ steps.get_version.outputs.result }}
           overwrite: true
