@@ -12,7 +12,7 @@
 | [Inverter ☀](#inverter)|NOT YET RELEASED| 
 | [Condizionatore 🌪](#condizionatore)|NOT YET RELEASED|
 | [Termostato 🔥](#termostato)|NOT YET RELEASED|
-| [Router 📶](#router)|**RELEASED in 2023.8.0**|
+| [Router 📶](network.md)|**RELEASED in 2023.8.0**|
 
 
 ## Download ZIP with all Home Assistant Project!
