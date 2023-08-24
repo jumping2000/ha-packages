@@ -138,12 +138,12 @@
       # CHANGE THE SENSOR WITH YOURS
       - name: VDSL distance
         state: >
-          {% set value = 'TAG_16' %}
+          {% set value = 'TAG_18' %}
           {{ (states(value)|float(default=0)/(13.81*sqrt(4.15))*1000) | round(0) }}
         unit_of_measurement: m
         state_class: measurement
         availability: >
-          {{ states('TAG_16') not in ['unavailable', 'unknown', 'None']  }}
+          {{ states('TAG_18') not in ['unavailable', 'unknown', 'None']  }}
       # CHANGE THE SENSOR WITH YOURS
       - name: fritz_upload_throughput
         state: >
