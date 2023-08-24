@@ -307,6 +307,8 @@ I passi di configurazione per poter utilizzare questo package, sono veramente po
 * lanciare lo script di configurazione _auto_configpy_ attraverso la CLI messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant:
 
 ```bash
+
+/config/packages$ chmod 744 autoconfig/auto_config.py
 /config/packages$ python autoconfig/auto_config.py -v
 
 ```
