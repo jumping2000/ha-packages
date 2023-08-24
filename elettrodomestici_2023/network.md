@@ -158,7 +158,7 @@ Ovviamente alcuni valori (come rumore ed attenuazione) non hanno senso se parlia
 * Dati di performance della connessione Internet
 * Attivazione / disattivazione di Wifi 2,4Ghz / 5Ghz / Guest Network
 * Riavvii, riconnessioni, update del firmware.
-* Notifiche con Telegram / Companion App / Alexa / Google oppure con l'ottimo [Centro Notifiche](https://github.com/caiosweet/Package-Notification-HUB-AppDaemon) realizzato con [app](https://github.com/jumping2000/notifier) Python e Appdaemon.
+* Notifiche con Telegram / Companion App / Alexa / Google oppure con l'ottimo [Centro Notifiche](https://github.com/caiosweet/Package-Notification-HUB-AppDaemon) realizzato con [app](https://github.com/jumping2000/notifier) in Python.
 
 <!-- Per evitare l'uso inutile di entità per configurare alcune aspetti "statici" o comunque poco variabili, relativi al funzionamento, abbiamo preferito usare gli [anchor](https://github.com/thomasloven/hass-config/wiki/Misc-tricks) impostabili nella sezione **"IMPOSTAZIONI DEL PACKAGES"**.
 Al contrario gli aspetti di configurazione che sono più soggetti a variazioni sono configurabili dalla card.  Per i **template sensor** sarà comunque necessario personalizzare leggermente il codice visto che non è possibile usare gli anchor, ma in questo caso è chiaramente indicato. -->
@@ -191,10 +191,10 @@ La sezione orizzontale di bottoni in basso ("***button container***") presenta l
 | Bottone | Cosa fa |
 | :---: | --- |
 | **Info** | cliccando si apre una finestra con le informazioni di dettaglio relative alla connessione e i button per riavvio, riconnessione etc |
-| **2.4Ghz"** / **5Ghz**  | cliccando sui due bottoni si abilitano gli AP/connessioni indicate |
-| **Guest**** | bottone che abilita la rete guest
-| **Fritz** | bottone che con il tocco singolo apre la finestra con i grafici.|
-| **Immagine del Fritz** | cliccando sull'immagine si apre pop-up di AdGuard |
+| **2.4Ghz** / **5Ghz**  | cliccando sui due bottoni si abilitano gli AP/connessioni indicate |
+| **Guest** | bottone che abilita la rete guest
+| **Fritz** | bottone che con il tocco singolo apre la finestra con i grafici |
+| **Immagine del Fritz** | cliccando sull'immagine si apre il pop-up di AdGuard |
 
 Come detto la card è adattabile al dispositivo usato e al suo orientamento, non si tratta una card _responsive_ ma si è cercato di rendere la fruizione buona sia su smartphone che su PC o tablet.
 
@@ -231,9 +231,11 @@ In alternativa per i packages relativi ad **Elettrodomestici Smart 2023** è pos
 <table align="center">
 	<tr>
 	    <th><center>🎫 Github Download 🎫</center></th>
+        <th><center>🎫 Release Download 🎫</center></th>
 	</tr>
   <tr>
       <td><div align=center><img width = 400 src="img/github_download.png"/></div></td>
+      <td><div align=center><img width = 400 src="img/release_download.png"/></div></td>
   </tr>
 </table>
 
@@ -329,7 +331,7 @@ I passi di configurazione per poter utilizzare questo package, sono veramente po
 
 Chi usa questa modalità potrà caricare l'intero file di configurazione dell'interfaccia grafica nella UI, ***dopo aver completato i passi precedenti***, e variare sempre da UI gli aspetti che più interessano.
 
-**NOTA**
+**NOTA**:
 **La card prevede gli elementi grafici per tutte le integrazioni (Speedtest, Adguard, Fritz), nel caso ad esempio non si voglia usare Speedtest occorre cancellare a mano dalla card tutta la parte relativa. E' consigliabile effettuare l'operazione subito dopo aver lanciato lo script di autoconfigurazione.**
 
 <br>
