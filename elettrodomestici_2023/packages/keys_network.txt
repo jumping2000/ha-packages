@@ -13,6 +13,8 @@ switch_wifi_5
 switch_wifi_guest
 upload_throughput
 download_throughput
+upload_link_throughput
+download_link_throughput
 upload_noise_margin
 download_noise_margin
 upload_power_attenuation
