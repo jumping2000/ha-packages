@@ -1,0 +1,172 @@
+  #################################################################
+  #                                                               #
+  #                       Packages/Network                        #
+  #                                                               #
+  #################################################################
+  ## package_network:
+  ## INFO 📦
+  ##  😅 Gianpi [hassiohelp.eu]
+  ##  📅 19/08/2023
+  ##  📌 Information provided: fritz, adguard, dns
+  ##  📂 PATH IMAGE /config/www/hassiohelp/pkg_natural_events
+  ##--------------------------------------------------------------|
+
+  #################################################################
+  #                                                               #
+  #                          Customize                            #
+  #                                                               #
+  #################################################################
+  homeassistant:
+    customize:
+
+      ############################################################################
+      ## CUSTOMIZE NODE ANCHORS
+      ############################################################################
+      package.network:
+        version: &v "2023.8.1"
+        date: 📅 01/08/2019 - Updated 04/08/2023
+        info: https://github.com/jumping2000/
+        information provided by: Fritz Speedtest AdguardHome
+        links: 
+          elettrodomestici: https://github.com/jumping2000/ha-packages/tree/main/elettrodomestici_2023
+          web: https://hassiohelp.eu/
+
+        extra_attributes: &extra_attributes
+          version: *v
+          package: "Network🌍"
+          attribution: "Gianpi - Network - hassiohelp.eu"
+
+        ##---------------------- IMPOSTAZIONI DEL PACKAGE ----------------------##
+        PING ROUTER: &CONF_PING_ROUTER 192.168.1.1
+        PING DNS GOOGLE: &CONF_PING_GOOGLE 8.8.8.8
+        ##---------------------- FINE IMPOSTAZIONI PACKAGE ---------------------##
+
+
+      ################################################
+      ## sensor
+      ################################################
+      sensor.network_status:
+        <<: *extra_attributes
+        icon: mdi:dishwasher
+        friendly_name: "Stato Network"
+
+      sensor.vdsl_distance:
+        <<: *extra_attributes
+        friendly_name: Distanza VDSL
+        icon: mdi:map-marker-distance
+
+      TAG_3:
+        <<: *extra_attributes
+        friendly_name: Ping
+        icon: mdi:pulse
+
+      TAG_1:
+        <<: *extra_attributes
+        friendly_name: Download
+        icon: mdi:arrow-down-bold
+
+      TAG_0:
+        <<: *extra_attributes
+        friendly_name: Upload
+        icon: mdi:arrow-up-bold
+
+      sensor.fritz_upload_throughput:
+        <<: *extra_attributes
+        friendly_name: Upload
+        icon: mdi:upload-network-outline
+
+      sensor.fritz_download_throughput:
+        <<: *extra_attributes
+        friendly_name: Download
+        icon: mdi:download-network-outline
+
+  #################################################################
+  #                                                               #
+  #                INTERNET PERFORMANCE METRICS                   #
+  #                                                               #
+  #################################################################
+  #https://www.home-assistant.io/components/speedtestdotnet/
+
+  
+  #################################################################
+  #                                                               #
+  #                      Binary Sensors                           #
+  #                                                               #
+  #################################################################
+  binary_sensor:
+  #https://home-assistant.io/components/binary_sensor.ping/
+    - platform: ping
+      host: *CONF_PING_ROUTER 
+      name: PING Router
+      count: 3
+      scan_interval: 120
+    - platform: ping
+      host: *CONF_PING_GOOGLE
+      name: PING Internet Access
+      count: 3
+      scan_interval: 120
+
+  #################################################################
+  #                                                               #
+  #                            Sensors                            #
+  #                                                               #
+  #################################################################
+  sensor:
+    - platform: statistics
+      name: "Fritz Upload Max"
+      entity_id: sensor.fritz_upload_throughput
+      state_characteristic: value_max
+      max_age:
+        hours: 12
+
+    - platform: statistics
+      name: "Fritz Download Max"
+      entity_id: sensor.fritz_download_throughput
+      state_characteristic: value_max
+      max_age:
+        hours: 12
+  
+  #################################################################
+  #                                                               #
+  #                          TEMPLATE                             #
+  #                                                               #
+  #################################################################
+  template:
+    - sensor:
+      #####################################################
+      # https://forum.kitz.co.uk/index.php?topic=10566.0
+      # CHANGE THE SENSOR WITH YOURS
+      - name: VDSL distance
+        state: >
+          {% set value = 'TAG_16' %}
+          {{ (states(value)|float(default=0)/(13.81*sqrt(4.15))*1000) | round(0) }}
+        unit_of_measurement: m
+        state_class: measurement
+        availability: >
+          {{ states('TAG_16') not in ['unavailable', 'unknown', 'None']  }}
+      # CHANGE THE SENSOR WITH YOURS
+      - name: fritz_upload_throughput
+        state: >
+          {% set value = 'TAG_11' %}
+          {{ (states(value)|float(default=0) / 125) | round(3,default=0) }}
+        device_class: data_rate
+        state_class: measurement
+        unit_of_measurement: "Mbit/s"
+        availability: >
+          {{ states('TAG_11') not in ['unavailable', 'unknown', 'None']  }}
+      # CHANGE THE SENSOR WITH YOURS
+      - name: fritz_download_throughput
+        state: >
+          {% set value = 'TAG_12' %}
+          {{ (states(value)|float(default=0) / 125) | round(3,default=0) }}
+        device_class: data_rate
+        state_class: measurement
+        unit_of_measurement: "Mbit/s"
+        availability: >
+          {{ states('TAG_12') not in ['unavailable', 'unknown', 'None']  }}
+           
+  #################################################################
+  #                                                               #
+  #                     END OF CONFIGURATION FILE                 #
+  #                                                               #
+  #################################################################

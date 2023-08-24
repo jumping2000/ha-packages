@@ -296,9 +296,10 @@ Lanciare il blueprint [Network notification](https://github.com/jumping2000/ha-t
 
 I passi di configurazione per poter utilizzare questo package, sono veramente pochi grazie allo script auto-configurante:
 * scaricare i files necessari e inserirli nelle cartelle di HA come previsto nel paragrafo "_Struttura dei file_", in particolare:
-  * la cartella _autoconfig_ e _keys.txt_ in _packages_
+  * la cartella _autoconfig_ e _keys_network.txt_ in _packages_
   * _network.yaml_ in _packages/elettrodomestici_
   * _card_router.yaml_ in _lovelace/card_elettrodomestici_
+* rinominare _keys_network.txt_ in _keys.txt_ (**IMPORTANTE**)
 * lanciare lo script di configurazione _auto_configpy_ attraverso la CLI messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant:
 
 ```bash
