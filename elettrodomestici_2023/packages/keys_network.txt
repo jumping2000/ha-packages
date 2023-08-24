@@ -1,9 +1,8 @@
-/config/packages/hassiohelp/network.yaml
-/config/packages/hassiohelp/card_router.yaml
+/config/packages/elettrodomestici/network.yaml
+/config/lovelace/card_elettrodomestici/card_router.yaml
 throughput_upload
 throughput_download
-external_ip:
-speedtest_integration
+external_ip
 speedtest_ping
 connection_status
 link_status
