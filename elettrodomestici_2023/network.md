@@ -310,10 +310,11 @@ I passi di configurazione per poter utilizzare questo package, sono veramente po
 
 ```bash
 
-/config/packages$ chmod 744 autoconfig/auto_config.py
-/config/packages$ python autoconfig/auto_config.py -v
+/config/packages# chmod 744 autoconfig/auto_config.py
+/config/packages# python autoconfig/auto_config.py -v
 
 ```
+dove ***/config/packages#*** è il path all'interno del filesystem del container.
 
 * verificare che l'operazione sia andata a buon fine senza errori;
 * finiti questi passaggi inserire la card router o nella propria configurazione Lovelace in YAML oppure nella propria interfaccia costruita tramite UI come di seguito riportato;
