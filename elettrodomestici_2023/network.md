@@ -315,6 +315,14 @@ I passi di configurazione per poter utilizzare questo package, sono veramente po
 
 ```
 dove ***/config/packages#*** è il path all'interno del filesystem del container.
+<br>
+nel caso che  l'interprete _python_ non sia disponibile nel path (??) occorre  richiamarlo in questo modo:
+
+```bash
+
+/config/packages# /usr/local/bin/python autoconfig/auto_config.py -v
+
+```
 
 * verificare che l'operazione sia andata a buon fine senza errori;
 * finiti questi passaggi inserire la card router o nella propria configurazione Lovelace in YAML oppure nella propria interfaccia costruita tramite UI come di seguito riportato;
