@@ -339,7 +339,7 @@ dove ***/config/packages#*** è il path all'interno del filesystem del container
     * ***-a*** : per cambiare il percorso completo del file _automations.yaml_
     * ***-c*** : per variare il percorso completo della card
     * ***-p*** : per variare il percorso completo del package
-    * ***-k*** : per variare il patch del file _keys.txt_
+    * ***-k*** : per variare il percorso completo del file _keys.txt_
 
 | Lovelace - Storage |
 | :---: |
