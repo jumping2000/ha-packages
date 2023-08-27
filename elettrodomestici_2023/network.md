@@ -247,6 +247,9 @@ La struttura dei file è rappresentata di seguito, quindi occorre **rispettare l
 
 La card Lovelace è unica ed è disponibile sia per chi usa la modalità [YAML o storage](https://www.home-assistant.io/dashboards/dashboards/) (***card_router.yaml***).
 
+**NOTA**:
+Saranno presenti due cartelle _autoconfig_, una per PC (_autoconfig_x86_64_) e una per Raspberry (_autoconfig_rpi_).
+
 
 ```bash
 .
@@ -310,19 +313,21 @@ I passi di configurazione per poter utilizzare questo package, sono veramente po
 
 ```bash
 
-/config/packages# chmod 744 autoconfig/auto_config.py
-/config/packages# python autoconfig/auto_config.py -v
+/config/packages# chmod 744 autoconfig_x86_64/auto_config.py
+/config/packages# python autoconfig_x86_64/auto_config.py -v
+
+```
+
+oppure per Raspberry:
+
+```bash
+/config/packages# chmod 744 autoconfig_rpi/auto_config.py
+/config/packages# python autoconfig_rpi/auto_config.py -v
 
 ```
 dove ***/config/packages#*** è il path all'interno del filesystem del container.
+
 <br>
-nel caso che  l'interprete _python_ non sia disponibile nel path (??) occorre  richiamarlo in questo modo:
-
-```bash
-
-/config/packages# /usr/local/bin/python autoconfig/auto_config.py -v
-
-```
 
 * verificare che l'operazione sia andata a buon fine senza errori;
 * finiti questi passaggi inserire la card router o nella propria configurazione Lovelace in YAML oppure nella propria interfaccia costruita tramite UI come di seguito riportato;
@@ -331,9 +336,10 @@ nel caso che  l'interprete _python_ non sia disponibile nel path (??) occorre  r
 ***Avvertenze***: 
 1. ricordarsi di effettuare l'avvio dello script subito dopo il completamento del blueprint.
 2. se per qualche motivo avete cambiato o volete cambiare i percorsi standard è possibile utilizzare delle opzioni nella sintassi dello script:
-    * ***-a*** : per cambiare il path del file automations.yaml
-    * ***-c*** : per variare il path della card
-    * ***-p*** : per variare il path del package
+    * ***-a*** : per cambiare il percorso completo del file _automations.yaml_
+    * ***-c*** : per variare il percorso completo della card
+    * ***-p*** : per variare il percorso completo del package
+    * ***-k*** : per variare il patch del file _keys.txt_
 
 | Lovelace - Storage |
 | :---: |
