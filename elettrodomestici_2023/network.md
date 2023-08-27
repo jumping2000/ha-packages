@@ -309,7 +309,7 @@ I passi di configurazione per poter utilizzare questo package, sono veramente po
   * _network.yaml_ in _packages/elettrodomestici_
   * _card_router.yaml_ in _lovelace/card_elettrodomestici_
 * rinominare _keys_network.txt_ in _keys.txt_ (**IMPORTANTE**)
-* lanciare lo script di configurazione _auto_configpy_ attraverso la CLI messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant:
+* lanciare lo script di configurazione _auto_config.py_ attraverso la CLI (command line interface) messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant (*ATTENZIONE* l'addon core-ssh non è adatto, occorre usare obbligatoriamente l'addon nel link):
 
 ```bash
 
