@@ -25,3 +25,4 @@ button_cleanup
 button_firmware_update
 button_reboot
 button_reconnect
+update_firmware
