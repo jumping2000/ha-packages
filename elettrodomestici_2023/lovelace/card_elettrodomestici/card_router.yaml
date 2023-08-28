@@ -497,23 +497,23 @@ custom_fields:
                                   - entity: >-
                                       TAG_17
                                     name: Att
-                              - entity: TAG_020
+                              - entity: TAG_20
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: GB inviati / ricevuti
                                 entities:
                                   - entity: TAG_19
                                     name: GB inviati
-                                  - entity: TAG_020
+                                  - entity: TAG_20
                                     name: GB ricevuti
                               - type: divider
-                              - entity: TAG_021
+                              - entity: TAG_21
                                 name: Pulisci entità HA
                               - entity: TAG_22
                                 name: Update firmware
-                              - entity: TAG_023
+                              - entity: TAG_23
                                 name: Reboot router
-                              - entity: TAG_024
+                              - entity: TAG_24
                                 name: Riconetti linea
                               - type: button
                                 icon: mdi:restore-alert
