@@ -24,7 +24,7 @@ custom_fields:
         ha-card { 
           border-radius: 0px 0px 0px 0px;
         }
-      image: /local/images/devices/sfondo_black.png
+      image: /local/hassiohelp/pkg_elettrodomestici/sfondo_black.png
       elements:
         - type: image
           entity: TAG_4
@@ -147,7 +147,7 @@ custom_fields:
             width: 1.5%
         - type: state-label
           entity: TAG_5
-          prefix: '? Portante: '
+          prefix: '⛓ Portante: '
           style:
             top: '-4%'
             left: 42%
@@ -158,7 +158,7 @@ custom_fields:
             padding: 4px 35px
         - type: state-label
           entity: TAG_4
-          prefix: '?? IP: '
+          prefix: '🗃 IP: '
           style:
             top: 6%
             left: 42%
@@ -169,7 +169,7 @@ custom_fields:
             padding: 4px 35px
         - type: state-label
           entity: TAG_2
-          prefix: '?? IP: '
+          prefix: '🌍 IP: '
           style:
             top: 16%
             left: 42%
@@ -180,7 +180,7 @@ custom_fields:
             padding: 4px 35px
         - type: state-label
           entity: sensor.fritz_download_throughput
-          prefix: '? '
+          prefix: '⬇ '
           style:
             top: 26%
             left: 42%
@@ -191,7 +191,7 @@ custom_fields:
             padding: 4px 35px
         - type: state-label
           entity: sensor.fritz_upload_throughput
-          prefix: '? '
+          prefix: '⬆ '
           style:
             top: 26%
             left: 68%
@@ -202,7 +202,7 @@ custom_fields:
             padding: 4px 35px
         - type: state-label
           entity: TAG_3
-          prefix: '? '
+          prefix: '⏳'
           style:
             top: 34%
             left: '-4%'
@@ -245,7 +245,7 @@ custom_fields:
                   to: 70
         - type: state-label
           entity: TAG_1
-          prefix: ?
+          prefix: '⬇'
           style:
             top: 34%
             left: 10%
@@ -288,7 +288,7 @@ custom_fields:
                   to: 19.9
         - type: state-label
           entity: TAG_0
-          prefix: ?
+          prefix: '⬆'
           style:
             top: 34%
             left: 28%
