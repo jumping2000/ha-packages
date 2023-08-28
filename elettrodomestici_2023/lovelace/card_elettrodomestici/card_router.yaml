@@ -467,49 +467,49 @@ custom_fields:
                             entities:
                               - type: section
                                 label: Statistiche Router
-                              - entity: TAG_014
+                              - entity: TAG_14
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Download
                                 icon: mdi:download
                                 entities:
                                   - entity: >-
-                                      TAG_014
+                                      TAG_14
                                     name: Link
                                   - entity: >-
-                                      TAG_016
+                                      TAG_16
                                     name: Rumore
                                   - entity: >-
-                                      TAG_018
+                                      TAG_18
                                     name: Att
-                              - entity: TAG_013
+                              - entity: TAG_13
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Upload
                                 icon: mdi:upload
                                 entities:
                                   - entity: >-
-                                      TAG_013
+                                      TAG_13
                                     name: Link
                                   - entity: >-
-                                      TAG_015
+                                      TAG_15
                                     name: Rumore
                                   - entity: >-
-                                      TAG_017
+                                      TAG_17
                                     name: Att
                               - entity: TAG_020
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: GB inviati / ricevuti
                                 entities:
-                                  - entity: TAG_019
+                                  - entity: TAG_19
                                     name: GB inviati
                                   - entity: TAG_020
                                     name: GB ricevuti
                               - type: divider
                               - entity: TAG_021
-                                name: Pulisci entit� HA
-                              - entity: TAG_022
+                                name: Pulisci entità HA
+                              - entity: TAG_22
                                 name: Update firmware
                               - entity: TAG_023
                                 name: Reboot router
@@ -616,7 +616,7 @@ custom_fields:
                 - grid-template-columns: 1fr
                 - grid-template-rows: 50% auto auto
           - type: custom:button-card
-            entity: TAG_010
+            entity: TAG_10
             icon: mdi:account-multiple-plus
             name: WiFi Guest
             show_state: false
@@ -625,7 +625,7 @@ custom_fields:
               icon:
                 - color: |
                     [[[
-                      if (states['TAG_010'].state== 'on')
+                      if (states['TAG_10'].state== 'on')
                         return "#27b376";
                       return "#bf212f";
                     ]]]

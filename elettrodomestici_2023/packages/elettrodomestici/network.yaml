@@ -55,17 +55,17 @@
         friendly_name: Distanza VDSL
         icon: mdi:map-marker-distance
 
-      TAG_3:
+      TAG_03:
         <<: *extra_attributes
         friendly_name: Ping
         icon: mdi:pulse
 
-      TAG_1:
+      TAG_01:
         <<: *extra_attributes
         friendly_name: Download
         icon: mdi:arrow-down-bold
 
-      TAG_0:
+      TAG_00:
         <<: *extra_attributes
         friendly_name: Upload
         icon: mdi:arrow-up-bold
