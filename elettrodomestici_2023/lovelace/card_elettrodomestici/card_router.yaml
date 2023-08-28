@@ -532,17 +532,17 @@ custom_fields:
                             entities:
                               - type: section
                                 label: Firmware & Uptime
-                              - entity: update.fritz_box_7530_fritz_os
+                              - entity: TAG_25
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Firmware
                                 entities:
-                                  - entity: update.fritz_box_7530_fritz_os
+                                  - entity: TAG_25
                                     name: Aggiornamento
-                                  - entity: update.fritz_box_7530_fritz_os
+                                  - entity: TAG_25
                                     attribute: installed_version
                                     name: Installato
-                                  - entity: update.fritz_box_7530_fritz_os
+                                  - entity: TAG_25
                                     attribute: latest_version
                                     name: Disponibile
                               - entity: TAG_06
