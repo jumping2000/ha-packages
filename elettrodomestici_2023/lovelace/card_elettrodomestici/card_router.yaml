@@ -27,7 +27,7 @@ custom_fields:
       image: /local/hassiohelp/pkg_elettrodomestici/sfondo_black.png
       elements:
         - type: image
-          entity: TAG_4
+          entity: TAG_04
           image: /local/hassiohelp/pkg_elettrodomestici/fritzbox.png
           state_filter:
             'off': brightness(96%) saturate(0.5) opacity(1.0)
@@ -124,7 +124,7 @@ custom_fields:
                             - entity: switch.adguard_safe_browsing
                             - entity: switch.adguard_safe_search
         - type: image
-          entity: TAG_4
+          entity: TAG_04
           image: /local/hassiohelp/pkg_elettrodomestici/fritzbox_led1.png
           state_filter:
             'off': brightness(100%) saturate(0.9)
@@ -135,7 +135,7 @@ custom_fields:
             top: 21%
             width: 1.5%
         - type: image
-          entity: TAG_8
+          entity: TAG_08
           image: /local/hassiohelp/pkg_elettrodomestici/fritzbox_led2.png
           state_filter:
             'off': brightness(100%) saturate(0.9)
@@ -146,7 +146,7 @@ custom_fields:
             top: 21%
             width: 1.5%
         - type: state-label
-          entity: TAG_5
+          entity: TAG_05
           prefix: '⛓ Portante: '
           style:
             top: '-4%'
@@ -157,7 +157,7 @@ custom_fields:
             line-height: 32px
             padding: 4px 35px
         - type: state-label
-          entity: TAG_4
+          entity: TAG_04
           prefix: '🗃 IP: '
           style:
             top: 6%
@@ -168,7 +168,7 @@ custom_fields:
             line-height: 32px
             padding: 4px 35px
         - type: state-label
-          entity: TAG_2
+          entity: TAG_02
           prefix: '🌍 IP: '
           style:
             top: 16%
@@ -201,7 +201,7 @@ custom_fields:
             line-height: 32px
             padding: 4px 35px
         - type: state-label
-          entity: TAG_3
+          entity: TAG_03
           prefix: '⏳'
           style:
             top: 34%
@@ -231,7 +231,7 @@ custom_fields:
           name: Ping
           columns: 1
           entities:
-            - entity: TAG_3
+            - entity: TAG_03
               max: 70
               severity:
                 - color: '#27b376'
@@ -244,7 +244,7 @@ custom_fields:
                   from: 40
                   to: 70
         - type: state-label
-          entity: TAG_1
+          entity: TAG_01
           prefix: '⬇'
           style:
             top: 34%
@@ -274,7 +274,7 @@ custom_fields:
           name: Ping
           columns: 1
           entities:
-            - entity: TAG_1
+            - entity: TAG_01
               max: 70
               severity:
                 - color: '#27b376'
@@ -287,7 +287,7 @@ custom_fields:
                   from: 0
                   to: 19.9
         - type: state-label
-          entity: TAG_0
+          entity: TAG_00
           prefix: '⬆'
           style:
             top: 34%
@@ -317,7 +317,7 @@ custom_fields:
           name: Ping
           columns: 1
           entities:
-            - entity: TAG_0
+            - entity: TAG_000
               max: 70
               severity:
                 - color: '#27b376'
@@ -467,53 +467,53 @@ custom_fields:
                             entities:
                               - type: section
                                 label: Statistiche Router
-                              - entity: TAG_14
+                              - entity: TAG_014
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Download
                                 icon: mdi:download
                                 entities:
                                   - entity: >-
-                                      TAG_14
+                                      TAG_014
                                     name: Link
                                   - entity: >-
-                                      TAG_16
+                                      TAG_016
                                     name: Rumore
                                   - entity: >-
-                                      TAG_18
+                                      TAG_018
                                     name: Att
-                              - entity: TAG_13
+                              - entity: TAG_013
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Upload
                                 icon: mdi:upload
                                 entities:
                                   - entity: >-
-                                      TAG_13
+                                      TAG_013
                                     name: Link
                                   - entity: >-
-                                      TAG_15
+                                      TAG_015
                                     name: Rumore
                                   - entity: >-
-                                      TAG_17
+                                      TAG_017
                                     name: Att
-                              - entity: TAG_20
+                              - entity: TAG_020
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: GB inviati / ricevuti
                                 entities:
-                                  - entity: TAG_19
+                                  - entity: TAG_019
                                     name: GB inviati
-                                  - entity: TAG_20
+                                  - entity: TAG_020
                                     name: GB ricevuti
                               - type: divider
-                              - entity: TAG_21
+                              - entity: TAG_021
                                 name: Pulisci entit� HA
-                              - entity: TAG_22
+                              - entity: TAG_022
                                 name: Update firmware
-                              - entity: TAG_23
+                              - entity: TAG_023
                                 name: Reboot router
-                              - entity: TAG_24
+                              - entity: TAG_024
                                 name: Riconetti linea
                               - type: button
                                 icon: mdi:restore-alert
@@ -545,21 +545,21 @@ custom_fields:
                                   - entity: update.fritz_box_7530_fritz_os
                                     attribute: latest_version
                                     name: Disponibile
-                              - entity: TAG_6
+                              - entity: TAG_06
                                 name: Uptime connessione
-                              - entity: TAG_7
+                              - entity: TAG_07
                                 name: Uptime router
                               - type: divider
-                              - entity: TAG_2
+                              - entity: TAG_02
                                 name: IP WAN
                               - entity: sensor.vdsl_distance
                                 name: Distanza da cabinet
-                              - entity: TAG_4
+                              - entity: TAG_04
                                 name: Stato connessione IP
-                              - entity: TAG_5
+                              - entity: TAG_05
                                 name: Stato connessione link
           - type: custom:button-card
-            entity: TAG_8
+            entity: TAG_08
             icon: mdi:wifi
             name: WiFi 2.4 Ghz
             show_icon: true
@@ -569,7 +569,7 @@ custom_fields:
               icon:
                 - color: |
                     [[[
-                      if (states['TAG_8'].state== 'on')
+                      if (states['TAG_08'].state== 'on')
                         return "#27b376";
                       return "#bf212f";
                     ]]]
@@ -588,7 +588,7 @@ custom_fields:
                 - grid-template-columns: 1fr
                 - grid-template-rows: 50% auto auto
           - type: custom:button-card
-            entity: TAG_9
+            entity: TAG_09
             icon: mdi:wifi-strength-4
             name: WiFi 5 Ghz
             show_state: false
@@ -597,7 +597,7 @@ custom_fields:
               icon:
                 - color: |
                     [[[
-                      if (states['TAG_9'].state== 'on')
+                      if (states['TAG_09'].state== 'on')
                         return "#27b376";
                       return "#bf212f";
                     ]]]
@@ -616,7 +616,7 @@ custom_fields:
                 - grid-template-columns: 1fr
                 - grid-template-rows: 50% auto auto
           - type: custom:button-card
-            entity: TAG_10
+            entity: TAG_010
             icon: mdi:account-multiple-plus
             name: WiFi Guest
             show_state: false
@@ -625,7 +625,7 @@ custom_fields:
               icon:
                 - color: |
                     [[[
-                      if (states['TAG_10'].state== 'on')
+                      if (states['TAG_010'].state== 'on')
                         return "#27b376";
                       return "#bf212f";
                     ]]]
@@ -662,7 +662,7 @@ custom_fields:
               icon:
                 - color: |
                     [[[
-                      if (states['TAG_4'].state== 'on')
+                      if (states['TAG_04'].state== 'on')
                         return "#27b376";
                       return "#bf212f";
                     ]]]
@@ -727,7 +727,7 @@ custom_fields:
                               - color: '#006f3c'
                                 from: 16
                                 to: 25
-                          - entity: TAG_1
+                          - entity: TAG_01
                             name: Speed Download
                             max: 65
                             severity:
@@ -740,7 +740,7 @@ custom_fields:
                               - color: '#006f3c'
                                 from: 50
                                 to: 65
-                          - entity: TAG_0
+                          - entity: TAG_00
                             name: Speed Upload
                             max: 25
                             severity:
@@ -818,8 +818,8 @@ custom_fields:
                           - entity: sensor.fritz_upload_throughput
                             color: '#006f3c'
                             invert: true
-                          - entity: TAG_1
+                          - entity: TAG_01
                             name: Speedtest Download
-                          - entity: TAG_0
+                          - entity: TAG_00
                             name: Speedtest Upload
                             invert: true 
