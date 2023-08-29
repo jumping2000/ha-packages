@@ -317,7 +317,7 @@ custom_fields:
           name: Ping
           columns: 1
           entities:
-            - entity: TAG_000
+            - entity: TAG_00
               max: 70
               severity:
                 - color: '#27b376'
