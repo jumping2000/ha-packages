@@ -160,6 +160,12 @@ Ovviamente alcuni valori (come rumore ed attenuazione) non hanno senso se parlia
 * Riavvii, riconnessioni, update del firmware.
 * Notifiche con Telegram / Companion App / Alexa / Google oppure con l'ottimo [Centro Notifiche](https://github.com/caiosweet/Package-Notification-HUB-AppDaemon) realizzato con [app](https://github.com/jumping2000/notifier) in Python.
 
+<br>
+
+$$\textbf{\color{red} \normalsize NOTA BENE} $$
+
+Il package è piuttosto generale quindi è possibile che alcuni dispositivi espongano tramite integrazione certe entità e non altre, occorre un po' di buon senso e cancellare le parti YAML non necessarie.
+
 <!-- Per evitare l'uso inutile di entità per configurare alcune aspetti "statici" o comunque poco variabili, relativi al funzionamento, abbiamo preferito usare gli [anchor](https://github.com/thomasloven/hass-config/wiki/Misc-tricks) impostabili nella sezione **"IMPOSTAZIONI DEL PACKAGES"**.
 Al contrario gli aspetti di configurazione che sono più soggetti a variazioni sono configurabili dalla card.  Per i **template sensor** sarà comunque necessario personalizzare leggermente il codice visto che non è possibile usare gli anchor, ma in questo caso è chiaramente indicato. -->
 
@@ -330,6 +336,7 @@ dove ***/config/packages#*** è il path all'interno del filesystem del container
 <br>
 
 * verificare che l'operazione sia andata a buon fine senza errori;
+* controllare package e card con un editor di testo e verificare che non ci siano tag "ENTITA' NON NEL BLUEPRINT", nel caso provvedere a cancellare o cambiare il blueprint inserendo l'entità;
 * finiti questi passaggi inserire la card router o nella propria configurazione Lovelace in YAML oppure nella propria interfaccia costruita tramite UI come di seguito riportato;
 * riavviare Home Assistant.
 
