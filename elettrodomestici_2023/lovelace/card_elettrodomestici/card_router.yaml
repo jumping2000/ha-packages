@@ -515,13 +515,13 @@ custom_fields:
                                 name: Reboot router
                               - entity: TAG_24
                                 name: Riconetti linea
-                              - type: button
-                                icon: mdi:restore-alert
-                                name: Reload Speedtest integration
-                                action_name: Reload
-                                tap_action:
-                                  action: call-service
-                                  service: script.reload_speedtest_integration
+                              #- type: button
+                              #  icon: mdi:restore-alert
+                              #  name: Reload Speedtest integration
+                              #  action_name: Reload
+                              #  tap_action:
+                              #    action: call-service
+                              #    service: script.reload_speedtest_integration
                       - type: vertical-stack
                         view_layout:
                           grid-area: colonna2
