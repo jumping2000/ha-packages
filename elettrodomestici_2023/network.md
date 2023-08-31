@@ -37,7 +37,7 @@ Anche per queste configurazioni saranno usati alcuni elementi grafici custom ric
 Riepiloghiamo i punti di forza di questo pacchetto sono:
 1. Adattabile per l'uso su tablet, smartphone, PC;
 2. Utilizzo di script di auto-configurazione
-3. Versioni grafica Locelave unificata adata per dashboard "_YAML_" e "_storage_", vedi [Dashboard](https://www.home-assistant.io/dashboards/dashboards/);
+3. Versioni grafica Lovelave unificata adata per dashboard "_YAML_" e "_storage_", vedi [Dashboard](https://www.home-assistant.io/dashboards/dashboards/);
 4. Riduzione del numero di componenti custom necessari;
 
 
