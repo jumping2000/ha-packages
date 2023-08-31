@@ -315,7 +315,9 @@ I passi di configurazione per poter utilizzare questo package, sono veramente po
   * _network.yaml_ in _packages/elettrodomestici_
   * _card_router.yaml_ in _lovelace/card_elettrodomestici_
 * rinominare _keys_network.txt_ in _keys.txt_ (**IMPORTANTE**)
-* lanciare lo script di configurazione _auto_config.py_ attraverso la CLI (command line interface) messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant (*ATTENZIONE* l'addon core-ssh non è adatto, occorre usare obbligatoriamente l'addon nel link):
+* lanciare lo script di configurazione _auto_config.py_ attraverso la CLI (Command Line Interface) messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant (*ATTENZIONE* l'addon core-ssh non è adatto, occorre usare obbligatoriamente l'addon nel link):
+
+**NOTA:** Se non riesci a lanciare i comandi sottostanti dal'addon SSH, utilizza nella conf dell'addon l'username ***root***, potrai ripristinare il precedente username alla fine della configurazione.
 
 ```bash
 
@@ -331,14 +333,16 @@ oppure per Raspberry:
 /config/packages# python autoconfig_rpi/auto_config.py -v
 
 ```
+
 dove ***/config/packages#*** è il path all'interno del filesystem del container.
 
 <br>
 
-* verificare che l'operazione sia andata a buon fine senza errori;
-* controllare package e card con un editor di testo e verificare che non ci siano tag "ENTITA' NON NEL BLUEPRINT", nel caso provvedere a cancellare o cambiare il blueprint inserendo l'entità;
+* verificare che l'operazione sia andata a buon fine senza errori (_controllare sempre il log_);
+* controllare package e card con un editor di testo e verificare che non ci siano tag "**ENTITA' NON NEL BLUEPRINT**", nel caso provvedere a cancellare o cambiare il blueprint inserendo l'entità necessaria (in questo package è da monitorare attentamente il sensore "VDSL distance" che non è significativo per connessioni FTTH);
 * finiti questi passaggi inserire la card router o nella propria configurazione Lovelace in YAML oppure nella propria interfaccia costruita tramite UI come di seguito riportato;
-* riavviare Home Assistant.
+* riavviare Home Assistant;
+* dopo il riavvio di HA controllare che non ci siano errori nel log.
 
 ***Avvertenze***: 
 1. ricordarsi di effettuare l'avvio dello script subito dopo il completamento del blueprint.
@@ -374,7 +378,7 @@ Per quanto riguarda le impostazioni grafiche è possibile agire sul proprio "tem
 4. altezza dei button inferiori
 
 
-<!-- Il codice da modificare è il seguente, nella parte "_variables_"; nulla vieta, nel caso si voglia standardizzare le card, di riportare queste configurazioni nel ***button template***.
+<!-- Il codice da modificare è il seguente, nella parte "_variables_"; nulla vieta, nel caso si voglia standardizzare le card, di riportare queste configurazioni in un ***button template*** e/o andare a modificare il proprio tema.
 
 ```yaml
               ###########################################################
@@ -429,7 +433,7 @@ Tutti i  nostri "follower" 😄
 
 <!-- ✨ _special_ ✨ -->
 [website]: https://hassiohelp.eu/
-[Websitebadge]: https://img.shields.io/website?down_message=Offline&label=HssioHelp&logoColor=blue&up_message=Online&url=https%3A%2F%2Fhassiohelp.eu
+[Websitebadge]: https://img.shields.io/website?down_message=Offline&label=HassioHelp&logoColor=blue&up_message=Online&url=https%3A%2F%2Fhassiohelp.eu
 
 [telegram]: https://t.me/HassioHelp
 [telegrambadge]: https://img.shields.io/badge/Chat-Telegram-blue?logo=Telegram
