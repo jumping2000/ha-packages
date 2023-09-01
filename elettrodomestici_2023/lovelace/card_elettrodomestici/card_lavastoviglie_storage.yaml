@@ -53,8 +53,7 @@ custom_fields:
     #######################################
       type: picture-elements
       style: |
-
-       @keyframes blinker {
+        @keyframes blinker {
           0% 49% 51% 100% { opacity: 1; }
           50% { opacity: 0.5; }
         }
