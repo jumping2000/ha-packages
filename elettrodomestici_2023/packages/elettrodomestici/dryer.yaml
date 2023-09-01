@@ -41,11 +41,7 @@
 
         ##---------------------- IMPOSTAZIONI DEL PACKAGE ----------------------##
         ## CONFIGURATION
-        PLUG asciugatrice SWITCH: &CONF_SWITCH_ENTITY "switch.plug_asciugatrice"
-        PLUG asciugatrice POTENZA (W): &CONF_POWER_ENTITY "sensor.plug_asciugatrice_power"
         PLUG ASCIUGATRICE ENERGIA (kWh): &CONF_ENERGY_ENTITY "sensor.plug_asciugatrice_energy"
-        ##
-        RITARDO TRA LE VARIE NOTIFICHE IN MINUTI: &DELAY_NOTIFICATION 5
         ## NON CAMBIARE ##
         COUNTER CICLI LAVAGGIO: &CONF_CICLI_TOTALE "counter.cicli_lavaggio_asciugatrice"
         DURATA LAVAGGIO OGGI: &CONF_OGGI_RUNTIME "sensor.asciugatrice_oggi_runtime"
