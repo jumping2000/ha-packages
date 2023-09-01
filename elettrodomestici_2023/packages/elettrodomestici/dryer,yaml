@@ -1,0 +1,546 @@
+  #################################################################
+  #                                                               #
+  #                        Packages/Dryer FSM                     #
+  #                                                               #
+  #################################################################
+  ## package_asciugatrice:
+  ## INFO 📦
+  ##  😅 Gianpi [hassiohelp.eu]
+  ##  📅 29/04/2023 - 2023.9.1
+  ##  📌 INFORMATION provided by plug and energy meter
+  ##  📂 PATH IMAGE /config/www/hassiohelp/pkg_elettrodomestici
+  ##  🎁 THANKS TO: https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/
+  ##  🎫 INFO https://www.elettro-domestici.com/articoli-elettrodomestici.asp?id=286
+  ##  🛠  BLUEPRINT https://github.com/jumping2000/ha-templates/blob/main/blueprints/fsm/fsm_lite.yaml
+  ##--------------------------------------------------------------|
+
+  #################################################################
+  #                                                               #
+  #                          Customize                            #
+  #                                                               #
+  #################################################################
+  homeassistant:
+    customize:
+
+      ############################################################################
+      ## CUSTOMIZE NODE ANCHORS
+      ############################################################################
+      package.dryer:
+        version: &v "2023.8.3"
+        date: 📅 01/09/2023 - Updated 31/08/2023
+        info: https://github.com/jumping2000/
+        information provided by: Fritz Speedtest AdguardHome
+        links: 
+          elettrodomestici: https://github.com/jumping2000/ha-packages/tree/main/elettrodomestici_2023
+          web: https://hassiohelp.eu/
+
+        extra_attributes: &extra_attributes
+          version: *v
+          package: "Network🌍"
+          attribution: "Gianpi - Network - hassiohelp.eu"
+
+        ##---------------------- IMPOSTAZIONI DEL PACKAGE ----------------------##       
+        ##---------------------- FINE IMPOSTAZIONI PACKAGE ---------------------##
+
+      ################################################
+      ## sensor
+      ################################################
+      sensor.dryer_status:
+        <<: *customize
+        icon: mdi:washing-machine
+        friendly_name: "Stato Asciugatrice"
+
+      binary_sensor.dryer_status:
+        <<: *customize
+        icon: mdi:washing-machine
+        friendly_name: "Asciugatrice ON/OFF"
+
+      binary_sensor.dryer_maintenance:
+        <<: *customize
+        icon: mdi:washing-machine-alert
+        friendly_name: "Manutenzione ON/OFF"
+
+      sensor.dryer_time_left:
+        <<: *customize
+        icon: mdi:progress-clock
+        friendly_name: "Fine prevista in "
+
+      sensor.asciugatrice_modulo_manutenzione:
+        <<: *customize
+        icon: mdi:progress-clock
+        friendly_name: "Cicli effettuati"
+
+      sensor.asciugatrice_oggi_runtime:
+        <<: *customize
+        friendly_name: Durata asciugatura oggi
+
+      sensor.asciugatrice_ieri_runtime:
+        <<: *customize
+        friendly_name: Durata asciugature ieri
+
+      sensor.asciugatrice_ultimo_runtime:
+        <<: *customize
+        friendly_name: Durata ultima asciugatura
+
+      sensor.asciugatrice_oggi_cicli:
+        <<: *customize
+        icon: mdi:autorenew
+        friendly_name: "Cicli oggi"
+
+      sensor.asciugatrice_settimana_cicli:
+        <<: *customize
+        icon: mdi:autorenew
+        friendly_name: "Cicli settimanali"
+
+      sensor.asciugatrice_mese_cicli:
+        <<: *customize
+        icon: mdi:autorenew
+        friendly_name: "Cicli mensili"
+
+      sensor.asciugatrice_anno_cicli:
+        <<: *customize
+        icon: mdi:autorenew
+        friendly_name: "Cicli annuali"
+
+      sensor.asciugatrice_oggi_energy:
+        <<: *customize
+        icon: mdi:transmission-tower-import
+        friendly_name: "Energia oggi"
+
+      sensor.asciugatrice_settimana_energy:
+        <<: *customize
+        icon: mdi:transmission-tower-import
+        friendly_name: "Energia settimanale"
+
+      sensor.asciugatrice_mese_energy:
+        <<: *customize
+        icon: mdi:transmission-tower-import
+        friendly_name: "Energia mensile"
+
+      sensor.asciugatrice_anno_energy:
+        <<: *customize
+        icon: mdi:transmission-tower-import
+        friendly_name: "Energia annuale"
+
+      sensor.asciugatrice_oggi_cost:
+        <<: *customize
+        friendly_name: "Costo oggi"
+        icon: mdi:currency-eur
+
+      sensor.asciugatrice_settimana_cost:
+        <<: *customize
+        friendly_name: "Costo settimanale"
+        icon: mdi:currency-eur
+
+      sensor.asciugatrice_mese_cost:
+        <<: *customize
+        friendly_name: "Costo mensile"
+        icon: mdi:currency-eur
+
+      sensor.asciugatrice_anno_cost:
+        <<: *customize
+        friendly_name: "Costo annuale"
+        icon: mdi:currency-eur
+
+      sensor.asciugatrice_total_runtime:
+        <<: *customize
+        friendly_name: "Total Runtime"
+        icon: mdi:chart-areaspline
+
+  #################################################################
+  #                                                               #
+  #                 INPUT BOOLEAN SELECT DATETIME                 #
+  #                                                               #
+  #################################################################  
+  input_select:
+    dryer_status:
+      name: Stato asciugatrice
+      options:
+        - Idle
+        - Lavaggio
+        - Risciacquo
+        - Svuotare
+      initial: Idle
+
+    asciugatrice_program:
+      name: Programma asciugatrice
+      options:
+        - Cotone #3,2
+        - Misti #1,10
+        - Sintetici #1,4
+        - Delicati #0,4
+        - Accappatoi
+        - 'Off'
+      initial: Misti
+
+  input_datetime:
+    asciugatrice_time_end:
+      name: End time
+      has_time: true
+      has_date: true
+
+  input_number:
+    asciugatrice_runtime:
+      name: Runtime totale asciugatrice
+      min: 0
+      max: 1000
+      step: 0.01
+      mode: box
+      icon: mdi:chart-areaspline
+    asciugatrice_energia_iniziale:
+      name: Energia iniziale asciugatrice
+      min: 0
+      max: 1000
+      step: 0.01
+      mode: box
+      icon: mdi:chart-areaspline
+    asciugatrice_ripetizioni_notifica:
+      name: Numero ripetizioni notifica
+      min: 1
+      max: 10
+      step: 1
+      icon: mdi:voicemail
+    asciugatrice_avviso_manutenzione:
+      name: Cicli di avviso di manutenzione
+      min: 10
+      max: 100
+      step: 5
+      icon: mdi:bullhorn
+    costo_energia:
+      name: Costo Energia
+      initial: 0.2
+      min: 0.05
+      max: 0.6
+      step: 0.01
+      icon: mdi:currency-eur
+
+  input_boolean:
+    asciugatrice_grocy_utilization:
+      name: Asciugatrice Grocy
+      icon: mdi:fridge
+    asciugatrice_runtime:
+      name: Durata ciclo di lavaggio
+      icon: mdi:timer-sand
+      initial: 'off'    
+
+  #################################################################
+  #                                                               #
+  #                           COUNTER                             #
+  #                                                               #
+  #################################################################
+  counter:
+    cicli_lavaggio_asciugatrice:
+      name: Cicli totali asciugatrice
+      step: 1
+      restore: true
+      icon: mdi:counter
+
+  #################################################################
+  #                                                               #
+  #                           SCRAPE                              #
+  #                                                               #
+  #################################################################
+  # DA SCEGLIERE SE USARE AL POST DELL'HELPER input_number.costo_energia
+  # scrape:
+  #   - resource: https://www.a2aenergia.eu/assistenza/tutela-cliente/indici/indice-pun
+  #     sensor:
+  #       - name: PUN F1
+  #         value_template: "{{ (value | replace (',', '.'))| float(default=0)}}"
+  #         select: "td"
+  #         index: 2
+  #         device_class: monetary
+  #         unit_of_measurement: EUR/kWh
+  #   - resource: https://www.servizioelettriconazionale.it/it-IT/tariffe/uso-domestico/biorarie/residente
+  #     sensor:
+  #       - name: SEN F1
+  #         value_template: "{{ (value | replace (',', '.'))| float(default=0)}}"
+  #         select: "td"
+  #         index: 3
+  #         device_class: monetary
+  #         unit_of_measurement: EUR/kWh
+  #
+  #################################################################
+  #                                                               #
+  #                           SENSOR                              #
+  #                                                               #
+  #################################################################
+  ## binary_sensor.dryer_status DA INSERIRE NEL RECORDER ##
+  sensor:
+    - platform: history_stats
+      name: Asciugatrice ultimo runtime
+      entity_id: binary_sensor.dryer_status
+      state: "on"
+      type: time
+      start: "{{ as_timestamp(states['input_boolean.asciugatrice_runtime'].last_changed | default, 0)}}"
+      end: "{{ now() }}"
+
+    - platform: history_stats
+      name: Asciugatrice oggi runtime
+      entity_id: binary_sensor.dryer_status
+      state: "on"
+      type: time
+      start: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
+      end: "{{ now() }}"
+
+  #################################################################
+  #                                                               #
+  #                          TEMPLATE                             #
+  #                                                               #
+  #################################################################
+  ### personalizzare l'entità di energia ###
+  template:
+    - trigger:
+        - platform: state
+          entity_id: sensor.dryer_status
+          to: "Svuotare"
+      sensor:
+        - name: asciugatrice_run_energy
+          state: >
+            {% set sensore_energia = "sensor.plug_asciugatrice_energy"%}
+            {% set value1 =  states('input_number.asciugatrice_energia_iniziale') |float(default=0) %}
+            {% set value2 =  states(sensore_energia) |float(default=0) %}
+            {{ (value2 - value1)|round(2,default=0)}}
+          availability: >
+            {% set sensore_energia = "sensor.plug_asciugatrice_energy" %}
+            {{ states(sensore_energia) not in ['unavailable', 'unknown', 'None'] }}
+
+    - sensor:
+      - name: dryer_status
+        state: "{{ states('input_select.dryer_status') }}"
+
+      - name: asciugatrice_total_runtime
+        state: >
+          {% set value =  states('input_number.asciugatrice_runtime') %}
+          {%  if ((value|float % 1)|round(2) * 60)|int >9  %}
+            {{ value|int }}:{{ ((value|float % 1)|round(2) * 60)|int(default=0) }}:00
+          {%  else %}
+            {{ value|int }}:0{{ ((value|float % 1)|round(2) * 60)|int(default=0) }}:00
+          {%  endif %}
+        availability: >
+          {{ states('input_number.asciugatrice_runtime') not in ['unavailable', 'unknown', 'None'] }}
+
+      - name: asciugatrice_modulo_manutenzione
+        state: >
+          {%- set value1 =  states('counter.cicli_lavaggio_asciugatrice') |int(default=0) -%}
+          {%- set value2 =  states('input_number.asciugatrice_avviso_manutenzione') |int(default=0) -%}
+          {{ value1 % value2 if value2 !=0 else 0 }}
+        availability: >
+          {{ states('counter.cicli_lavaggio_asciugatrice') not in ['unavailable', 'unknown', 'None'] }}
+
+      - name: dryer_time_left
+        state: >
+          {% set timer = ((states.input_datetime.asciugatrice_time_end.attributes.timestamp - as_timestamp(now())) / 60 ) | round(0) | default(1) %}
+          {% if states('sensor.dryer_status') != 'Idle' %}
+            {{ timer if timer>0 else 0 }} min
+          {% else %}
+            {% set program = states('input_select.asciugatrice_program') | default("Off") %}
+            {% set dict_time_program = {
+              'Cotone': '03:20:00',
+              'Misti': '01:10:00',
+              'Sintetici': '01:40:00',
+              'Delicati': '00:40:00',
+              'Accappatoi: '00:40:00',
+              'Off': '00:00:00' } %}
+            {{ dict_time_program[program] if program in dict_time_program else '00:00:00'}}
+          {% endif %}
+        availability: >
+          {{ states('input_datetime.asciugatrice_time_end') not in ['unavailable', 'unknown', 'None'] }}
+
+      - name: asciugatrice_cost
+        state: "{{(states('sensor.asciugatrice_run_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+        attributes:
+          oggi_cost: "{{(states('sensor.asciugatrice_oggi_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          settimana_cost: "{{(states('sensor.asciugatrice_settimana_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          mese_cost: "{{(states('sensor.asciugatrice_mese_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          anno_cost: "{{(states('sensor.asciugatrice_anno_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+        unit_of_measurement: '€'
+        device_class: monetary
+        availability: >
+          {{ states('sensor.asciugatrice_oggi_energy') not in ['unavailable', 'unknown', 'None'] }}
+
+    - binary_sensor:
+      - name: dryer_status
+        device_class: power
+        state: >
+          {{ states('sensor.dryer_status') in ['Riempimento','Lavaggio','Risciacquo','Centrifuga'] }}
+        availability: >
+          {{ states('sensor.dryer_status') not in ['unavailable', 'unknown', 'none'] }}
+
+      - name: dryer_maintenance
+        device_class: problem
+        state: >
+          {%- set value1 =  states('counter.cicli_lavaggio_asciugatrice') | int(default=0) -%}
+          {%- set value2 =  states('input_number.asciugatrice_avviso_manutenzione') | int(default=0) -%}
+          {{ (value1 % value2 == 0) if value2 !=0 else False}}
+        availability: >
+          {{ states('counter.cicli_lavaggio_asciugatrice') not in ['unavailable', 'unknown', 'none'] }}
+
+  #################################################################
+  #                                                               #
+  #                      UTILITY METER                            #
+  #                                                               #
+  #################################################################  
+  ## CICLI LAVAGGIO ##
+  utility_meter:
+    asciugatrice_oggi_cicli:
+      source: *CONF_CICLI_TOTALE
+      cycle: daily
+    asciugatrice_settimana_cicli:
+      source: *CONF_CICLI_TOTALE
+      cycle: weekly
+    asciugatrice_mese_cicli:
+      source: *CONF_CICLI_TOTALE
+      cycle: monthly
+    asciugatrice_anno_cicli:
+      source: *CONF_CICLI_TOTALE
+      cycle: yearly
+  ## ENERGIA asciugatrice ##
+    asciugatrice_oggi_energy:
+      source: *CONF_ENERGY_ENTITY
+      cycle: daily
+    asciugatrice_settimana_energy:
+      source: *CONF_ENERGY_ENTITY
+      cycle: weekly
+    asciugatrice_mese_energy:
+      source: *CONF_ENERGY_ENTITY
+      cycle: monthly
+    asciugatrice_anno_energy:
+      source: *CONF_ENERGY_ENTITY
+      cycle: yearly
+  ## DURATA LAVAGGI ##
+    asciugatrice_settimana_runtime:
+      source: *CONF_OGGI_RUNTIME 
+      cycle: weekly
+    asciugatrice_mese_runtime:
+      source: *CONF_OGGI_RUNTIME 
+      cycle: monthly
+    asciugatrice_anno_runtime:
+      source: *CONF_OGGI_RUNTIME 
+      cycle: yearly
+
+  #################################################################
+  #                                                               #
+  #                          SCRIPT                               #
+  #                                                               #
+  #################################################################
+  script:
+    reset_contatori_asciugatrice:
+      sequence:
+        - alias: "Reset contatori asciugatrice"
+          service: utility_meter.calibrate
+          data:
+            value: '0'
+          target:
+            entity_id: 
+            - sensor.asciugatrice_settimana_cicli
+            - sensor.asciugatrice_mese_cicli
+            - sensor.asciugatrice_anno_cicli
+            - sensor.asciugatrice_settimana_energy
+            - sensor.asciugatrice_mese_energy
+            - sensor.asciugatrice_anno_energy
+            - sensor.asciugatrice_settimana_runtime
+            - sensor.asciugatrice_mese_runtime
+            - sensor.asciugatrice_anno_runtime
+
+    reset_totali_asciugatrice:
+      sequence:
+        - alias: "Reset cicli totale"
+          service: counter.reset
+          target:
+            entity_id: *CONF_CICLI_TOTALE
+        - alias: "Reset runtime totale"
+          service: input_number.set_value
+          data:
+            value: 0
+          target:
+            entity_id: input_number.asciugatrice_runtime
+
+  #################################################################
+  #                                                               #
+  #                          AUTOMATION                           #
+  #                                                               #
+  #################################################################
+  automation:
+  ## INSERIRE il SENSORE DI DURATA ##
+    - alias: "Durata totale accensione asciugatrice"
+      trigger:
+        platform: time
+        at: "23:59"
+      action:
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.asciugatrice_runtime
+          data:
+            value: "{{ states('input_number.asciugatrice_runtime') | float(default=0) + states('sensor.asciugatrice_oggi_runtime') | float(default=0) }}"
+  
+  #################################################################
+  ## la durata dei programmi è da personalizzare
+    - alias: Asciugatrice Program
+      mode: queued
+      trigger:
+        - platform: state
+          entity_id: input_select.asciugatrice_program
+        - platform: state
+          entity_id: sensor.dryer_status
+          from: "Idle"
+          to: "Lavaggio"
+      action:
+        - service: input_datetime.set_datetime
+          target:
+            entity_id: input_datetime.asciugatrice_time_end
+          data:
+            time: >-
+              {% set program = states('input_select.asciugatrice_program') %}
+              {% set dict_time_program = {
+                'Cotone': '03:20:00',
+                'Misti': '01:10:00',
+                'Sintetici': '01:40:00',
+                'Delicati': '00:40:00',
+                'Accappatoi: '00:40:00',
+                'Off': '00:00:00' } %}
+              {% set t = now().timestamp() %}
+              {% set sec = strptime(dict_time_program[program], "%H:%M:%S").hour*3600 + strptime(dict_time_program[program], "%H:%M:%S").minute*60  %}
+              {{ (t+sec) | timestamp_custom("%H:%M:%S", true) }}
+            date: >-
+              {{ now().timestamp() | timestamp_custom("%Y-%m-%d", true)  }}
+        
+  #################################################################
+    # - alias: Avviso manutenzione asciugatrice
+    #   trigger:
+    #     - platform: template
+    #       value_template: "{{ states('counter.cicli_lavaggio_asciugatrice')|int(default=0) %  states('input_number.asciugatrice_avviso_manutenzione')|int(default=0) == 0 }}"
+    #       for: "00:01:00"
+    #   action:
+    #     - variables:
+    #         avvisi_manutenzione: " {{ states('input_number.asciugatrice_avviso_manutenzione') }} "
+    #     - service: script.my_notify
+    #       data:
+    #         title: "-- Attenzione --"
+    #         notify: notify.telegram, notify.mobile_app_mi_9
+    #         message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di lavaggio, è l'ora di fare manutenzione alla asciugatrice"
+    #         google: 1
+        ### NOTIFICHE TELEGRAM, COMPANION, GOOGLE, ALEXA ###
+        # - service: *DEFAULT_NOTIFY_MOBILE
+        #   data:
+        #     title: "-- Attenzione --"
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di lavaggio 💧, è l'ora di fare manutenzione 🔧 alla asciugatrice"
+        # - service: *DEFAULT_NOTIFY
+        #   data:
+        #     title: "-- Attenzione --"
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di lavaggio 💧, è l'ora di fare manutenzione 🔧 alla asciugatrice"
+        # - service: *DEFAULT_SERVICE_TTS
+        #   data:
+        #     entity_id: *DEFAULT_MEDIA_PLAYER_GOOGLE
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di lavaggio, è l'ora di fare manutenzione alla asciugatrice"
+        # - service: notify.alexa_media
+        #   data:
+        #     message: "Hai raggiunto i {{ avvisi_manutenzione }} cicli di lavaggio, è l'ora di fare manutenzione alla asciugatrice"
+        #     target: *DEFAULT_MEDIA_PLAYER_ALEXA 
+        #     data:
+        #       type: announce
+        
+  #################################################################
+  #                                                               #
+  #                     END OF CONFIGURATION FILE                 #
+  #                                                               #
+  #################################################################
