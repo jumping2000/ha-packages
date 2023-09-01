@@ -51,30 +51,27 @@ custom_fields:
     #######################################
     ## PICTURE CARD
     #######################################
-	  type: picture-elements
-	  style: |
-		@keyframes smoke {
-		  100% {
-			transform: translatey(-180px) scaley(1.5) scalex(1.5);
-			filter: blur(15px);
-		}
-		  0% {
-			transform: translatey(0) scaley(0.5) scalex(0.5);
-			filter: blur(5px);
-		}
-		}
-		@keyframes cook {
-		  0% 100% { filter: saturate(1); }
-		  50% { filter: saturate(0); }
-		}
-
-		ha-card {
-		  --my-cook: {% if is_state('sensor.oven_status', 'Riscaldamento') or is_state('sensor.oven_status', 'Mantenimento')%} cook 1800ms infinite {% endif %};
-		  --my-smoke: {% if is_state('sensor.oven_status', 'Mantenimento') %} smoke 2.5s infinite {% endif %};
-		  border-radius: 0px 0px 0px 0px;
-		}
-        image: /local/hassiohelp/pkg_elettrodomestici/sfondo_black.png
-        elements:
+      type: picture-elements
+      style: |
+        @keyframes smoke {
+          100% {
+          transform: translatey(-180px) scaley(1.5) scalex(1.5);
+          filter: blur(15px); }
+          0% {
+          transform: translatey(0) scaley(0.5) scalex(0.5);
+          filter: blur(5px); }
+        }
+        @keyframes cook {
+          0% 100% {filter: saturate(1); }
+          50% {filter: saturate(0); }
+        }
+        ha-card {
+          --my-cook: {% if is_state('sensor.oven_status', 'Riscaldamento') or is_state('sensor.oven_status', 'Mantenimento')%} cook 1800ms infinite {% endif %};
+          --my-smoke: {% if is_state('sensor.oven_status', 'Mantenimento') %} smoke 2.5s infinite {% endif %};
+          border-radius: 0px 0px 0px 0px;
+        }
+      image: /local/hassiohelp/pkg_elettrodomestici/sfondo_black.png
+      elements:
   #######################################
   # inserire lo switch della forno  #
   #######################################
@@ -90,36 +87,36 @@ custom_fields:
             width: 27%
           tap_action:
             action: toggle
-  ###
+        ###
         - type: image
           entity: sensor.oven_status 
           image: /local/hassiohelp/pkg_elettrodomestici/forno_chicken.png
           state_filter:
-			#'Off': opacity(0.0)
-			Riscaldamento: null
-			Mantenimento: null
-			Idle: opacity(0.0)
+            #'Off': opacity(0.0)
+            Riscaldamento: null
+            Mantenimento: null
+            Idle: opacity(0.0)
           style:
-			transform: 'translate(0%,0%)'
-			animation: var(--my-cook)
-			left: 12%
-			top: 29% #43%
-			width: 21%
-  ###
+            transform: 'translate(0%,0%)'
+            animation: var(--my-cook)
+            left: 12%
+            top: 29% #43%
+            width: 21%
+        ###
         - type: image
           entity: sensor.oven_status 
           image: /local/hassiohelp/pkg_elettrodomestici/forno_smoke.png
-		  state_filter:
-			'Off': opacity(0.0)
-			Riscaldamento: opacity(0.0)
-			Mantenimento: null #opacity(0.0)
-			Idle: opacity(0.0) #null
-		  style:
-			transform: 'translate(0%,0%)'
-			animation: var(--my-smoke)
-			left: 12%
-			top: 30% #35
-			width: 25%
+          state_filter:
+            'Off': opacity(0.0)
+            Riscaldamento: opacity(0.0)
+            Mantenimento: null #opacity(0.0)
+            Idle: opacity(0.0) #null
+          style:
+            transform: 'translate(0%,0%)'
+            animation: var(--my-smoke)
+            left: 12%
+            top: 30% #35
+            width: 25%
   #######################################
   ## POWER LABEL
   #######################################
