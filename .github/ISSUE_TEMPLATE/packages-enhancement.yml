@@ -1,4 +1,4 @@
-name: Packages Enhancement
+name: Package Enhancement
 description: Propose a new feature/improvement for an existing package
 title: 'Enhancement - '
 labels:
@@ -15,7 +15,7 @@ body:
         This template should only be used to propose a new feature or enhancement for an existing package. If this is not your case, you can [choose a different issue template](https://github.com/jumping2000/ha-templates/issues/new/choose). 
   - type: input
     attributes:
-      label: package name
+      label: Package name
       description: The name of the package you're opening this issue for.
     validations:
       required: true
