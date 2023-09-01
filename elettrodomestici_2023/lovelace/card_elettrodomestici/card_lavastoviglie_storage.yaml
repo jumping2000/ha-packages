@@ -134,7 +134,7 @@ custom_fields:
   ### ENERGY LABEL
   #######################################
         - type: state-label
-          entity: sensor.plug_lavastoviglie_power 
+          entity: sensor.plug_lavastoviglie_energy
           prefix: '🏭 '
           style:
             top: 0%
