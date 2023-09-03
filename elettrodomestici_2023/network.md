@@ -338,14 +338,17 @@ dove ***/config/packages#*** è il path all'interno del filesystem del container
 
 <br>
 
-* verificare che l'operazione sia andata a buon fine senza errori (_controllare sempre il log_);
-* controllare package e card con un editor di testo e verificare che non ci siano tag "**ENTITA' NON NEL BLUEPRINT**", nel caso provvedere a cancellare o cambiare il blueprint inserendo l'entità necessaria (in questo package è da monitorare attentamente il sensore "VDSL distance" che non è significativo per connessioni FTTH);
+* verificare che l'operazione sia andata a buon fine e lo script abbia effettuato le sostituzioni;
+* controllare package e card con un editor di testo e verificare che non ci siano tag "**ENTITA' NON NEL BLUEPRINT**", che può indicare 2 cose:
+  * hai dimenticato di inserire nel blueprint delle entità necessarie;
+  * ci sono delle entità da cancellare poichè non significative nella tua configurazione (in questo package è da monitorare attentamente il sensore "VDSL distance" che non è  significativo per connessioni FTTH);
 * finiti questi passaggi inserire la card router o nella propria configurazione Lovelace in YAML oppure nella propria interfaccia costruita tramite UI come di seguito riportato;
 * riavviare Home Assistant;
-* dopo il riavvio di HA controllare che non ci siano errori nel log.
+* dopo il riavvio di HA controllare che non ci siano _errori nel log_.
 
 ***Avvertenze***: 
 1. ricordarsi di effettuare l'avvio dello script subito dopo il completamento del blueprint.
+2. lo script va lanciato una sola volta
 2. se per qualche motivo avete cambiato o volete cambiare i percorsi standard è possibile utilizzare delle opzioni nella sintassi dello script:
     * ***-a*** : per cambiare il percorso completo del file _automations.yaml_
     * ***-c*** : per variare il percorso completo della card
