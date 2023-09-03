@@ -181,7 +181,7 @@ Al contrario gli aspetti di configurazione che sono più soggetti a variazioni s
 <table align="center">
 	<tr>
 	    <th><center> 🖥 Desktop 🖥<center></th>
-            <th><center>📱 Mobile 🔋<center></th>
+      <th><center>📱 Mobile 🔋<center></th>
 	</tr>
     <tr>
         <td><div align=center><img width = "450" src="img/lavatrice_1.png"/></div></td>
