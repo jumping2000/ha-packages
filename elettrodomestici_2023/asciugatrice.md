@@ -166,7 +166,6 @@ La sezione orizzontale di bottoni in basso ("***button container***") presenta l
 | :---: | --- |
 | **Info** | cliccando si apre una finestra con le informazioni di dettaglio relative alla consumi/cicli/costi per giorno, settimana, mese, anno ed asptti di configurazionec |
 | **Settimana** / **Mese** / **Anno** |informazioni relative all'energia consumata e i costi associati |
-| **Guest** | bottone che abilita la rete guest
 | **Asciugatrice** | bottone che con il tocco singolo spegne/accende la presa collegata all'elettrodomestico, con il tocco prolungato apre la finestra con i dati e i grafici di energia recuperati dalle informazioni statistiche contenute nel DB di HA |
 
 Come detto la card è adattabile al dispositivo usato e al suo orientamento, non si tratta una card _responsive_ ma si è cercato di rendere la fruizione buona sia su smartphone che su PC o tablet.
