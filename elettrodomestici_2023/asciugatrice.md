@@ -42,7 +42,7 @@ Riepiloghiamo i punti di forza di questo pacchetto sono:
 6. Utilizzo dei dati statistici conservati nel DB di HA senza quindi richiedere uan retention "_infinita_" o cmq molto estesa del DB stesso;
 
 
-$$\textbf{\color{red} \normalsize 🚨 Come usuale prestate massina attenzione ai collegamenti elettrici. 🚨}$$
+$$\textbf{\color{red} \normalsize 🚨 Come usuale prestate massima attenzione ai collegamenti elettrici. 🚨}$$
 
 
 ## Prerequisiti 
@@ -96,7 +96,7 @@ Vediamo in dettaglio quali sono gli stati per l'asciugatrice, le transizioni da 
 | :---: | --- |
 | **Idle** | Stato iniziale a riposo della asciugatrice | 
 | **Asciugatura** | Avvio del programma di asciugatura dei panni |
-| **MAntenimento** | Fase di mantenimento a bassa potenza |
+| **Mantenimento** | Fase di mantenimento a bassa potenza |
 | **Svuotare** | Stato finale del programma di asciugatura |
 
 <br>
