@@ -14,6 +14,7 @@
 # GRANDEZZA_CARATTERI_BUTTON_BIG: &CONF_FONT_SIZE_BIG "1.1em"
 # COLORE_BUTTON_NAME: "var(--primary-text-color)"
 # COLORE_BUTTON_LABEL: "var(--google-grey)" #"gray"
+###########################################################
 type: custom:button-card
 styles:
   card:
