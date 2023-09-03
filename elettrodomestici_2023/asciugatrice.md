@@ -1,4 +1,4 @@
-$$\textbf{\color{lightgreen} \huge 🌪 Asciugatrice 💧}$$
+$$\textbf{\color{lightgreen} \huge 🌪 Asciugatrice 💦}$$
 
 <p align="center"> 🔥 <b>Pacchetto AUTO CONFIGURANTE</b> 🔥 </p>
 

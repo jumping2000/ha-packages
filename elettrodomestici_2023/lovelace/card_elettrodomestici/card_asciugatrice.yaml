@@ -1,3 +1,20 @@
+###########################################################
+# SFONDO_IMMAGINE: "/local/hassiohelp/pkg_elettrodomestici/sfondo_black.png"
+# GRANDEZZA_CARATTERI_BASE: "12px"
+# GRANDEZZA_CARATTERI_APEX: "10px"
+# ALTEZZA_LINEA: "24px"
+# COLORSCHEME_RGB_RED: "#bf212f"
+# COLORSCHEME_RGB_YELLOW: "#f9a73e"
+# COLORSCHEME_RGB_GREEN2: "#006f3c"
+# COLORSCHEME_RGB_GREEN: "#27b376"
+# COLORSCHEME_RGB_BLUE: "#264b96"
+###########################################################
+# GRANDEZZA_CARATTERI_BUTTON_SMALL: &CONF_FONT_SIZE_SMALL "0.85em"
+# GRANDEZZA_CARATTERI_BUTTON_MEDIUM: &CONF_FONT_SIZE_MEDIUM "0.95em"
+# GRANDEZZA_CARATTERI_BUTTON_BIG: &CONF_FONT_SIZE_BIG "1.1em"
+# COLORE_BUTTON_NAME: "var(--primary-text-color)"
+# COLORE_BUTTON_LABEL: "var(--google-grey)" #"gray"
+###########################################################
 type: custom:button-card
 styles:
   card:
