@@ -42,7 +42,7 @@ Riepiloghiamo i punti di forza di questo pacchetto sono:
 6. Utilizzo dei dati statistici conservati nel DB di HA senza quindi richiedere uan retention "_infinita_" o cmq molto estesa del DB stesso;
 
 
-$$\textbf{\color{red} \normalsize 🚨 Come usuale prestate attenzione ai collegamenti elettrici. 🚨}$$
+$$\textbf{\color{red} \normalsize 🚨 Come usuale prestate massina attenzione ai collegamenti elettrici. 🚨}$$
 
 
 ## Prerequisiti 
@@ -59,7 +59,7 @@ Per poter utilizzare il packages occorrono alcune card e alcune configurazioni a
 | **[Bar Card](https://github.com/custom-cards/bar-card)** | Usato ma non indispensabile |
 | **[Multiple Entity Row](https://github.com/benct/lovelace-multiple-entity-row)** | Usato ma non indispensabile |
 
-L'utilizzo delle card _non indispensabili_ permette una migliore visualizzazione delle informazioni soprattutto con i dispositivi smartphone ma nulla vieta di poterle rimuovere utilizzando dei layout più scomodi ma comunque fruibili (questo vale per la Layout Card e la Multiple Entity Row). La rimozione dei componenti custom e dl relativo adattamento del codice YAML è lasciato al lettore "evoluto" in grado di procedere in autonomia.
+L'utilizzo delle card _non indispensabili_ permette una migliore visualizzazione delle informazioni soprattutto con i dispositivi smartphone ma nulla vieta di poterle rimuovere utilizzando dei layout più scomodi ma comunque fruibili (questo vale per la Layout Card e la Multiple Entity Row). La rimozione dei card custom e dl relativo adattamento del codice YAML è lasciato al lettore "evoluto" in grado di procedere in autonomia.
 
 | Configurazioni obbligatorie |
 | :---: |
