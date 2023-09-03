@@ -25,7 +25,7 @@ custom_fields:
         @keyframes idle {}
         @keyframes unknown {}
         @keyframes unavailable {}
-        @keyframes lavaggio {
+        @keyframes asciugatura {
           0% { transform: rotate(0deg); }
           10% { transform: rotate(40deg); }
           20% { transform: rotate(80deg); }
@@ -37,25 +37,15 @@ custom_fields:
           90% { transform: rotate(-80deg); }
           100% { transform: rotate(0deg); }
         }
-        @keyframes riempimento{
-          30% { transform: rotate(40deg); }
-          60% { transform: rotate(-40deg); }
-        }
-        @keyframes centrifuga {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }             
-        }
-        @keyframes risciacquo {
+        @keyframes mantenimento {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(720deg); } 
         }
         ha-card { 
           --my-animation-name: {{stato|lower}};
           --my-rotate: {{ {
-                'Riempimento' : '1800ms infinite ease-in-out',
-                'Lavaggio' : '1800ms infinite ease-in-out backwards',
-                'Centrifuga' : '150ms infinite ease-in-out',
-                'Risciacquo' : '1500ms infinite ease-in-out alternate backwards',
+                'Asciugatura' : '1800ms infinite ease-in-out backwards',
+                'Mantenimento' : '1500ms infinite ease-in-out alternate backwards',
                 'Idle': '',
                 'unknown':'',
                 'unavailable':''
@@ -81,10 +71,8 @@ custom_fields:
           image: /local/hassiohelp/pkg_elettrodomestici/asciugatrice_oblo.png
           state_filter:
             Idle: opacity(0.0)
-            Riempimento: opacity(0.0)
-            Lavaggio: opacity(0.0)
-            Risciacquo: opacity(0.0)
-            Centrifuga: opacity(0.0)
+            Asciugatura: opacity(0.0)
+            Mantenimento: opacity(0.0)
             Svuotare: null
           style:
             left: 16.5%
@@ -96,9 +84,8 @@ custom_fields:
           image: /local/hassiohelp/pkg_elettrodomestici/asciugatrice_panni.png
           state_filter:
             Idle: opacity(0.0)
-            Riempimento: null
-            Lavaggio: null
-            Risciacquo: null
+            Asciugatura: null
+            Mantenimento: null
             Svuotare: opacity(0.0)
           style:
             transform: translate(0%,0%)
@@ -113,9 +100,8 @@ custom_fields:
           image: /local/hassiohelp/pkg_elettrodomestici/asciugatrice_cornice.png
           state_filter:
             Idle: opacity(0.0)
-            Riempimento: null
-            Lavaggio: null
-            Risciacquo: null
+            Asciugatura: null
+            Mantenimento: null
             Svuotare: opacity(0.0)
           style:
             left: 22%
@@ -539,12 +525,12 @@ custom_fields:
                                     unit: kWh
                                   - entity: sensor.asciugatrice_cost
                                     name: Costo
-                              - entity: counter.cicli_lavaggio_asciugatrice
+                              - entity: counter.cicli_asciugatrice
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Totali
                                 entities:
-                                  - entity: counter.cicli_lavaggio_asciugatrice
+                                  - entity: counter.cicli_asciugatrice
                                     name: Cicli
                                   - entity: sensor.asciugatrice_total_runtime
                                     name: Durata

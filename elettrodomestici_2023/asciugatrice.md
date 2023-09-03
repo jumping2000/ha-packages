@@ -245,6 +245,7 @@ Saranno presenti due cartelle _autoconfig_, una per PC (_autoconfig_x86_64_) e u
 │   │       └── pkg_elettrodomestici/
 │   │           ├── asciugatrice.png
 │   │           ├── asciugatrice_oblo.png
+│   │           ├── asciugatrice_cornice.png
 │   │           ├── asciugatrice_panni.png
 │   │           ├── sfondo_black.png
 │   │           ├── sfondo_white.png

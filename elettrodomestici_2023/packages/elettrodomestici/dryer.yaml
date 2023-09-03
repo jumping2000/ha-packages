@@ -26,7 +26,7 @@
       ## CUSTOMIZE NODE ANCHORS
       ############################################################################
       package.dryer:
-        version: &v "2023.9.1"
+        version: &v "2023.9.0"
         date: 📅 01/09/2023 - Updated 31/09/2023
         info: https://github.com/jumping2000/
         information provided by: Smart Plug
@@ -43,7 +43,7 @@
         ## CONFIGURATION
         PLUG ASCIUGATRICE ENERGIA (kWh): &CONF_ENERGY_ENTITY "sensor.plug_asciugatrice_energy"
         ## NON CAMBIARE ##
-        COUNTER CICLI LAVAGGIO: &CONF_CICLI_TOTALE "counter.cicli_lavaggio_asciugatrice"
+        COUNTER CICLI LAVAGGIO: &CONF_CICLI_TOTALE "counter.cicli_asciugatrice"
         DURATA LAVAGGIO OGGI: &CONF_OGGI_RUNTIME "sensor.asciugatrice_oggi_runtime"
         ##---------------------- FINE IMPOSTAZIONI PACKAGE ---------------------##
 
@@ -214,7 +214,7 @@
   #                                                               #
   #################################################################
   counter:
-    cicli_lavaggio_asciugatrice:
+    cicli_asciugatrice:
       name: Cicli totali asciugatrice
       step: 1
       restore: true
@@ -282,11 +282,11 @@
 
       - name: asciugatrice_modulo_manutenzione
         state: >
-          {%- set value1 =  states('counter.cicli_lavaggio_asciugatrice') |int(default=0) -%}
+          {%- set value1 =  states('counter.cicli_asciugatrice') |int(default=0) -%}
           {%- set value2 =  states('input_number.asciugatrice_avviso_manutenzione') |int(default=0) -%}
           {{ value1 % value2 if value2 !=0 else 0 }}
         availability: >
-          {{ states('counter.cicli_lavaggio_asciugatrice') not in ['unavailable', 'unknown', 'none'] }}
+          {{ states('counter.cicli_asciugatrice') not in ['unavailable', 'unknown', 'none'] }}
 
       - name: asciugatrice_cost
         state: "{{(states('sensor.asciugatrice_run_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
@@ -311,11 +311,11 @@
       - name: dryer_maintenance
         device_class: problem
         state: >
-          {%- set value1 =  states('counter.cicli_lavaggio_asciugatrice') | int(default=0) -%}
+          {%- set value1 =  states('counter.cicli_asciugatrice') | int(default=0) -%}
           {%- set value2 =  states('input_number.asciugatrice_avviso_manutenzione') | int(default=0) -%}
           {{ (value1 % value2 == 0) if value2 !=0 else False}}
         availability: >
-          {{ states('counter.cicli_lavaggio_asciugatrice') not in ['unavailable', 'unknown', 'none'] }}
+          {{ states('counter.cicli_asciugatrice') not in ['unavailable', 'unknown', 'none'] }}
 
       - name: dryer_time_left
         state: >
