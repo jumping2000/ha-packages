@@ -1,32 +1,3 @@
-############## ENTITA PLUG DA PERSONALIZZARE ##############
-# PLUG_LAVASTOVIGLIE_SWITCH: "switch.plug_lavastoviglie"
-# PLUG_LAVASTOVIGLIE_POTENZA_(W): "sensor.plug_lavastoviglie_power"
-# PLUG_LAVASTOVIGLIE_ENERGIA_(kWh): "sensor.plug_lavastoviglie_energy"
-# PLUG_LAVASTOVIGLIE_CORRENTE_(A): "sensor.plug_lavastoviglie_current"
-# PLUG_LAVASTOVIGLIE_TENSIONE_(V): "sensor.plug_lavastoviglie_voltage"
-# PLUG_LAVASTOVIGLIE_POT_APPARENTE_(var): "sensor.plug_lavastoviglie_apparent_power"
-# PLUG_LAVASTOVIGLIE_POT_REATTIVA_(VA): "sensor.plug_lavastoviglie_reactive_power"
-###########################################################
-# CONTEGGIO_MANUTENZIONI_LAVASTOVIGLIE: "sensor.lavastoviglie_modulo_manutenzione"
-# LAVASTOVIGLIE_STATUS: "sensor.dishwasher_status"
-# PROGRAM_LAVASTOVIGLIE_STATUS: "input_select.lavastoviglie_program"
-###########################################################
-# SFONDO_IMMAGINE: "/local/hassiohelp/pkg_elettrodomestici/sfondo_black.png"
-# GRANDEZZA_CARATTERI_BASE: "12px"
-# GRANDEZZA_CARATTERI_APEX: "10px"
-# ALTEZZA_LINEA: "24px"
-# COLORSCHEME_RGB_RED: "#bf212f"
-# COLORSCHEME_RGB_YELLOW: "#f9a73e"
-# COLORSCHEME_RGB_GREEN2: "#006f3c"
-# COLORSCHEME_RGB_GREEN: "#27b376"
-# COLORSCHEME_RGB_BLUE: "#264b96"
-###########################################################
-# GRANDEZZA_CARATTERI_BUTTON_SMALL: &CONF_FONT_SIZE_SMALL "0.85em"
-# GRANDEZZA_CARATTERI_BUTTON_MEDIUM: &CONF_FONT_SIZE_MEDIUM "0.95em"
-# GRANDEZZA_CARATTERI_BUTTON_BIG: &CONF_FONT_SIZE_BIG "1.1em"
-# COLORE_BUTTON_NAME: "var(--primary-text-color)"
-# COLORE_BUTTON_LABEL: "var(--google-grey)" #"gray"
-###########################################################
 type: custom:button-card
 styles:
   card:
@@ -48,103 +19,134 @@ styles:
 custom_fields:
   pictures:
     card:
-    #######################################
-    ## PICTURE CARD
-    #######################################
       type: picture-elements
       style: |
-        @keyframes blinker {
-          0% 49% 51% 100% { opacity: 1; }
-          50% { opacity: 0.5; }
+        {% set stato = states('sensor.dryer_status') %}
+        @keyframes idle {}
+        @keyframes unknown {}
+        @keyframes unavailable {}
+        @keyframes lavaggio {
+          0% { transform: rotate(0deg); }
+          10% { transform: rotate(40deg); }
+          20% { transform: rotate(80deg); }
+          30% { transform: rotate(40deg); }
+          40% { transform: rotate(80deg); }
+          60% { transform: rotate(-40deg); }
+          70% { transform: rotate(-80deg); }
+          80% { transform: rotate(-40deg); }
+          90% { transform: rotate(-80deg); }
+          100% { transform: rotate(0deg); }
         }
-        ha-card {
-          --my-blinker: {% if (is_state('sensor.dishwasher_status', 'Prelavaggio') or 
-                              is_state('sensor.dishwasher_status', 'Lavaggio') or
-                              is_state('sensor.dishwasher_status', 'Risciacquo')) %} 
-                          blinker 800ms infinite 
-                        {% endif %};
+        @keyframes riempimento{
+          30% { transform: rotate(40deg); }
+          60% { transform: rotate(-40deg); }
+        }
+        @keyframes centrifuga {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }             
+        }
+        @keyframes risciacquo {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(720deg); } 
+        }
+        ha-card { 
+          --my-animation-name: {{stato|lower}};
+          --my-rotate: {{ {
+                'Riempimento' : '1800ms infinite ease-in-out',
+                'Lavaggio' : '1800ms infinite ease-in-out backwards',
+                'Centrifuga' : '150ms infinite ease-in-out',
+                'Risciacquo' : '1500ms infinite ease-in-out alternate backwards',
+                'Idle': '',
+                'unknown':'',
+                'unavailable':''
+                } [stato] }};
           border-radius: 0px 0px 0px 0px;
-        }  
+        }
       image: /local/hassiohelp/pkg_elettrodomestici/sfondo_black.png
       elements:
-  ###########################################
-  # inserire lo switch della lavastoviglie  #
-  ###########################################
         - type: image
-          entity: switch.plug_lavastoviglie 
-          image: /local/hassiohelp/pkg_elettrodomestici/lavastoviglie.png
+          entity: switch.plug_asciugatrice
+          image: /local/hassiohelp/pkg_elettrodomestici/asciugatrice.png
           state_filter:
             'off': brightness(50%) saturate(0.5) opacity(1.0)
             'on': brightness(100%)
           style:
             left: 22%
-            top: 48% #57.5%
+            top: 48.5%
             width: 27%
-  ###
+          tap_action:
+            action: toggle
         - type: image
-          entity: sensor.dishwasher_status 
-          image: /local/hassiohelp/pkg_elettrodomestici/lavastoviglie_finita.png
+          entity: sensor.dryer_status
+          image: /local/hassiohelp/pkg_elettrodomestici/asciugatrice_oblo.png
           state_filter:
             Idle: opacity(0.0)
             Riempimento: opacity(0.0)
             Lavaggio: opacity(0.0)
             Risciacquo: opacity(0.0)
             Centrifuga: opacity(0.0)
-            Svuotare: Null
+            Svuotare: null
           style:
-            left: 22.1% #21.5% #27%
+            left: 16.5%
             pointer-events: none
-            top: 48%
-            width: 33.2%
-  ###
+            top: 46%
+            width: 33%
         - type: image
-          entity: sensor.dishwasher_status 
-          image: /local/hassiohelp/pkg_elettrodomestici/lavastoviglie_wash.png
+          entity: sensor.dryer_status
+          image: /local/hassiohelp/pkg_elettrodomestici/asciugatrice_panni.png
           state_filter:
             Idle: opacity(0.0)
             Riempimento: null
             Lavaggio: null
             Risciacquo: null
-            Centrifuga: null
             Svuotare: opacity(0.0)
           style:
-            transform: 'translate(0%,0%)'
+            transform: translate(0%,0%)
             animation: var(--my-rotate)
             animation-name: var(--my-animation-name)
-            left: 18.4%
-            top: 15%
-            width: 7.5%
-  #######################################
-  ## POWER LABEL
-  #######################################
+            left: 14%
+            pointer-events: none
+            top: 31%
+            width: 16%
+        - type: image
+          entity: sensor.dryer_status
+          image: /local/hassiohelp/pkg_elettrodomestici/asciugatrice_cornice.png
+          state_filter:
+            Idle: opacity(0.0)
+            Riempimento: null
+            Lavaggio: null
+            Risciacquo: null
+            Svuotare: opacity(0.0)
+          style:
+            left: 22%
+            pointer-events: none
+            top: 47%
+            width: 19%
         - type: state-label
-          entity: sensor.plug_lavastoviglie_power 
+          entity: sensor.plug_asciugatrice_power
           prefix: '⚡ '
           style:
             top: 0%
             left: 32%
             pointer-events: none
             transform: initial
-            font-size: 12px 
+            font-size: 12px
             line-height: 24px
             padding: 0px 14px
-            color: "var(--primary-text-color)"
-  #######################################
-  ### ENERGY LABEL
-  #######################################
+            color: var(--primary-text-color)
         - type: state-label
-          entity: sensor.plug_lavastoviglie_energy
+          entity: sensor.plug_asciugatrice_energy
           prefix: '🏭 '
           style:
             top: 0%
             left: 52%
             pointer-events: none
             transform: initial
-            font-size: 12px 
+            font-size: 12px
             line-height: 24px
             padding: 0px 14px
         - type: state-label
-          entity: sensor.lavastoviglie_cost
+          entity: sensor.asciugatrice_cost
           attribute: oggi_cost
           prefix: '💰 '
           suffix: ' €'
@@ -153,71 +155,57 @@ custom_fields:
             left: 78%
             pointer-events: none
             transform: initial
-            font-size: 12px 
+            font-size: 12px
             line-height: 24px
             padding: 0px 14px
-  #######################################
-  ### STATUS LABEL
-  #######################################
         - type: state-label
-          entity: sensor.dishwasher_status
+          entity: sensor.dryer_status
           prefix: 'Stato: '
           style:
             top: 10%
             left: 36%
             pointer-events: none
             transform: initial
-            font-size: 12px 
+            font-size: 12px
             font-weight: bold
-            color: #27b376
+            color: null
             line-height: 24px
             padding: 2px 2px
-  #######################################
-  ### BINARY STATUS
-  #######################################
         - type: state-label
-          entity: binary_sensor.dishwasher_status
+          entity: binary_sensor.dryer_status
           style:
             top: 10%
             left: 65%
             pointer-events: none
             transform: initial
-            font-size: 12px 
+            font-size: 12px
             line-height: 24px
             padding: 2px 22px
         - type: state-icon
-          entity: binary_sensor.dishwasher_status
+          entity: binary_sensor.dryer_status
           state-color: true
           style:
-            top: 10% #0
-            left: 64% #0
+            top: 10%
+            left: 64%
             transform: scale(0.8)
             line-height: 24px
             padding: 0px 2px
-  #######################################
-  ### MAINTENANCE LABEL
-  #######################################
         - type: state-label
-          entity: sensor.lavastoviglie_modulo_manutenzione
+          entity: sensor.asciugatrice_modulo_manutenzione
           prefix: 'Cicli: '
           style:
             top: 10%
             left: 84%
             pointer-events: none
-            font-size: 12px  # 14px
-            line-height: 24px #24px
+            font-size: 12px
+            line-height: 24px
             transform: initial
             padding: 2px 2px
-  #######################################
-  ## GRAFICO
-  #######################################
-  # da inserire il sensore potenza      #
-  #######################################
-        - type: 'custom:apexcharts-card'
+        - type: custom:apexcharts-card
           style:
-            '--card-background-color': 'rgba(0, 0, 0, 0.0)'
-            '--ha-card-border-width': '0px'
-            '--ha-card-box-shadow': 'none'
+            '--card-background-color': rgba(0, 0, 0, 0.0)
+            '--ha-card-border-width': 0px
+            '--ha-card-box-shadow': none
             top: 60%
             left: 60%
             width: 50%
@@ -232,7 +220,7 @@ custom_fields:
             title:
               style:
                 fontSize: 12px
-                fontFamily: Segoe UI Light 
+                fontFamily: Segoe UI Light
             yaxis:
               forceNiceScale: true
               decimalsInFloat: 0
@@ -262,12 +250,12 @@ custom_fields:
             show: false
             show_states: false
             colorize_states: true
-            title: 'Potenza'
+            title: Potenza
           series:
-            - entity: sensor.plug_lavastoviglie_power
+            - entity: sensor.plug_asciugatrice_power
               name: Potenza
-              type: line #area
-              stroke_width: 2 #0
+              type: line
+              stroke_width: 2
               curve: stepline
               group_by:
                 func: last
@@ -288,14 +276,11 @@ custom_fields:
                   value: 1500
                 - color: '#bf212f'
                   value: 2300
-  #######################################
-  ## GRAFICO MANUTENZIONE
-  #######################################
         - type: custom:bar-card
           style:
-            '--card-background-color': 'transparent'
-            '--ha-card-border-radius': '5px'
-            '--ha-card-box-shadow': 'none'
+            '--card-background-color': transparent
+            '--ha-card-border-radius': 5px
+            '--ha-card-box-shadow': none
             top: 56%
             left: 91%
             width: 60px
@@ -310,7 +295,7 @@ custom_fields:
             icon: 'off'
           columns: 1
           entities:
-            - entity: sensor.lavastoviglie_modulo_manutenzione
+            - entity: sensor.asciugatrice_modulo_manutenzione
               max: 50
               severity:
                 - color: '#27b376'
@@ -322,16 +307,13 @@ custom_fields:
                 - color: '#bf212f'
                   from: 40
                   to: 50
-  #######################################
-  ### Programma
-  #######################################
         - type: state-label
-          entity: input_select.lavastoviglie_program
+          entity: input_select.asciugatrice_program
           prefix: 'Programma: '
           style:
-            left: 5% 
-            bottom: -3%
-            font-size: 12px 
+            left: 5%
+            bottom: '-3%'
+            font-size: 12px
             line-height: 24px
             transform: initial
             padding: 2px 2px
@@ -341,7 +323,7 @@ custom_fields:
             action: call-service
             service: input_select.select_previous
             service_data:
-              entity_id: input_select.lavastoviglie_program
+              entity_id: input_select.asciugatrice_program
           style:
             left: 50%
             bottom: 0%
@@ -354,34 +336,32 @@ custom_fields:
             action: call-service
             service: input_select.select_next
             service_data:
-              entity_id: input_select.lavastoviglie_program
+              entity_id: input_select.asciugatrice_program
           style:
             left: 56%
             bottom: 0%
             transform: initial
             line-height: 24px
             padding: 2px 2px
-  ### tempo rimasto
         - type: state-label
-          entity: sensor.dishwasher_time_left
+          entity: sensor.dryer_time_left
           style:
             right: 6%
-            bottom: -3%
+            bottom: '-3%'
             pointer-events: none
-            font-size: 12px 
+            font-size: 12px
             transform: initial
             line-height: 24px
             padding: 2px 2px
         - type: icon
           icon: mdi:progress-clock
-          entity: sensor.dishwasher_status
+          entity: sensor.dryer_status
           style:
             bottom: 0%
             right: 1%
             transform: initial
             line-height: 24px
             padding: 2px 2px
-###########################################################
   buttons:
     card:
       type: custom:mod-card
@@ -426,121 +406,121 @@ custom_fields:
                     --popup-min-width: 950px; 
                     --popup-max-width: 1050px;
                     --popup-border-radius: var(--ha-card-border-radius);
-                  title: Dati lavastoviglie
-                  content:  
-                      type: custom:layout-card
-                      layout_type: grid #custom:grid-layout
-                      layout:
-                        grid-template-columns: 50% 50%
-                        grid-template-rows: auto
-                        margin: 0px 0px 0px 0px
-                        grid-template-areas: |
-                          "colonna1 colonna2"
-                        mediaquery:
-                          "(max-width: 600px)":
-                            grid-template-columns: 100%
-                            grid-template-areas: |
-                              "colonna1"
-                              "colonna2"
-                      cards:
-                        - type: vertical-stack
-                          view_layout:
-                            grid-area: colonna1
-                          cards:
+                  title: Dati asciugatrice
+                  content:
+                    type: custom:layout-card
+                    layout_type: grid
+                    layout:
+                      grid-template-columns: 50% 50%
+                      grid-template-rows: auto
+                      margin: 0px 0px 0px 0px
+                      grid-template-areas: |
+                        "colonna1 colonna2"
+                      mediaquery:
+                        '(max-width: 600px)':
+                          grid-template-columns: 100%
+                          grid-template-areas: |
+                            "colonna1"
+                            "colonna2"
+                    cards:
+                      - type: vertical-stack
+                        view_layout:
+                          grid-area: colonna1
+                        cards:
                           - type: entities
                             show_header_toggle: false
                             state_color: true
                             entities:
-                              - entity: sensor.lavastoviglie_cost
+                              - entity: sensor.asciugatrice_cost
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Oggi
                                 icon: mdi:counter
                                 entities:
-                                  - entity: sensor.lavastoviglie_oggi_cicli
+                                  - entity: sensor.asciugatrice_oggi_cicli
                                     name: Cicli
-                                  - entity: sensor.lavastoviglie_oggi_runtime
+                                  - entity: sensor.asciugatrice_oggi_runtime
                                     name: Durata
                                     format: duration-h
-                                  - entity: sensor.lavastoviglie_oggi_energy
+                                  - entity: sensor.asciugatrice_oggi_energy
                                     name: Energia
                                   - attribute: oggi_cost
                                     name: Costo
-                                    unit: '€'
-                              - entity: sensor.lavastoviglie_cost
+                                    unit: €
+                              - entity: sensor.asciugatrice_cost
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Settimana
                                 icon: mdi:counter
                                 entities:
-                                  - entity: sensor.lavastoviglie_settimana_cicli
+                                  - entity: sensor.asciugatrice_settimana_cicli
                                     name: Cicli
-                                  - entity: sensor.lavastoviglie_settimana_runtime
+                                  - entity: sensor.asciugatrice_settimana_runtime
                                     name: Durata
                                     format: duration-h
-                                  - entity: sensor.lavastoviglie_settimana_energy
+                                  - entity: sensor.asciugatrice_settimana_energy
                                     name: Energia
                                   - attribute: settimana_cost
                                     name: Costo
-                                    unit: '€'
-                              - entity: sensor.lavastoviglie_cost
+                                    unit: €
+                              - entity: sensor.asciugatrice_cost
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Mese
                                 icon: mdi:counter
                                 entities:
-                                  - entity: sensor.lavastoviglie_mese_cicli
+                                  - entity: sensor.asciugatrice_mese_cicli
                                     name: Cicli
-                                  - entity: sensor.lavastoviglie_mese_runtime
+                                  - entity: sensor.asciugatrice_mese_runtime
                                     name: Durata
                                     format: duration-h
-                                  - entity: sensor.lavastoviglie_mese_energy
+                                  - entity: sensor.asciugatrice_mese_energy
                                     name: Energia
                                   - attribute: mese_cost
                                     name: Costo
-                                    unit: '€'
-                              - entity: sensor.lavastoviglie_cost
+                                    unit: €
+                              - entity: sensor.asciugatrice_cost
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Anno
                                 icon: mdi:counter
                                 entities:
-                                  - entity: sensor.lavastoviglie_anno_cicli
+                                  - entity: sensor.asciugatrice_anno_cicli
                                     name: Cicli
-                                  - entity: sensor.lavastoviglie_anno_runtime
+                                  - entity: sensor.asciugatrice_anno_runtime
                                     name: Durata
                                     format: duration-h
-                                  - entity: sensor.lavastoviglie_anno_energy
+                                  - entity: sensor.asciugatrice_anno_energy
                                     name: Energia
                                   - attribute: anno_cost
                                     name: Costo
-                                    unit: '€'
+                                    unit: €
                               - type: divider
-                              - entity: button.plug_lavastoviglie_restart
+                              - entity: button.plug_asciugatrice_restart
                               - type: button
                                 icon: mdi:restore-alert
                                 name: Reset Cicli / Energia
                                 action_name: Reset
                                 tap_action:
                                   action: call-service
-                                  service: script.reset_lavastoviglie_cicli
+                                  service: script.reset_asciugatrice_cicli
                               - type: button
                                 icon: mdi:restore-alert
                                 name: Reset Valori Totali
                                 action_name: Reset
                                 tap_action:
                                   action: call-service
-                                  service: script.reset_lavastoviglie_totale
-                        - type: vertical-stack
-                          view_layout:
-                            grid-area: colonna2
-                          cards:
+                                  service: script.reset_asciugatrice_totale
+                      - type: vertical-stack
+                        view_layout:
+                          grid-area: colonna2
+                        cards:
                           - type: entities
                             show_header_toggle: false
                             state_color: true
                             entities:
-                              - entity: sensor.lavastoviglie_oggi_runtime
-                              - entity: sensor.lavastoviglie_ultimo_runtime
+                              - entity: sensor.asciugatrice_oggi_runtime
+                              - entity: sensor.asciugatrice_ultimo_runtime
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Ultimo
@@ -548,42 +528,44 @@ custom_fields:
                                   hui-generic-entity-row:
                                     $: |
                                       state-badge {
-                                        {% set COLOR = "orange" if is_state("binary_sensor.dishwasher_status","on")  %}              
+                                        {% set COLOR = "orange" if is_state("binary_sensor.dryer_status","on")  %}              
                                         color: {{COLOR}};
                                       } 
                                 entities:
-                                  - entity: sensor.lavastoviglie_ultimo_runtime
+                                  - entity: sensor.asciugatrice_ultimo_runtime
                                     name: Durata
-                                  - entity: sensor.lavastoviglie_run_energy
+                                  - entity: sensor.asciugatrice_run_energy
                                     name: Energia
                                     unit: kWh
-                                  - entity: sensor.lavastoviglie_cost
+                                  - entity: sensor.asciugatrice_cost
                                     name: Costo
-                              - entity: counter.cicli_lavaggio_lavastoviglie
+                              - entity: counter.cicli_lavaggio_asciugatrice
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Totali
                                 entities:
-                                  - entity: counter.cicli_lavaggio_lavastoviglie
+                                  - entity: counter.cicli_lavaggio_asciugatrice
                                     name: Cicli
-                                  - entity: sensor.lavastoviglie_total_runtime
+                                  - entity: sensor.asciugatrice_total_runtime
                                     name: Durata
                                     unit: h
-                                  - entity: sensor.plug_lavastoviglie_total_energy
+                                  - entity: sensor.plug_asciugatrice_total_energy
                                     name: Energia
                               - type: divider
-                              - entity: binary_sensor.dishwasher_maintenance
-                              - entity: sensor.lavastoviglie_modulo_manutenzione
-                              - entity: input_number.lavastoviglie_ripetizioni_notifica
-                              - entity: input_number.lavastoviglie_avviso_manutenzione
-                              - entity: input_boolean.lavastoviglie_grocy_utilization
+                              - entity: binary_sensor.dryer_maintenance
+                              - entity: sensor.asciugatrice_modulo_manutenzione
+                              - entity: input_number.asciugatrice_ripetizioni_notifica
+                              - entity: input_number.asciugatrice_avviso_manutenzione
+                              - entity: input_boolean.asciugatrice_grocy_utilization
           - type: custom:button-card
             name: Settimana
-            entity: sensor.lavastoviglie_settimana_energy
+            entity: sensor.asciugatrice_settimana_energy
             show_state: true
             show_label: true
             label: >
-              [[[ return states['sensor.lavastoviglie_cost'].attributes.settimana_cost + ' €'; ]]]
+              [[[ return
+              states['sensor.asciugatrice_cost'].attributes.settimana_cost + ' €';
+              ]]]
             styles:
               card:
                 - background-color: var('--background-color')
@@ -599,14 +581,14 @@ custom_fields:
                 - grid-template-areas: '"n" "s" "l"'
                 - grid-template-columns: 1fr
                 - grid-template-rows: auto auto auto
-                
           - type: custom:button-card
             name: Mese
-            entity: sensor.lavastoviglie_mese_energy
+            entity: sensor.asciugatrice_mese_energy
             show_state: true
             show_label: true
             label: >
-              [[[ return states['sensor.lavastoviglie_cost'].attributes.mese_cost + ' €'; ]]]
+              [[[ return states['sensor.asciugatrice_cost'].attributes.mese_cost +
+              ' €'; ]]]
             styles:
               card:
                 - background-color: var('--background-color')
@@ -622,14 +604,14 @@ custom_fields:
                 - grid-template-areas: '"n" "s" "l"'
                 - grid-template-columns: 1fr
                 - grid-template-rows: auto auto auto
-                
           - type: custom:button-card
             name: Anno
-            entity: sensor.lavastoviglie_anno_energy
+            entity: sensor.asciugatrice_anno_energy
             show_state: true
             show_label: true
             label: >
-                [[[ return states['sensor.lavastoviglie_cost'].attributes.anno_cost + ' €'; ]]]
+              [[[ return states['sensor.asciugatrice_cost'].attributes.anno_cost +
+              ' €'; ]]]
             styles:
               card:
                 - background-color: var('--background-color')
@@ -645,10 +627,9 @@ custom_fields:
                 - grid-template-areas: '"n" "s" "l"'
                 - grid-template-columns: 1fr
                 - grid-template-rows: auto auto auto
-                
           - type: custom:button-card
-            name: Lavastoviglie
-            entity: switch.plug_lavastoviglie
+            name: asciugatrice
+            entity: switch.plug_asciugatrice
             icon: mdi:washing-machine
             show_state: false
             show_label: false
@@ -666,7 +647,7 @@ custom_fields:
               icon:
                 - color: |
                     [[[
-                      if (states['switch.plug_lavastoviglie'].state== 'on')
+                      if (states['switch.plug_asciugatrice'].state== 'on')
                         return "#27b376";
                       return "#bf212f";
                     ]]]
@@ -675,7 +656,7 @@ custom_fields:
                 - grid-template-areas: '"i" "n" "s"'
                 - grid-template-columns: 1fr
                 - grid-template-rows: 50% auto auto
-              double_action:
+              tap_action:
                 action: fire-dom-event
                 browser_mod:
                   service: browser_mod.popup
@@ -684,84 +665,82 @@ custom_fields:
                       --popup-min-width: 950px; 
                       --popup-max-width: 1050px;
                       --popup-border-radius: var(--ha-card-border-radius);
-                    title: Energia Lavastoviglie
+                    title: Energia asciugatrice
                     content:
                       type: vertical-stack
                       cards:
                         - type: custom:bar-card
-                          ## INSERIRE LE ENTITA' CORRETTE O ELIMINARE SE NON SI HANNO ###
                           positions:
                             name: inside
                             value: inside
-                            #indicator: inside
                             minmax: 'off'
                             icon: 'off'
                           height: 40px
                           columns: 5
                           entities:
-                            - entity: "sensor.plug_lavastoviglie_apparent_power"
+                            - entity: sensor.plug_asciugatrice_apparent_power
                               name: P. apparente
                               max: 2000
                               severity:
-                                - color: "#27b376"
+                                - color: '#27b376'
                                   from: 0
                                   to: 99.9
-                                - color: "#fl9a73e"
+                                - color: '#fl9a73e'
                                   from: 100
                                   to: 399.9
-                                - color: "#bf212f"
+                                - color: '#bf212f'
                                   from: 400
                                   to: 1999
-                            - entity: "sensor.plug_lavastoviglie_reactive_power"
+                            - entity: sensor.plug_asciugatrice_reactive_power
                               name: P. Reattiva
                               max: 2000
                               severity:
-                                - color: "#27b376"
+                                - color: '#27b376'
                                   from: 0
                                   to: 99.9
-                                - color: "#fl9a73e"
+                                - color: '#fl9a73e'
                                   from: 100
                                   to: 399.9
-                                - color: "#bf212f"
+                                - color: '#bf212f'
                                   from: 400
                                   to: 1999
-                            - entity: "sensor.plug_lavastoviglie_power"
+                            - entity: sensor.plug_asciugatrice_power
                               name: Potenza
                               max: 2000
                               severity:
-                                - color: "#27b376"
+                                - color: '#27b376'
                                   from: 0
                                   to: 99.9
-                                - color: "#fl9a73e"
+                                - color: '#fl9a73e'
                                   from: 100
                                   to: 399.9
-                                - color: "#bf212f"
+                                - color: '#bf212f'
                                   from: 400
                                   to: 1999
-                            - entity: "sensor.plug_lavastoviglie_voltage"
+                            - entity: sensor.plug_asciugatrice_voltage
                               name: Tensione
                               max: 255
                               severity:
-                                - color: "#27b376"
+                                - color: '#27b376'
                                   from: 230
                                   to: 249
-                                - color: "#fl9a73e"
+                                - color: '#fl9a73e'
                                   from: 220
                                   to: 229
                                 - color: rgb(163,0,0,0.80)
                                   from: 250
                                   to: 255
-                            - entity: "sensor.plug_lavastoviglie_current"
+                            - entity: sensor.plug_asciugatrice_current
                               name: Corrente
                               max: 10
                               severity:
-                                - color: "#27b376"
+                                - color: '#27b376'
                                   from: 1
                                   to: 5.9
-                                - color: "#fl9a73e"
+                                - color: '#fl9a73e'
                                   from: 6
                                   to: 7.9
-                                - color: "#bf212f"
+                                - color: '#bf212f'
                                   from: 8
                                   to: 10
                         - type: grid
@@ -769,7 +748,7 @@ custom_fields:
                           columns: 5
                           cards:
                             - type: statistic
-                              entity: sensor.plug_lavastoviglie_energy
+                              entity: sensor.plug_asciugatrice_energy
                               name: Mese corrente
                               unit: kWh
                               period:
@@ -777,7 +756,7 @@ custom_fields:
                                   period: month
                               stat_type: change
                             - type: statistic
-                              entity: sensor.plug_lavastoviglie_energy
+                              entity: sensor.plug_asciugatrice_energy
                               name: Mese - 1
                               unit: kWh
                               period:
@@ -786,7 +765,7 @@ custom_fields:
                                   offset: -1
                               stat_type: change
                             - type: statistic
-                              entity: sensor.plug_lavastoviglie_energy
+                              entity: sensor.plug_asciugatrice_energy
                               name: Mese - 2
                               unit: kWh
                               period:
@@ -795,7 +774,7 @@ custom_fields:
                                   offset: -2
                               stat_type: change
                             - type: statistic
-                              entity: sensor.plug_lavastoviglie_energy
+                              entity: sensor.plug_asciugatrice_energy
                               name: Mese - 3
                               unit: kWh
                               period:
@@ -804,7 +783,7 @@ custom_fields:
                                   offset: -3
                               stat_type: change
                             - type: statistic
-                              entity: sensor.plug_lavastoviglie_energy
+                              entity: sensor.plug_asciugatrice_energy
                               name: Mese - 4
                               unit: kWh
                               period:
@@ -850,7 +829,7 @@ custom_fields:
                           graph_span: 30d
                           update_interval: 1h
                           series:
-                            - entity: sensor.plug_lavastoviglie_energy
+                            - entity: sensor.plug_asciugatrice_energy
                               name: Energia
                               type: column
                               statistics:
@@ -864,11 +843,11 @@ custom_fields:
                                 legend_value: false
                               opacity: 0.8
                               color_threshold:
-                                - color: "#27b376"
+                                - color: '#27b376'
                                   value: 0.4
-                                - color: "#006f3c"
+                                - color: '#006f3c'
                                   value: 0.8
-                                - color: "#fl9a73e"
+                                - color: '#fl9a73e'
                                   value: 1.2
-                                - color: "#bf212f"
+                                - color: '#bf212f'
                                   value: 1.6

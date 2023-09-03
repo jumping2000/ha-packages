@@ -11,7 +11,7 @@
   ##  📂 PATH IMAGE /config/www/hassiohelp/pkg_elettrodomestici
   ##  🎁 THANKS TO: https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/
   ##  🎫 INFO https://www.elettro-domestici.com/articoli-elettrodomestici.asp?id=286
-  ##  🛠  BLUEPRINT https://github.com/jumping2000/ha-templates/blob/main/blueprints/fsm/fsm_lite.yaml
+  ##  🛠  BLUEPRINT:  https://github.com/jumping2000/ha-templates/blob/main/blueprints/fsm/cn_fsm_appliances.yaml
   ##--------------------------------------------------------------|
 
   #################################################################
@@ -26,18 +26,18 @@
       ## CUSTOMIZE NODE ANCHORS
       ############################################################################
       package.dryer:
-        version: &v "2023.8.3"
-        date: 📅 01/09/2023 - Updated 31/08/2023
+        version: &v "2023.9.1"
+        date: 📅 01/09/2023 - Updated 31/09/2023
         info: https://github.com/jumping2000/
-        information provided by: Fritz Speedtest AdguardHome
+        information provided by: Smart Plug
         links: 
           elettrodomestici: https://github.com/jumping2000/ha-packages/tree/main/elettrodomestici_2023
           web: https://hassiohelp.eu/
 
         extra_attributes: &extra_attributes
           version: *v
-          package: "Network🌍"
-          attribution: "Gianpi - Network - hassiohelp.eu"
+          package: "Dryer🌍"
+          attribution: "Gianpi - Dryer - hassiohelp.eu"
 
         ##---------------------- IMPOSTAZIONI DEL PACKAGE ----------------------##
         ## CONFIGURATION
@@ -142,8 +142,8 @@
       name: Stato asciugatrice
       options:
         - Idle
-        - Lavaggio
-        - Risciacquo
+        - Mantenimento
+        - Asciugatura
         - Svuotare
       initial: Idle
 
@@ -195,7 +195,7 @@
       name: Costo Energia
       initial: 0.2
       min: 0.05
-      max: 0.6
+      max: 0.8
       step: 0.01
       icon: mdi:currency-eur
 
@@ -220,30 +220,6 @@
       restore: true
       icon: mdi:counter
 
-  #################################################################
-  #                                                               #
-  #                           SCRAPE                              #
-  #                                                               #
-  #################################################################
-  # DA SCEGLIERE SE USARE AL POST DELL'HELPER input_number.costo_energia
-  # scrape:
-  #   - resource: https://www.a2aenergia.eu/assistenza/tutela-cliente/indici/indice-pun
-  #     sensor:
-  #       - name: PUN F1
-  #         value_template: "{{ (value | replace (',', '.'))| float(default=0)}}"
-  #         select: "td"
-  #         index: 2
-  #         device_class: monetary
-  #         unit_of_measurement: EUR/kWh
-  #   - resource: https://www.servizioelettriconazionale.it/it-IT/tariffe/uso-domestico/biorarie/residente
-  #     sensor:
-  #       - name: SEN F1
-  #         value_template: "{{ (value | replace (',', '.'))| float(default=0)}}"
-  #         select: "td"
-  #         index: 3
-  #         device_class: monetary
-  #         unit_of_measurement: EUR/kWh
-  #
   #################################################################
   #                                                               #
   #                           SENSOR                              #
@@ -287,7 +263,7 @@
             {{ (value2 - value1)|round(2,default=0)}}
           availability: >
             {% set sensore_energia = "sensor.plug_asciugatrice_energy" %}
-            {{ states(sensore_energia) not in ['unavailable', 'unknown', 'None'] }}
+            {{ states(sensore_energia) not in ['unavailable', 'unknown', 'none'] }}
 
     - sensor:
       - name: dryer_status
@@ -302,7 +278,7 @@
             {{ value|int }}:0{{ ((value|float % 1)|round(2) * 60)|int(default=0) }}:00
           {%  endif %}
         availability: >
-          {{ states('input_number.asciugatrice_runtime') not in ['unavailable', 'unknown', 'None'] }}
+          {{ states('input_number.asciugatrice_runtime') not in ['unavailable', 'unknown', 'none'] }}
 
       - name: asciugatrice_modulo_manutenzione
         state: >
@@ -310,19 +286,19 @@
           {%- set value2 =  states('input_number.asciugatrice_avviso_manutenzione') |int(default=0) -%}
           {{ value1 % value2 if value2 !=0 else 0 }}
         availability: >
-          {{ states('counter.cicli_lavaggio_asciugatrice') not in ['unavailable', 'unknown', 'None'] }}
+          {{ states('counter.cicli_lavaggio_asciugatrice') not in ['unavailable', 'unknown', 'none'] }}
 
       - name: asciugatrice_cost
-        state: "{{(states('sensor.asciugatrice_run_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+        state: "{{(states('sensor.asciugatrice_run_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
         attributes:
-          oggi_cost: "{{(states('sensor.asciugatrice_oggi_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
-          settimana_cost: "{{(states('sensor.asciugatrice_settimana_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
-          mese_cost: "{{(states('sensor.asciugatrice_mese_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
-          anno_cost: "{{(states('sensor.asciugatrice_anno_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          oggi_cost: "{{(states('sensor.asciugatrice_oggi_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
+          settimana_cost: "{{(states('sensor.asciugatrice_settimana_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
+          mese_cost: "{{(states('sensor.asciugatrice_mese_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
+          anno_cost: "{{(states('sensor.asciugatrice_anno_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
         unit_of_measurement: '€'
         device_class: monetary
         availability: >
-          {{ states('sensor.asciugatrice_oggi_energy') not in ['unavailable', 'unknown', 'None'] }}
+          {{ states('sensor.asciugatrice_oggi_energy') not in ['unavailable', 'unknown', 'none'] }}
 
     - binary_sensor:
       - name: dryer_status
@@ -349,16 +325,17 @@
           {% else %}
             {% set program = states('input_select.asciugatrice_program') | default("Off") %}
             {% set dict_time_program = {
-              'Cotone': '03:20:00',
-              'Misti': '01:10:00',
-              'Sintetici': '01:40:00',
-              'Delicati': '00:40:00',
+              'Daily': '00:45:00',
+              'Lana':'01:10:00'
+              'Risparmio': '00:30:00',
+              'Sintetici': '00:20:00',
+              'Relax': '00:15:00',
               'Accappatoi': '00:40:00',
               'Off': '00:00:00' } %}
             {{ dict_time_program[program] if program in dict_time_program else '00:00:00'}}
           {% endif %}
         availability: >
-          {{ states('input_datetime.asciugatrice_time_end') not in ['unavailable', 'unknown', 'None'] }}
+          {{ states('input_datetime.asciugatrice_time_end') not in ['unavailable', 'unknown', 'none'] }}
 
   #################################################################
   #                                                               #
@@ -468,7 +445,7 @@
         - platform: state
           entity_id: sensor.dryer_status
           from: "Idle"
-          to: "Lavaggio"
+          to: "Asciugatura"
       action:
         - service: input_datetime.set_datetime
           target:
@@ -477,10 +454,11 @@
             time: >-
               {% set program = states('input_select.asciugatrice_program') %}
               {% set dict_time_program = {
-                'Cotone': '03:20:00',
-                'Misti': '01:10:00',
-                'Sintetici': '01:40:00',
-                'Delicati': '00:40:00',
+                'Daily': '00:45:00',
+                'Lana':'01:10:00'
+                'Risparmio': '00:30:00',
+                'Sintetici': '00:20:00',
+                'Relax': '00:15:00',
                 'Accappatoi': '00:40:00',
                 'Off': '00:00:00' } %}
               {% set t = now().timestamp() %}

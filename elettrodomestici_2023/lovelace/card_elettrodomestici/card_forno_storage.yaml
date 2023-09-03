@@ -464,6 +464,7 @@ custom_fields:
                                     name: Cicli
                                   - entity: sensor.forno_oggi_runtime
                                     name: Durata
+                                    format: duration-h
                                   - entity: sensor.forno_oggi_energy
                                     name: Energia
                                   - attribute: oggi_cost
@@ -479,6 +480,7 @@ custom_fields:
                                     name: Cicli
                                   - entity: sensor.forno_settimana_runtime
                                     name: Durata
+                                    format: duration-h
                                   - entity: sensor.forno_settimana_energy
                                     name: Energia
                                   - attribute: settimana_cost
@@ -494,6 +496,7 @@ custom_fields:
                                     name: Cicli
                                   - entity: sensor.forno_mese_runtime
                                     name: Durata
+                                    format: duration-h
                                   - entity: sensor.forno_mese_energy
                                     name: Energia
                                   - attribute: mese_cost
@@ -509,6 +512,7 @@ custom_fields:
                                     name: Cicli
                                   - entity: sensor.forno_anno_runtime
                                     name: Durata
+                                    format: duration-h
                                   - entity: sensor.forno_anno_energy
                                     name: Energia
                                   - attribute: anno_cost

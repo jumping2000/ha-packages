@@ -493,6 +493,7 @@ custom_fields:
                                     name: Cicli
                                   - entity: sensor.lavatrice_oggi_runtime
                                     name: Durata
+                                    format: duration-h
                                   - entity: sensor.lavatrice_oggi_energy
                                     name: Energia
                                   - attribute: oggi_cost
@@ -508,6 +509,7 @@ custom_fields:
                                     name: Cicli
                                   - entity: sensor.lavatrice_settimana_runtime
                                     name: Durata
+                                    format: duration-h
                                   - entity: sensor.lavatrice_settimana_energy
                                     name: Energia
                                   - attribute: settimana_cost
@@ -523,6 +525,7 @@ custom_fields:
                                     name: Cicli
                                   - entity: sensor.lavatrice_mese_runtime
                                     name: Durata
+                                    format: duration-h
                                   - entity: sensor.lavatrice_mese_energy
                                     name: Energia
                                   - attribute: mese_cost
@@ -538,6 +541,7 @@ custom_fields:
                                     name: Cicli
                                   - entity: sensor.lavatrice_anno_runtime
                                     name: Durata
+                                    format: duration-h
                                   - entity: sensor.lavatrice_anno_energy
                                     name: Energia
                                   - attribute: anno_cost
