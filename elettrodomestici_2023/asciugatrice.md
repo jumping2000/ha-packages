@@ -164,7 +164,7 @@ La sezione orizzontale di bottoni in basso ("***button container***") presenta l
 
 | Bottone | Cosa fa |
 | :---: | --- |
-| **Info** | cliccando si apre una finestra con le informazioni di dettaglio relative alla consumi/cicli/costi per giorno, settimana, mese, anno ed asptti di configurazionec |
+| **Info** | cliccando si apre una finestra con le informazioni di dettaglio relative alla consumi/cicli/costi per giorno, settimana, mese, anno ed aspetti di configurazione |
 | **Settimana** / **Mese** / **Anno** |informazioni relative all'energia consumata e i costi associati |
 | **Asciugatrice** | bottone che con il tocco singolo spegne/accende la presa collegata all'elettrodomestico, con il tocco prolungato apre la finestra con i dati e i grafici di energia recuperati dalle informazioni statistiche contenute nel DB di HA |
 
