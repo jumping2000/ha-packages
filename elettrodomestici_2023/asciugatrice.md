@@ -312,8 +312,8 @@ dove ***/config/packages#*** è il path all'interno del filesystem del container
 * dopo il riavvio di HA controllare che non ci siano _errori nel log_.
 
 ***Avvertenze***: 
-1. ricordarsi di effettuare l'avvio dello script subito dopo il completamento del blueprint.
-2. lo script va lanciato una sola volta
+1. ricordarsi di effettuare l'avvio dello script subito dopo il completamento del blueprint;
+2. lo script va lanciato una sola volta sui file yaml scaricati da Github, se sbagli qualcosa occorre effetture il download di nuovo;
 2. se per qualche motivo avete cambiato o volete cambiare i percorsi standard è possibile utilizzare delle opzioni nella sintassi dello script:
     * ***-a*** : per cambiare il percorso completo del file _automations.yaml_
     * ***-c*** : per variare il percorso completo della card
