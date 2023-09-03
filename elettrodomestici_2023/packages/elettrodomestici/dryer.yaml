@@ -52,15 +52,15 @@
       ################################################
       sensor.dryer_status:
         <<: *extra_attributes
-        icon: mdi:washing-machine
+        icon: mdi:tumble-dryer
         friendly_name: "Stato Asciugatrice"
       binary_sensor.dryer_status:
         <<: *extra_attributes
-        icon: mdi:washing-machine
+        icon: mdi:tumble-dryer
         friendly_name: "Asciugatrice ON/OFF"
       binary_sensor.dryer_maintenance:
         <<: *extra_attributes
-        icon: mdi:washing-machine-alert
+        icon: mdi:tumble-dryer-alert
         friendly_name: "Manutenzione ON/OFF"
       sensor.dryer_time_left:
         <<: *extra_attributes
@@ -150,13 +150,14 @@
     asciugatrice_program:
       name: Programma asciugatrice
       options:
-        - Cotone #3,2
-        - Misti #1,10
-        - Sintetici #1,4
-        - Delicati #0,4
+        - Daily
+        - Lana
+        - Risparmio
+        - Sintetici
+        - Relax
         - Accappatoi
         - 'Off'
-      initial: Misti
+      initial: Daily
 
   input_datetime:
     asciugatrice_time_end:
@@ -200,9 +201,6 @@
       icon: mdi:currency-eur
 
   input_boolean:
-    asciugatrice_grocy_utilization:
-      name: Asciugatrice Grocy
-      icon: mdi:fridge
     asciugatrice_runtime:
       name: Durata ciclo di lavaggio
       icon: mdi:timer-sand
@@ -326,7 +324,7 @@
             {% set program = states('input_select.asciugatrice_program') | default("Off") %}
             {% set dict_time_program = {
               'Daily': '00:45:00',
-              'Lana':'01:10:00'
+              'Lana':'01:10:00',
               'Risparmio': '00:30:00',
               'Sintetici': '00:20:00',
               'Relax': '00:15:00',
@@ -455,7 +453,7 @@
               {% set program = states('input_select.asciugatrice_program') %}
               {% set dict_time_program = {
                 'Daily': '00:45:00',
-                'Lana':'01:10:00'
+                'Lana':'01:10:00',
                 'Risparmio': '00:30:00',
                 'Sintetici': '00:20:00',
                 'Relax': '00:15:00',

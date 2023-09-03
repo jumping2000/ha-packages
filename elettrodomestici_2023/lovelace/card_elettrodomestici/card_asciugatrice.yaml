@@ -499,7 +499,6 @@ custom_fields:
                                     name: Costo
                                     unit: €
                               - type: divider
-                              - entity: button.plug_asciugatrice_restart
                               - type: button
                                 icon: mdi:restore-alert
                                 name: Reset Cicli / Energia
@@ -559,7 +558,6 @@ custom_fields:
                               - entity: sensor.asciugatrice_modulo_manutenzione
                               - entity: input_number.asciugatrice_ripetizioni_notifica
                               - entity: input_number.asciugatrice_avviso_manutenzione
-                              - entity: input_boolean.asciugatrice_grocy_utilization
           - type: custom:button-card
             name: Settimana
             entity: sensor.asciugatrice_settimana_energy
@@ -631,9 +629,9 @@ custom_fields:
                 - grid-template-columns: 1fr
                 - grid-template-rows: auto auto auto
           - type: custom:button-card
-            name: asciugatrice
+            name: Dryer
             entity: switch.plug_asciugatrice
-            icon: mdi:washing-machine
+            icon: mdi:tumble-dryer
             show_state: false
             show_label: false
             styles:
