@@ -72,7 +72,7 @@ custom_fields:
       image: /local/hassiohelp/pkg_elettrodomestici/sfondo_black.png
       elements:
         - type: image
-          entity: switch.plug_asciugatrice
+          entity: TAG_00
           image: /local/hassiohelp/pkg_elettrodomestici/asciugatrice.png
           state_filter:
             'off': brightness(50%) saturate(0.5) opacity(1.0)
@@ -126,7 +126,7 @@ custom_fields:
             top: 47%
             width: 19%
         - type: state-label
-          entity: sensor.plug_asciugatrice_power
+          entity: TAG_01
           prefix: '⚡ '
           style:
             top: 0%
@@ -138,7 +138,7 @@ custom_fields:
             padding: 0px 14px
             color: var(--primary-text-color)
         - type: state-label
-          entity: sensor.plug_asciugatrice_energy
+          entity: TAG_02
           prefix: '🏭 '
           style:
             top: 0%
@@ -255,7 +255,7 @@ custom_fields:
             colorize_states: true
             title: Potenza
           series:
-            - entity: sensor.plug_asciugatrice_power
+            - entity: TAG_01
               name: Potenza
               type: line
               stroke_width: 2
@@ -630,7 +630,7 @@ custom_fields:
                 - grid-template-rows: auto auto auto
           - type: custom:button-card
             name: Dryer
-            entity: switch.plug_asciugatrice
+            entity: TAG_00
             icon: mdi:tumble-dryer
             show_state: false
             show_label: false
@@ -648,7 +648,7 @@ custom_fields:
               icon:
                 - color: |
                     [[[
-                      if (states['switch.plug_asciugatrice'].state== 'on')
+                      if (states['TAG_00'].state== 'on')
                         return "#27b376";
                       return "#bf212f";
                     ]]]
@@ -705,7 +705,7 @@ custom_fields:
                               - color: '#bf212f'
                                 from: 400
                                 to: 1999
-                          - entity: sensor.plug_asciugatrice_power
+                          - entity: TAG_01
                             name: Potenza
                             max: 2000
                             severity:
@@ -749,7 +749,7 @@ custom_fields:
                         columns: 5
                         cards:
                           - type: statistic
-                            entity: sensor.plug_asciugatrice_energy
+                            entity: TAG_02
                             name: Mese corrente
                             unit: kWh
                             period:
@@ -757,7 +757,7 @@ custom_fields:
                                 period: month
                             stat_type: change
                           - type: statistic
-                            entity: sensor.plug_asciugatrice_energy
+                            entity: TAG_02
                             name: Mese - 1
                             unit: kWh
                             period:
@@ -766,7 +766,7 @@ custom_fields:
                                 offset: -1
                             stat_type: change
                           - type: statistic
-                            entity: sensor.plug_asciugatrice_energy
+                            entity: TAG_02
                             name: Mese - 2
                             unit: kWh
                             period:
@@ -775,7 +775,7 @@ custom_fields:
                                 offset: -2
                             stat_type: change
                           - type: statistic
-                            entity: sensor.plug_asciugatrice_energy
+                            entity: TAG_02
                             name: Mese - 3
                             unit: kWh
                             period:
@@ -784,7 +784,7 @@ custom_fields:
                                 offset: -3
                             stat_type: change
                           - type: statistic
-                            entity: sensor.plug_asciugatrice_energy
+                            entity: TAG_02
                             name: Mese - 4
                             unit: kWh
                             period:
@@ -830,7 +830,7 @@ custom_fields:
                         graph_span: 30d
                         update_interval: 1h
                         series:
-                          - entity: sensor.plug_asciugatrice_energy
+                          - entity: TAG_02
                             name: Energia
                             type: column
                             statistics:
