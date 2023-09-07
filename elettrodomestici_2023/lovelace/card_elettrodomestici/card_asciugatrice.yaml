@@ -558,6 +558,7 @@ custom_fields:
                               - entity: sensor.asciugatrice_modulo_manutenzione
                               - entity: input_number.asciugatrice_ripetizioni_notifica
                               - entity: input_number.asciugatrice_avviso_manutenzione
+                              - entity: input_number.costo_energia
           - type: custom:button-card
             name: Settimana
             entity: sensor.asciugatrice_settimana_energy
