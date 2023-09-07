@@ -679,32 +679,6 @@ custom_fields:
                         height: 40px
                         columns: 5
                         entities:
-                          - entity: sensor.plug_asciugatrice_apparent_power
-                            name: P. apparente
-                            max: 2000
-                            severity:
-                              - color: '#27b376'
-                                from: 0
-                                to: 99.9
-                              - color: '#fl9a73e'
-                                from: 100
-                                to: 399.9
-                              - color: '#bf212f'
-                                from: 400
-                                to: 1999
-                          - entity: sensor.plug_asciugatrice_reactive_power
-                            name: P. Reattiva
-                            max: 2000
-                            severity:
-                              - color: '#27b376'
-                                from: 0
-                                to: 99.9
-                              - color: '#fl9a73e'
-                                from: 100
-                                to: 399.9
-                              - color: '#bf212f'
-                                from: 400
-                                to: 1999
                           - entity: TAG_01
                             name: Potenza
                             max: 2000
@@ -718,7 +692,7 @@ custom_fields:
                               - color: '#bf212f'
                                 from: 400
                                 to: 1999
-                          - entity: sensor.plug_asciugatrice_voltage
+                          - entity: TAG_03
                             name: Tensione
                             max: 255
                             severity:
@@ -731,7 +705,7 @@ custom_fields:
                               - color: rgb(163,0,0,0.80)
                                 from: 250
                                 to: 255
-                          - entity: sensor.plug_asciugatrice_current
+                          - entity: TAG_04
                             name: Corrente
                             max: 10
                             severity:

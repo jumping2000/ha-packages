@@ -268,6 +268,15 @@ Lanciare il blueprint [CN FSM ](https://github.com/jumping2000/ha-templates/tree
 
 [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fjumping2000%2Fha-templates%2Fblob%2Fmain%2Fblueprints%2Fcn_fsm%2Fcn_fsm_appliances.yaml)
 
+
+
+Nel blueprint occorre indicare i sensori relativi a potenza ed energia, i servizi di notifica, alcuni helper e le entità relative allo stato dell'asciugatrice che nel package sono i seguenti, anche se poi ogni utilizzatore  è libero di cambiarli:
+* `input_select.dryer_status`
+* `sensor.dryer_status`
+* `input_boolean.asciugatrice_runtime`
+* `input_number.asciugatrice_energia_iniziale`
+* `counter.cicli_asciugatrice`
+
 <br>
 
 | Impostazioni Package |

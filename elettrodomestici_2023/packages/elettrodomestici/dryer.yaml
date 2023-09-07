@@ -41,7 +41,7 @@
 
         ##---------------------- IMPOSTAZIONI DEL PACKAGE ----------------------##
         ## CONFIGURATION
-        PLUG ASCIUGATRICE ENERGIA (kWh): &CONF_ENERGY_ENTITY "sensor.plug_asciugatrice_energy"
+        PLUG ASCIUGATRICE ENERGIA (kWh): &CONF_ENERGY_ENTITY "TAG_02"
         ## NON CAMBIARE ##
         COUNTER CICLI LAVAGGIO: &CONF_CICLI_TOTALE "counter.cicli_asciugatrice"
         DURATA LAVAGGIO OGGI: &CONF_OGGI_RUNTIME "sensor.asciugatrice_oggi_runtime"
@@ -255,12 +255,12 @@
       sensor:
         - name: asciugatrice_run_energy
           state: >
-            {% set sensore_energia = "sensor.plug_asciugatrice_energy"%}
+            {% set sensore_energia = "TAG_02"%}
             {% set value1 =  states('input_number.asciugatrice_energia_iniziale') |float(default=0) %}
             {% set value2 =  states(sensore_energia) |float(default=0) %}
             {{ (value2 - value1)|round(2,default=0)}}
           availability: >
-            {% set sensore_energia = "sensor.plug_asciugatrice_energy" %}
+            {% set sensore_energia = "TAG_02" %}
             {{ states(sensore_energia) not in ['unavailable', 'unknown', 'none'] }}
 
     - sensor:
