@@ -3,3 +3,5 @@
 switch_plug
 power_plug
 energy_plug
+voltage_plug
+current_plug
