@@ -272,6 +272,26 @@
         availability: >
           {{ states('input_number.asciugatrice_runtime') not in ['unavailable', 'unknown', 'none'] }}
 
+      - name: dryer_time_left
+        state: >
+          {% set timer = ((states.input_datetime.asciugatrice_time_end.attributes.timestamp - as_timestamp(now())) / 60 ) | round(0) | default(1) %}
+          {% if states('sensor.dryer_status') != 'Idle' %}
+            {{ timer if timer>0 else 0 }} min
+          {% else %}
+            {% set program = states('input_select.asciugatrice_program') | default("Off") %}
+            {% set dict_time_program = {
+              'Daily': '00:45:00',
+              'Lana':'01:10:00',
+              'Risparmio': '00:30:00',
+              'Sintetici': '00:20:00',
+              'Relax': '00:15:00',
+              'Accappatoi': '00:40:00',
+              'Off': '00:00:00' } %}
+            {{ dict_time_program[program] if program in dict_time_program else '00:00:00'}}
+          {% endif %}
+        availability: >
+          {{ states('input_datetime.asciugatrice_time_end') not in ['unavailable', 'unknown', 'none'] }}
+
       - name: asciugatrice_modulo_manutenzione
         state: >
           {%- set value1 =  states('counter.cicli_asciugatrice') |int(default=0) -%}
@@ -308,26 +328,6 @@
           {{ (value1 % value2 == 0) if value2 !=0 else False}}
         availability: >
           {{ states('counter.cicli_asciugatrice') not in ['unavailable', 'unknown', 'none'] }}
-
-      - name: dryer_time_left
-        state: >
-          {% set timer = ((states.input_datetime.asciugatrice_time_end.attributes.timestamp - as_timestamp(now())) / 60 ) | round(0) | default(1) %}
-          {% if states('sensor.dryer_status') != 'Idle' %}
-            {{ timer if timer>0 else 0 }} min
-          {% else %}
-            {% set program = states('input_select.asciugatrice_program') | default("Off") %}
-            {% set dict_time_program = {
-              'Daily': '00:45:00',
-              'Lana':'01:10:00',
-              'Risparmio': '00:30:00',
-              'Sintetici': '00:20:00',
-              'Relax': '00:15:00',
-              'Accappatoi': '00:40:00',
-              'Off': '00:00:00' } %}
-            {{ dict_time_program[program] if program in dict_time_program else '00:00:00'}}
-          {% endif %}
-        availability: >
-          {{ states('input_datetime.asciugatrice_time_end') not in ['unavailable', 'unknown', 'none'] }}
 
   #################################################################
   #                                                               #
