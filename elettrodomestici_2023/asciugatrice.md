@@ -20,7 +20,7 @@ $$\textbf{\color{lightgreen} \huge 🌪 Asciugatrice 💦}$$
 
 <br>
 
-| Argomento | Packages |
+|  |  |
 | :---: | --- |
 | Livello | Novizio (Novizio, Esperto, Pro) |
 | Difficoltà | Bassa (Bassa, Media, Alta) |
@@ -153,7 +153,7 @@ $$\textbf{\color{red} \normalsize NOTA BENE} $$
       <th><center>📱 Mobile 🔋<center></th>
 	</tr>
     <tr>
-      <td><div align=center><img width = "450" src="img/lavatrice_1.png"/></div></td>
+      <td><div align=center><img width = "450" src="img/asciugatrice_1.png"/></div></td>
       <td><div align=center><img width = 420 src="img/lavatrice_2.png"/></div></td>
     </tr>
 </table>
@@ -182,19 +182,11 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 <table align="center">
 	<tr>
 	    <th><center>🎫 Info Card 🎫</center></th>
-      <th><center>⬆ Throughput Card ⬇</th>
+      <th><center>⬆ Energy Card ⬇</th>
 	</tr>
     <tr>
-        <td><div align=center><img width = 400 src="img/router_3.png"/></div></td>
-        <td><div align=center><img width = 400 src="img/router_4.png"/></div></td>
-    </tr>
-	<tr>
-	    <th><center>⚠ Problemi di connessione ⚠</center></th>
-      <th><center>👮 AdGuard 🕵️‍♀️</center></th>
-	</tr>
-    <tr>
-        <td><div align=center><img width = 400 src="img/router_6.png"/></div></td>
-        <td><div align=center><img width = 400 src="img/router_5.png"/></div></td>
+        <td><div align=center><img width = 400 src="img/asciugatrice_3.png"/></div></td>
+        <td><div align=center><img width = 400 src="img/asciugatrice_4.png"/></div></td>
     </tr>
 </table>
 
