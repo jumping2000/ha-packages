@@ -556,7 +556,6 @@ custom_fields:
                               - type: divider
                               - entity: binary_sensor.dryer_maintenance
                               - entity: sensor.asciugatrice_modulo_manutenzione
-                              - entity: input_number.asciugatrice_ripetizioni_notifica
                               - entity: input_number.asciugatrice_avviso_manutenzione
                               - entity: input_number.costo_energia
           - type: custom:button-card
