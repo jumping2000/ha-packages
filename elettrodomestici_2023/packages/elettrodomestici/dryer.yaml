@@ -187,7 +187,7 @@
       step: 5
       icon: mdi:bullhorn
     costo_energia:
-      name: Costo Energia
+      name: Costo Energia €/kWh
       initial: 0.2
       min: 0.05
       max: 0.8
