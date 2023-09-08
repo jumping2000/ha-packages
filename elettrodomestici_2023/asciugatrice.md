@@ -50,6 +50,7 @@ Riepiloghiamo i punti di forza di questo pacchetto sono:
 5. Riduzione del numero di componenti custom necessari;
 6. Utilizzo dei dati statistici conservati nel DB di HA senza quindi richiedere uan retention "_infinita_" o cmq molto estesa del DB stesso;
 
+<br>
 
 $$\textbf{\color{red} \normalsize 🚨 Come usuale prestate massima attenzione ai collegamenti elettrici. 🚨}$$
 
