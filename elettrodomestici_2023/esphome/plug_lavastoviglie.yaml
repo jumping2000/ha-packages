@@ -23,7 +23,7 @@
 substitutions:
   device_name: "plug-lavastoviglie"
   sensor_name: "Plug Lavastoviglie"
-  id_name: "plug_lavatrice"
+  id_name: "plug_lavastoviglie"
   device_description: "Teckin SP22 Power Monitoring Plug"
   current_res: "0.00223" # Higher value gives lower watt readout
   voltage_div: "734.5" # Lower value gives lower voltage readout
