@@ -40,7 +40,7 @@ L'articolo riprende quanto avevamo già scritto nel 2020 con l'articolo **[Elett
 In particolare in questa **edizione 2023** useremo alcuni custom ricchi di funzionalità come [Button Card](https://github.com/custom-cards/button-card) ed [ApexChart Card](https://github.com/RomRider/apexcharts-card) che oramai sono diventati dei veri e propri classici delle interfacce sviluppate per Home Assistant e introdurremo ulteriori elementi sia a livello di dati disponibili che a livello di grafica, ma le perle che rendono l'uso del package veramente superiore sotto tutti punti di vista rispetto a pacchetti analoghi sono:
 * l'utilizzo di una "macchina a stati finiti" [FSM](https://it.wikipedia.org/wiki/Automa_a_stati_finiti) che restituisce lo stato del dispositivo in maniera molto precisa. 
 * Un [Blueprint](https://www.home-assistant.io/docs/automation/using_blueprints/) semplificherà la configurazione e contemporaneamente darà ottima precisione nella rilevazione delle fasi di asciugatura.
-* **🔥E novità assoluta, il tutto sarà auto-configurante senza necessità di scrivere neanche una riga di YAML** 🔥
+* **🔥E novità assoluta, il tutto sarà auto-configurante senza necessità di scrivere complesse istruzioni YAML** 🔥
 
 Riepiloghiamo i punti di forza di questo pacchetto sono:
 1. Adattabile per l'uso su tablet, smartphone, PC;
@@ -260,6 +260,29 @@ Saranno presenti due cartelle _autoconfig_, una per PC (_autoconfig_x86_64_) e u
 ```
 
 ## Configurazione
+
+Tutti i packages ***"Elettrodomestici"*** dipendono o dipenderanno appaena completato l'iter di aggiornamento, da un unico blueprint con la procedura di configurazione automatica; l'unico parametro che dovrà essere specificato nel package è il _sensore di energia_. Vediamo l'iter di installazione e configurazione.
+
+| Impostazioni Package |
+| :---: |
+
+I passi di configurazione per poter utilizzare questo package, sono veramente pochi grazie allo script auto-configurante:
+* scaricare i files necessari e inserirli nelle cartelle di HA come previsto nel paragrafo "_Struttura dei file_", in particolare:
+  * la cartella _autoconfig_ e _keys_network.txt_ in _packages_ **(non è necessario se l'hai già fatto per altro packages)**;
+  * _dryer.yaml_ in _packages/elettrodomestici_;
+  * _card_asciugatrice.yaml_ in _lovelace/card_elettrodomestici_
+* rinominare _keys_dryier.txt_ in _keys.txt_ (**IMPORTANTE**)
+
+A questo punto effettuate occorre, con una operazione di "Trova e Sostituisci", sostituire nel package _dryer.yaml_ il *TAG_02* con il proprio sensore di energia dell'asciugatrice.
+
+```bash
+Esempio
+
+Sostituzione di TAG_O2 con sensor.asciugatrice_energy
+```
+
+Fatto questo **riavviate  Home Assistant** e verificate che non ci siano errori le log relativi al nuovo package **dryer.yaml**.
+
 | Blueprint |
 | :---: |
 
@@ -271,7 +294,6 @@ Lanciare il blueprint [CN FSM ](https://github.com/jumping2000/ha-templates/tree
 [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fjumping2000%2Fha-templates%2Fblob%2Fmain%2Fblueprints%2Fcn_fsm%2Fcn_fsm_appliances.yaml)
 
 
-
 Nel blueprint occorre indicare i sensori relativi a potenza ed energia, i servizi di notifica, alcuni helper e le entità relative allo stato dell'asciugatrice che nel package sono i seguenti, anche se poi ogni utilizzatore  è libero di cambiarli:
 * `input_select.dryer_status`
 * `sensor.dryer_status`
@@ -281,15 +303,10 @@ Nel blueprint occorre indicare i sensori relativi a potenza ed energia, i serviz
 
 <br>
 
-| Impostazioni Package |
+| Script e completamento configurazione|
 | :---: |
 
-I passi di configurazione per poter utilizzare questo package, sono veramente pochi grazie allo script auto-configurante:
-* scaricare i files necessari e inserirli nelle cartelle di HA come previsto nel paragrafo "_Struttura dei file_", in particolare:
-  * la cartella _autoconfig_ e _keys_network.txt_ in _packages_
-  * _dryer.yaml_ in _packages/elettrodomestici_
-  * _card_asciugatrice.yaml_ in _lovelace/card_elettrodomestici_
-* rinominare _keys_dryier.txt_ in _keys.txt_ (**IMPORTANTE**)
+Dopo le operazioni preliminare sul package e il completamento del blueprint si passa alla fase finale di configurazione "automatica":
 * lanciare lo script di configurazione _auto_config.py_ attraverso la CLI (Command Line Interface) messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant (*ATTENZIONE* l'addon core-ssh non è adatto, occorre usare obbligatoriamente l'addon nel link):
 
 **NOTA:** Se non riesci a lanciare i comandi sottostanti dal'addon SSH, utilizza nella conf dell'addon l'username ***root***, potrai ripristinare il precedente username alla fine della configurazione.
@@ -318,8 +335,7 @@ dove ***/config/packages#*** è il path all'interno del filesystem del container
   * hai dimenticato di inserire nel blueprint delle entità necessarie;
   * ci sono delle entità da cancellare poichè non significative nella tua configurazione;
 * finiti questi passaggi inserire la card router o nella propria configurazione Lovelace in YAML oppure nella propria interfaccia costruita tramite UI come di seguito riportato;
-* riavviare Home Assistant;
-* dopo il riavvio di HA controllare che non ci siano _errori nel log_.
+* controllare che non ci siano _errori nel log di HA_.
 
 ***Avvertenze***: 
 1. ricordarsi di effettuare l'avvio dello script subito dopo il completamento del blueprint;
