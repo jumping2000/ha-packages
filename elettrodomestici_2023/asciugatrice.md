@@ -273,7 +273,7 @@ I passi di configurazione per poter utilizzare questo package, sono veramente po
   * _card_asciugatrice.yaml_ in _lovelace/card_elettrodomestici_
 * rinominare _keys_dryer.txt_ in _keys.txt_ (**IMPORTANTE**)
 
-A questo punto effettuate occorre, con una operazione di "Trova e Sostituisci", sostituire nel package _dryer.yaml_ il *TAG_02* con il proprio sensore di energia dell'asciugatrice.
+A questo punto effettuate, con una operazione di "Trova e Sostituisci", la siostituzione nel package _dryer.yaml_ di *TAG_02* con il proprio sensore di energia dell'asciugatrice.
 
 ```bash
 Esempio
