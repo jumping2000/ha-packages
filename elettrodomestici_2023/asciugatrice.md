@@ -268,7 +268,7 @@ Tutti i packages ***"Elettrodomestici"*** dipendono o dipenderanno appaena compl
 
 I passi di configurazione per poter utilizzare questo package, sono veramente pochi grazie allo script auto-configurante:
 * scaricare i files necessari e inserirli nelle cartelle di HA come previsto nel paragrafo "_Struttura dei file_", in particolare:
-  * la cartella _autoconfig_ e il file _keys_dryer.txt_ in _packages_ **(non è necessario se l'hai già fatto per altro packages)**;
+  * la cartella _autoconfig_ e il file _keys_dryer.txt_  in _packages_ **(non è necessario se l'hai già fatto per altro packages)**;
   * _dryer.yaml_ in _packages/elettrodomestici_;
   * _card_asciugatrice.yaml_ in _lovelace/card_elettrodomestici_
 * rinominare _keys_dryer.txt_ in _keys.txt_ (**IMPORTANTE**)
