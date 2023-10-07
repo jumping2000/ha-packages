@@ -15,7 +15,7 @@ jobs:
       - name: 📦 Create zip file for the packages esphome lovelace www
         run: |
           cd "${{ github.workspace }}/elettrodomestici_2023"
-          zip -r elettrodomestici_2023.zip packages esphome lovelace www button_card_templates
+          zip -r elettrodomestici_2023.zip packages lovelace www
  
       - name: 📤 Upload the zip file as a release asset
         uses: svenstaro/upload-release-action@v2
