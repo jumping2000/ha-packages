@@ -52,7 +52,7 @@ function replace_string() {
         return 1
     fi
     sed -i "s/$stringa_old/$stringa_new/g" "$file"
-    info "Sostituzione TAG completata nel file $file."
+    info "Sostituzione dei tag completata nel file $file."
 }
 
 checkRequirement "wget"
@@ -100,7 +100,7 @@ if [ -n "$haPath" ]; then
     info "Removing Elettrodomestici Smart 2023 zip file..."
     rm -f "$haPath/elettrodomestici_2023.zip"
     rm -rf "$temp_dir"
-    info "Installation complete."
+    info "Download files complete / Copia file completata."
 
     echo "Scegli un package da installare dalla lista:"
     select choice in "${elettrodomestici[@]}"; do
@@ -114,6 +114,7 @@ if [ -n "$haPath" ]; then
                 ;;
         esac
     done
+	
     echo "Hai scelto: $selected_appliance"
     # Scegli sensore energia
     read -p "[REQUIRED] Enter energy sensor for the chosen appliance / [OBBLIGATORIO] Inserisci il sensore di energia per l'elettrodomestico scelto: " energy_sensor
@@ -121,7 +122,7 @@ if [ -n "$haPath" ]; then
     result=$(echo "$selected_appliance" | awk '{print $1}' | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
     replace_string "TAG_02" "$energy_sensor" "$haPath/packages/elettrodomestici/$result.yaml"
     echo
-    info "Now you can restart Home Assistant / Prima parte della configurazione finita, riavvia Home Assistant e avvia "
+    info "Now you can restart Home Assistant / Prima parte della configurazione finita, riavvia Home Assistant e procedi con la parte di configurazione "
 else
     echo
     error "Could not find the directory for Home Assistant" false
