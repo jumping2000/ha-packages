@@ -15,9 +15,6 @@ declare -a paths=(
     "$HOME/.homeassistant"
     "/usr/share/hassio/homeassistant"
 )
-declare pack="elettrodomestici"
-declare card="card_elettrodomestici"
-declare img="hassiohelp/pkg_elettrodomestici"
 declare elettrodomestici=("Washing_Machine / Lavatrice" "Dryer / Asciugatrice" "Dishwasher / Lavastoviglie" "Oven / Forno")
 declare temp_dir="temp_dir"
 
