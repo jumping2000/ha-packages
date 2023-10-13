@@ -174,6 +174,10 @@ Il package e la relativa card espongono una serie di dati, funzionalità, grafic
       <td><div align=center><img width = "450" src="img/asciugatrice_1.png"/></div></td>
       <td><div align=center><img width = 420 src="img/asciugatrice_2.png"/></div></td>
     </tr>
+    <tr>
+        <td><div align=center><img width = "450" src="img/forno_pollo1.png"/></div></td>
+        <td><div align=center><img width = 420 src="img/forno_2.png"/></div></td>
+    </tr>
 </table>
 
 La card è, in sostanza, una _custom button-card_ con funzionalità di _container_ che al suo interno contiene due importanti sezioni:
@@ -200,11 +204,19 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 <table align="center">
 	<tr>
 	    <th><center>🎫 Info Card 🎫</center></th>
-      <th><center>⬆ Energy Card ⬇</th>
+      <th><center>☢ Energy Card ☢</th>
 	</tr>
     <tr>
-        <td><div align=center><img width = 400 src="img/asciugatrice_3.png"/></div></td>
-        <td><div align=center><img width = 400 src="img/asciugatrice_4.png"/></div></td>
+        <td><div align=center><img width = 400 src="img/lavatrice_3.png"/></div></td>
+        <td><div align=center><img width = 400 src="img/lavatrice_4.png"/></div></td>
+    </tr>
+	<tr>
+	    <th><center>🌀 Centrifuga in corso 🌀</center></th>
+      <th><center>🎽 E' l'ora di tendere i panni 🎽</center></th>
+	</tr>
+    <tr>
+        <td><div align=center><img width = 400 src="img/centrifuga.png"/></div></td>
+        <td><div align=center><img width = 400 src="img/svuotare.png"/></div></td>
     </tr>
 </table>
 
@@ -213,15 +225,20 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 | Download |
 | :---: |
 
-Il download automatico dei packages è possibile con l'utilizzo dello script `smart_config.sh`, per cui è necessario effettuare il download del file e il posizionamento nella dir `/config` o altra nella propria istanza di Home Asisstant e quindi dare i gisuti permessi di esecuzione:
+Il download automatico dei packages è possibile con l'utilizzo dello script `smart_config.sh`, per cui è necessario effettuare il download del file e il posizionamento nella dir `/config` o altra nella propria istanza di Home Asisstant e quindi dare i giusti permessi di esecuzione, tutto questo è possibile con i seguenti passaggi attraverso la **CLI** (Command Line Interface) messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant:
+* avviare l'addon SSH o collegarsi alla CLI del container;
+* posizionarsi nella cartella  `/config`;
+* scaricare lo script da github `smart_config.sh`;
+* dare i giusti permessi allo script con il comando `chmod`;
+
+Di seguito la sequenza dei comandi:
 
 ```bash
-
+/# cd /config
+/config# wget https://raw.githubusercontent.com/jumping2000/ha-packages/main/smart_config.sh
 /config# chmod 744 smart_config.sh
 
 ```
-
-
 
 | Struttura dei file |
 | :---: |
@@ -280,17 +297,14 @@ Saranno presenti due cartelle _autoconfig_, una per PC (_autoconfig_x86_64_) e u
 
 Tutti i packages ***"Elettrodomestici"*** dipendono da un unico blueprint con la procedura di download e configurazione automatica; l'iter di installazione e configurazione che risulta molto semplificato grazie ai due script:
 1. script di download (`smart_config.sh`)
-2. script auto-configurante (`auto_config.py`):
+2. script di configurazione (`auto_config.py`):
 
 | Script di download |
 | :---: |
 
-Per il download automatico dei file segui questi passi:
- attraverso la CLI (Command Line Interface) messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant 
-* effettuare il backup della propria configurazione;
-* avviare l'addon 
-* scaricare lo script da github `smart_config.sh` (--> `wget -O - https://raw.githubusercontent.com/jumping2000/ha-packages/main/smart_config.sh` <--)
-* avviare lo script `smart_config.sh`(--> `config# ./smart:config.sh` <--) questo script si preoccuperà di effettuare il download di tutti i files necessari;
+Effettuare i seguenti passaggi attraverso l'addon SSH oppure da CLI del container:
+* effettuare il backup di HA;
+* avviare lo script `smart_config.sh`(--> `config# ./smart_config.sh` <--), questo script si preoccuperà di effettuare il download di tutti i files necessari;
 * seguire le istruzioni dello script inserendo l'elettromestico da configurare e l'entità di energia;
 * rinominare il file keys_XXX.txt relativo all'elettrodomestico da configurare (es. _keys_dryer.txt_ in _keys.txt_) (**IMPORTANTE**);
 
