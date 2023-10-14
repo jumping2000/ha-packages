@@ -1,5 +1,0 @@
-/config/packages/elettrodomestici/washing_machine_lite.yaml
-/config/lovelace/card_elettrodomestici/card_lavatrice.yaml
-switch_plug
-power_plug
-energy_plug

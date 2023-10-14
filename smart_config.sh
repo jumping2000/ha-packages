@@ -71,6 +71,20 @@ function check_arch() {
         return "x86"
     fi
 }
+function rename_keys() {
+    local appliance="$1"
+    local dir="$haPath/packages/elettrodomestici"
+    # Loop through files in the directory and copy if search_string is found
+    for file in "$dir"/*; do
+    if [ -f "$file" ]; then
+        filename=$(basename "$file")
+        if [[ "$filename" == *"$appliance"* ]]; then
+        cp "$file" "$directory/keys.txt"
+        info "Copied '$filename' to 'keys.txt'"
+        fi
+    fi
+    done
+}
 
 checkRequirement "wget"
 checkRequirement "unzip"
@@ -132,7 +146,7 @@ case "$option" in
             rm -rf "$temp_dir"
             info "Download files complete / Copia file completata."
 
-            echo "Scegli un package da installare dalla lista:"
+            echo "Choose a package: / Scegli un package da installare dalla lista:"
             select choice in "${elettrodomestici[@]}"; do
                 case "$REPLY" in
                     1|2|3|4)
@@ -145,13 +159,14 @@ case "$option" in
                 esac
             done
             
-            echo "Hai scelto: $selected_appliance"
+            info "Hai scelto: $selected_appliance"
             # Scegli sensore energia
             read -p "[REQUIRED] Enter energy sensor for the chosen appliance / [OBBLIGATORIO] Inserisci il sensore di energia per l'elettrodomestico scelto: " energy_sensor
-            echo "Il sensore inserito è: $energy_sensor"
+            info "Il sensore inserito è: $energy_sensor"
             result=$(echo "$selected_appliance" | awk '{print $1}' | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
             replace_string "TAG_02" "$energy_sensor" "$haPath/packages/elettrodomestici/$result.yaml"
             echo
+            rename_keys "$result"
             info "Now you can restart Home Assistant / Prima parte della configurazione finita, riavvia Home Assistant e continua con la configurazione"
         else
             echo

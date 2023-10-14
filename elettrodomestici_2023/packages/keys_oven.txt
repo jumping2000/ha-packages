@@ -1,0 +1,7 @@
+/config/packages/elettrodomestici/oven.yaml
+/config/lovelace/card_elettrodomestici/card_forno.yaml
+switch_plug
+power_plug
+energy_plug
+voltage_plug
+current_plug
