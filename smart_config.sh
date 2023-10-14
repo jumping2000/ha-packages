@@ -73,7 +73,7 @@ function check_arch() {
 }
 function rename_keys() {
     local appliance="$1"
-    local dir="$haPath/packages/elettrodomestici"
+    local dir="$haPath/packages/"
     # Loop through files in the directory and copy if search_string is found
     for file in "$dir"/*; do
     if [ -f "$file" ]; then
