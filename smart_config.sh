@@ -100,7 +100,6 @@ case "$option" in
                 haPath="$path"
             fi
         done
-
         if [ -n "$haPath" ]; then
             info "Found Home Assistant configuration directory at '$haPath'"
             cd "$haPath" || error "Could not change path to $haPath"
@@ -162,7 +161,6 @@ case "$option" in
             echo "and run the script again"
             exit 1
         fi
-
         ;;
     "config")
         if [ "$check_arch" == "pi" ]; 
