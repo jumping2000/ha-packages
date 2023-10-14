@@ -14,6 +14,7 @@
 | [Termostato 🔥](#termostato)| NOT YET RELEASED | - | - |
 | [Router 📶](network.md) | **2023.8.0** |  YES | NO |
 
+ESPHOME Version available [here](old_pack) 
 <br>
 
 ## Download ZIP with all HA Projects!
