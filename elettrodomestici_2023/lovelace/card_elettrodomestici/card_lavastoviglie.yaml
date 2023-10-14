@@ -369,7 +369,9 @@ custom_fields:
             transform: initial
             line-height: 24px
             padding: 2px 2px
-###########################################################
+  #######################################
+  ## BUTTONS BELOW
+  #######################################
   buttons:
     card:
       type: custom:mod-card

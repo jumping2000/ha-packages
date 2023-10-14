@@ -236,7 +236,7 @@ Di seguito la sequenza dei comandi:
 ```bash
 /# cd /config
 /config# wget https://raw.githubusercontent.com/jumping2000/ha-packages/main/smart_config.sh
-/config# chmod 744 smart_config.sh
+/config# chmod +x smart_config.sh
 
 ```
 
@@ -363,7 +363,7 @@ Dopo le operazioni preliminare sul package e il completamento del blueprint si p
 
 ```bash
 
-/config/packages# chmod 744 autoconfig_x86_64/auto_config.py
+/config/packages# chmod +x autoconfig_x86_64/auto_config.py
 /config/packages# python autoconfig_x86_64/auto_config.py -v
 
 ```
@@ -371,7 +371,7 @@ Dopo le operazioni preliminare sul package e il completamento del blueprint si p
 oppure per Raspberry:
 
 ```bash
-/config/packages# chmod 744 autoconfig_rpi/auto_config.py
+/config/packages# chmod +x autoconfig_rpi/auto_config.py
 /config/packages# python autoconfig_rpi/auto_config.py -v
 
 ```
