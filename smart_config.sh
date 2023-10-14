@@ -122,7 +122,7 @@ if [ -n "$haPath" ]; then
     result=$(echo "$selected_appliance" | awk '{print $1}' | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
     replace_string "TAG_02" "$energy_sensor" "$haPath/packages/elettrodomestici/$result.yaml"
     echo
-    info "Now you can restart Home Assistant / Prima parte della configurazione finita, riavvia Home Assistant e procedi con la configurazione"
+    info "Now you can restart Home Assistant / Prima parte della configurazione finita, riavvia Home Assistant e continua con la configurazione"
 else
     echo
     error "Could not find the directory for Home Assistant" false

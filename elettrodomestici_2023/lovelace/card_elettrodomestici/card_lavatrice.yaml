@@ -36,16 +36,16 @@ styles:
 custom_fields:
   pictures:
     card:
-  #######################################
-  ## PICTURE CARD
-  #######################################
+    #######################################
+    ## PICTURE CARD
+    #######################################
       type: picture-elements
       style: |
-        {% set stato = states('sensor.dryer_status') %}
+        {% set stato = states('sensor.washing_machine_status') %}
         @keyframes idle {}
         @keyframes unknown {}
         @keyframes unavailable {}
-        @keyframes asciugatura {
+        @keyframes lavaggio {
           0% { transform: rotate(0deg); }
           10% { transform: rotate(40deg); }
           20% { transform: rotate(80deg); }
@@ -57,15 +57,25 @@ custom_fields:
           90% { transform: rotate(-80deg); }
           100% { transform: rotate(0deg); }
         }
-        @keyframes mantenimento {
+        @keyframes riempimento{
+          30% { transform: rotate(40deg); }
+          60% { transform: rotate(-40deg); }
+        }
+        @keyframes centrifuga {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }             
+        }
+        @keyframes risciacquo {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(720deg); } 
         }
         ha-card { 
           --my-animation-name: {{stato|lower}};
           --my-rotate: {{ {
-                'Asciugatura' : '1800ms infinite ease-in-out backwards',
-                'Mantenimento' : '1500ms infinite ease-in-out alternate backwards',
+                'Riempimento' : '1800ms infinite ease-in-out',
+                'Lavaggio' : '1800ms infinite ease-in-out backwards',
+                'Centrifuga' : '150ms infinite ease-in-out',
+                'Risciacquo' : '1500ms infinite ease-in-out alternate backwards',
                 'Idle': '',
                 'unknown':'',
                 'unavailable':''
@@ -75,64 +85,57 @@ custom_fields:
       image: /local/hassiohelp/pkg_elettrodomestici/sfondo_black.png
       elements:
   #######################################
-  ### Switch elettrodomestico            
+  # inserire lo switch della lavatrice  #
   #######################################
         - type: image
-          entity: TAG_00
-          image: /local/hassiohelp/pkg_elettrodomestici/asciugatrice.png
+          entity: TAG_00 
+          image: /local/hassiohelp/pkg_elettrodomestici/lavatrice.png
           state_filter:
             'off': brightness(50%) saturate(0.5) opacity(1.0)
             'on': brightness(100%)
           style:
             left: 22%
-            top: 48.5%
+            top: 48.5% #58
             width: 27%
           tap_action:
             action: toggle
+  ###
         - type: image
-          entity: sensor.dryer_status
-          image: /local/hassiohelp/pkg_elettrodomestici/asciugatrice_oblo.png
+          entity: sensor.washing_machine_status 
+          image: /local/hassiohelp/pkg_elettrodomestici/lavatrice_oblo.png
           state_filter:
             Idle: opacity(0.0)
-            Asciugatura: opacity(0.0)
-            Mantenimento: opacity(0.0)
-            Svuotare: null
+            Riempimento: opacity(0.0)
+            Lavaggio: opacity(0.0)
+            Risciacquo: opacity(0.0)
+            Centrifuga: opacity(0.0)
+            Svuotare: Null
           style:
             left: 16.5%
             pointer-events: none
-            top: 46%
+            top: 46% #55.5%
             width: 33%
+  ###
         - type: image
-          entity: sensor.dryer_status
-          image: /local/hassiohelp/pkg_elettrodomestici/asciugatrice_panni.png
+          entity: sensor.washing_machine_status 
+          image: /local/hassiohelp/pkg_elettrodomestici/lavatrice_panni.png
           state_filter:
             Idle: opacity(0.0)
-            Asciugatura: null
-            Mantenimento: null
+            Riempimento: null
+            Lavaggio: null
+            Risciacquo: null
+            Centrifuga: null
             Svuotare: opacity(0.0)
           style:
-            transform: translate(0%,0%)
+            transform: 'translate(0%,0%)'
             animation: var(--my-rotate)
             animation-name: var(--my-animation-name)
-            left: 14%
+            left: 14.5%
             pointer-events: none
-            top: 31%
-            width: 16%
-        - type: image
-          entity: sensor.dryer_status
-          image: /local/hassiohelp/pkg_elettrodomestici/asciugatrice_cornice.png
-          state_filter:
-            Idle: opacity(0.0)
-            Asciugatura: null
-            Mantenimento: null
-            Svuotare: opacity(0.0)
-          style:
-            left: 22%
-            pointer-events: none
-            top: 47%
-            width: 19%
+            top: 30%
+            width: 15%
   #######################################
-  ### POWER LABEL
+  ## POWER LABEL
   #######################################
         - type: state-label
           entity: TAG_01
@@ -142,10 +145,10 @@ custom_fields:
             left: 32%
             pointer-events: none
             transform: initial
-            font-size: 12px
+            font-size: 12px 
             line-height: 24px
             padding: 0px 14px
-            color: var(--primary-text-color)
+            color: "var(--primary-text-color)"
   #######################################
   ### ENERGY LABEL
   #######################################
@@ -157,11 +160,11 @@ custom_fields:
             left: 52%
             pointer-events: none
             transform: initial
-            font-size: 12px
+            font-size: 12px 
             line-height: 24px
             padding: 0px 14px
         - type: state-label
-          entity: sensor.asciugatrice_cost
+          entity: sensor.lavatrice_cost
           attribute: oggi_cost
           prefix: '💰 '
           suffix: ' €'
@@ -170,44 +173,44 @@ custom_fields:
             left: 78%
             pointer-events: none
             transform: initial
-            font-size: 12px
+            font-size: 12px 
             line-height: 24px
             padding: 0px 14px
   #######################################
   ### STATUS LABEL
   #######################################
         - type: state-label
-          entity: sensor.dryer_status
+          entity: sensor.washing_machine_status
           prefix: 'Stato: '
           style:
             top: 10%
             left: 36%
             pointer-events: none
             transform: initial
-            font-size: 12px
+            font-size: 12px 
             font-weight: bold
-            color: null
+            color: #27b376
             line-height: 24px
             padding: 2px 2px
   #######################################
-  ### BINARY STATUS
+  ### OBLO'
   #######################################
         - type: state-label
-          entity: binary_sensor.dryer_status
+          entity: binary_sensor.washing_machine_status
           style:
             top: 10%
             left: 65%
             pointer-events: none
             transform: initial
-            font-size: 12px
+            font-size: 12px 
             line-height: 24px
             padding: 2px 22px
         - type: state-icon
-          entity: binary_sensor.dryer_status
+          entity: binary_sensor.washing_machine_status
           state-color: true
           style:
-            top: 10%
-            left: 64%
+            top: 10% #0
+            left: 64% #0
             transform: scale(0.8)
             line-height: 24px
             padding: 0px 2px
@@ -215,24 +218,26 @@ custom_fields:
   ### MAINTENANCE LABEL
   #######################################
         - type: state-label
-          entity: sensor.asciugatrice_modulo_manutenzione
+          entity: sensor.lavatrice_modulo_manutenzione
           prefix: 'Cicli: '
           style:
             top: 10%
             left: 84%
             pointer-events: none
-            font-size: 12px
-            line-height: 24px
+            font-size: 12px  # 14px
+            line-height: 24px #24px
             transform: initial
             padding: 2px 2px
   #######################################
   ## GRAFICO
   #######################################
-        - type: custom:apexcharts-card
+  # da inserire il sensore potenza      #
+  #######################################
+        - type: 'custom:apexcharts-card'
           style:
-            '--card-background-color': rgba(0, 0, 0, 0.0)
-            '--ha-card-border-width': 0px
-            '--ha-card-box-shadow': none
+            '--card-background-color': 'rgba(0, 0, 0, 0.0)'
+            '--ha-card-border-width': '0px'
+            '--ha-card-box-shadow': 'none'
             top: 60%
             left: 60%
             width: 50%
@@ -247,7 +252,7 @@ custom_fields:
             title:
               style:
                 fontSize: 12px
-                fontFamily: Segoe UI Light
+                fontFamily: Segoe UI Light 
             yaxis:
               forceNiceScale: true
               decimalsInFloat: 0
@@ -277,12 +282,12 @@ custom_fields:
             show: false
             show_states: false
             colorize_states: true
-            title: Potenza
+            title: 'Potenza'
           series:
             - entity: TAG_01
               name: Potenza
-              type: line
-              stroke_width: 2
+              type: line #area
+              stroke_width: 2 #0
               curve: stepline
               group_by:
                 func: last
@@ -308,9 +313,9 @@ custom_fields:
   #######################################
         - type: custom:bar-card
           style:
-            '--card-background-color': transparent
-            '--ha-card-border-radius': 5px
-            '--ha-card-box-shadow': none
+            '--card-background-color': 'transparent'
+            '--ha-card-border-radius': '5px'
+            '--ha-card-box-shadow': 'none'
             top: 56%
             left: 91%
             width: 60px
@@ -325,7 +330,7 @@ custom_fields:
             icon: 'off'
           columns: 1
           entities:
-            - entity: sensor.asciugatrice_modulo_manutenzione
+            - entity: sensor.lavatrice_modulo_manutenzione
               max: 50
               severity:
                 - color: '#27b376'
@@ -341,12 +346,12 @@ custom_fields:
   ### Programma
   #######################################
         - type: state-label
-          entity: input_select.asciugatrice_program
+          entity: input_select.lavatrice_program
           prefix: 'Programma: '
           style:
-            left: 5%
-            bottom: '-3%'
-            font-size: 12px
+            left: 5% 
+            bottom: -3%
+            font-size: 12px 
             line-height: 24px
             transform: initial
             padding: 2px 2px
@@ -356,7 +361,7 @@ custom_fields:
             action: call-service
             service: input_select.select_previous
             service_data:
-              entity_id: input_select.asciugatrice_program
+              entity_id: input_select.lavatrice_program
           style:
             left: 50%
             bottom: 0%
@@ -369,32 +374,34 @@ custom_fields:
             action: call-service
             service: input_select.select_next
             service_data:
-              entity_id: input_select.asciugatrice_program
+              entity_id: input_select.lavatrice_program
           style:
             left: 56%
             bottom: 0%
             transform: initial
             line-height: 24px
             padding: 2px 2px
+  ### tempo rimasto
         - type: state-label
-          entity: sensor.dryer_time_left
+          entity: sensor.washing_machine_time_left
           style:
             right: 6%
-            bottom: '-3%'
+            bottom: -3%
             pointer-events: none
-            font-size: 12px
+            font-size: 12px 
             transform: initial
             line-height: 24px
             padding: 2px 2px
         - type: icon
           icon: mdi:progress-clock
-          entity: sensor.dryer_status
+          entity: sensor.washing_machine_status
           style:
             bottom: 0%
             right: 1%
             transform: initial
             line-height: 24px
             padding: 2px 2px
+###########################################################
   buttons:
     card:
       type: custom:mod-card
@@ -439,120 +446,121 @@ custom_fields:
                     --popup-min-width: 950px; 
                     --popup-max-width: 1050px;
                     --popup-border-radius: var(--ha-card-border-radius);
-                  title: Dati asciugatrice
-                  content:
-                    type: custom:layout-card
-                    layout_type: grid
-                    layout:
-                      grid-template-columns: 50% 50%
-                      grid-template-rows: auto
-                      margin: 0px 0px 0px 0px
-                      grid-template-areas: |
-                        "colonna1 colonna2"
-                      mediaquery:
-                        '(max-width: 600px)':
-                          grid-template-columns: 100%
-                          grid-template-areas: |
-                            "colonna1"
-                            "colonna2"
-                    cards:
-                      - type: vertical-stack
-                        view_layout:
-                          grid-area: colonna1
-                        cards:
+                  title: Dati Lavatrice
+                  content:  
+                      type: custom:layout-card
+                      layout_type: grid #custom:grid-layout
+                      layout:
+                        grid-template-columns: 50% 50%
+                        grid-template-rows: auto
+                        margin: 0px 0px 0px 0px
+                        grid-template-areas: |
+                          "colonna1 colonna2"
+                        mediaquery:
+                          "(max-width: 600px)":
+                            grid-template-columns: 100%
+                            grid-template-areas: |
+                              "colonna1"
+                              "colonna2"
+                      cards:
+                        - type: vertical-stack
+                          view_layout:
+                            grid-area: colonna1
+                          cards:
                           - type: entities
                             show_header_toggle: false
                             state_color: true
                             entities:
-                              - entity: sensor.asciugatrice_cost
+                              - entity: sensor.lavatrice_cost
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Oggi
                                 icon: mdi:counter
                                 entities:
-                                  - entity: sensor.asciugatrice_oggi_cicli
+                                  - entity: sensor.lavatrice_oggi_cicli
                                     name: Cicli
-                                  - entity: sensor.asciugatrice_oggi_runtime
+                                  - entity: sensor.lavatrice_oggi_runtime
                                     name: Durata
                                     format: duration-h
-                                  - entity: sensor.asciugatrice_oggi_energy
+                                  - entity: sensor.lavatrice_oggi_energy
                                     name: Energia
                                   - attribute: oggi_cost
                                     name: Costo
-                                    unit: €
-                              - entity: sensor.asciugatrice_cost
+                                    unit: '€'
+                              - entity: sensor.lavatrice_cost
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Settimana
                                 icon: mdi:counter
                                 entities:
-                                  - entity: sensor.asciugatrice_settimana_cicli
+                                  - entity: sensor.lavatrice_settimana_cicli
                                     name: Cicli
-                                  - entity: sensor.asciugatrice_settimana_runtime
+                                  - entity: sensor.lavatrice_settimana_runtime
                                     name: Durata
                                     format: duration-h
-                                  - entity: sensor.asciugatrice_settimana_energy
+                                  - entity: sensor.lavatrice_settimana_energy
                                     name: Energia
                                   - attribute: settimana_cost
                                     name: Costo
-                                    unit: €
-                              - entity: sensor.asciugatrice_cost
+                                    unit: '€'
+                              - entity: sensor.lavatrice_cost
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Mese
                                 icon: mdi:counter
                                 entities:
-                                  - entity: sensor.asciugatrice_mese_cicli
+                                  - entity: sensor.lavatrice_mese_cicli
                                     name: Cicli
-                                  - entity: sensor.asciugatrice_mese_runtime
+                                  - entity: sensor.lavatrice_mese_runtime
                                     name: Durata
                                     format: duration-h
-                                  - entity: sensor.asciugatrice_mese_energy
+                                  - entity: sensor.lavatrice_mese_energy
                                     name: Energia
                                   - attribute: mese_cost
                                     name: Costo
-                                    unit: €
-                              - entity: sensor.asciugatrice_cost
+                                    unit: '€'
+                              - entity: sensor.lavatrice_cost
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Anno
                                 icon: mdi:counter
                                 entities:
-                                  - entity: sensor.asciugatrice_anno_cicli
+                                  - entity: sensor.lavatrice_anno_cicli
                                     name: Cicli
-                                  - entity: sensor.asciugatrice_anno_runtime
+                                  - entity: sensor.lavatrice_anno_runtime
                                     name: Durata
                                     format: duration-h
-                                  - entity: sensor.asciugatrice_anno_energy
+                                  - entity: sensor.lavatrice_anno_energy
                                     name: Energia
                                   - attribute: anno_cost
                                     name: Costo
-                                    unit: €
+                                    unit: '€'
                               - type: divider
+                              - entity: button.plug_lavatrice_restart
                               - type: button
                                 icon: mdi:restore-alert
                                 name: Reset Cicli / Energia
                                 action_name: Reset
                                 tap_action:
                                   action: call-service
-                                  service: script.reset_asciugatrice_cicli
+                                  service: script.reset_lavatrice_cicli
                               - type: button
                                 icon: mdi:restore-alert
                                 name: Reset Valori Totali
                                 action_name: Reset
                                 tap_action:
                                   action: call-service
-                                  service: script.reset_asciugatrice_totale
-                      - type: vertical-stack
-                        view_layout:
-                          grid-area: colonna2
-                        cards:
+                                  service: script.reset_lavatrice_totale
+                        - type: vertical-stack
+                          view_layout:
+                            grid-area: colonna2
+                          cards:
                           - type: entities
                             show_header_toggle: false
                             state_color: true
                             entities:
-                              - entity: sensor.asciugatrice_oggi_runtime
-                              - entity: sensor.asciugatrice_ultimo_runtime
+                              - entity: sensor.lavatrice_oggi_runtime
+                              - entity: sensor.lavatrice_ultimo_runtime
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Ultimo
@@ -560,43 +568,42 @@ custom_fields:
                                   hui-generic-entity-row:
                                     $: |
                                       state-badge {
-                                        {% set COLOR = "orange" if is_state("binary_sensor.dryer_status","on")  %}              
+                                        {% set COLOR = "orange" if is_state("binary_sensor.washing_machine_status","on")  %}              
                                         color: {{COLOR}};
                                       } 
                                 entities:
-                                  - entity: sensor.asciugatrice_ultimo_runtime
+                                  - entity: sensor.lavatrice_ultimo_runtime
                                     name: Durata
-                                  - entity: sensor.asciugatrice_run_energy
+                                  - entity: sensor.lavatrice_run_energy
                                     name: Energia
                                     unit: kWh
-                                  - entity: sensor.asciugatrice_cost
+                                  - entity: sensor.lavatrice_cost
                                     name: Costo
-                              - entity: counter.cicli_asciugatrice
+                              - entity: counter.cicli_lavaggio_lavatrice
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Totali
                                 entities:
-                                  - entity: counter.cicli_asciugatrice
+                                  - entity: counter.cicli_lavaggio_lavatrice
                                     name: Cicli
-                                  - entity: sensor.asciugatrice_total_runtime
+                                  - entity: sensor.lavatrice_total_runtime
                                     name: Durata
                                     unit: h
-                                  - entity: sensor.plug_asciugatrice_total_energy
+                                  - entity: sensor.plug_lavatrice_total_energy
                                     name: Energia
                               - type: divider
-                              - entity: binary_sensor.dryer_maintenance
-                              - entity: sensor.asciugatrice_modulo_manutenzione
-                              - entity: input_number.asciugatrice_avviso_manutenzione
-                              - entity: input_number.costo_energia
+                              - entity: binary_sensor.washing_machine_maintenance
+                              - entity: sensor.lavatrice_modulo_manutenzione
+                              - entity: input_number.lavatrice_ripetizioni_notifica
+                              - entity: input_number.lavatrice_avviso_manutenzione
+                              - entity: input_boolean.lavatrice_grocy_utilization
           - type: custom:button-card
             name: Settimana
-            entity: sensor.asciugatrice_settimana_energy
+            entity: sensor.lavatrice_settimana_energy
             show_state: true
             show_label: true
             label: >
-              [[[ return
-              states['sensor.asciugatrice_cost'].attributes.settimana_cost + ' €';
-              ]]]
+              [[[ return states['sensor.lavatrice_cost'].attributes.settimana_cost + ' €'; ]]]
             styles:
               card:
                 - background-color: var('--background-color')
@@ -612,14 +619,14 @@ custom_fields:
                 - grid-template-areas: '"n" "s" "l"'
                 - grid-template-columns: 1fr
                 - grid-template-rows: auto auto auto
+                
           - type: custom:button-card
             name: Mese
-            entity: sensor.asciugatrice_mese_energy
+            entity: sensor.lavatrice_mese_energy
             show_state: true
             show_label: true
             label: >
-              [[[ return states['sensor.asciugatrice_cost'].attributes.mese_cost +
-              ' €'; ]]]
+              [[[ return states['sensor.lavatrice_cost'].attributes.mese_cost + ' €'; ]]]
             styles:
               card:
                 - background-color: var('--background-color')
@@ -635,14 +642,14 @@ custom_fields:
                 - grid-template-areas: '"n" "s" "l"'
                 - grid-template-columns: 1fr
                 - grid-template-rows: auto auto auto
+                
           - type: custom:button-card
             name: Anno
-            entity: sensor.asciugatrice_anno_energy
+            entity: sensor.lavatrice_anno_energy
             show_state: true
             show_label: true
             label: >
-              [[[ return states['sensor.asciugatrice_cost'].attributes.anno_cost +
-              ' €'; ]]]
+                [[[ return states['sensor.lavatrice_cost'].attributes.anno_cost + ' €'; ]]]
             styles:
               card:
                 - background-color: var('--background-color')
@@ -658,10 +665,11 @@ custom_fields:
                 - grid-template-areas: '"n" "s" "l"'
                 - grid-template-columns: 1fr
                 - grid-template-rows: auto auto auto
+                
           - type: custom:button-card
-            name: Dryer
+            name: Lavatrice
             entity: TAG_00
-            icon: mdi:tumble-dryer
+            icon: mdi:washing-machine
             show_state: false
             show_label: false
             styles:
@@ -687,172 +695,181 @@ custom_fields:
                 - grid-template-areas: '"i" "n" "s"'
                 - grid-template-columns: 1fr
                 - grid-template-rows: 50% auto auto
-            tap_action:
-              action: fire-dom-event
-              browser_mod:
-                service: browser_mod.popup
-                data:
-                  style: |-
-                    --popup-min-width: 950px; 
-                    --popup-max-width: 1050px;
-                    --popup-border-radius: var(--ha-card-border-radius);
-                  title: Energia asciugatrice
-                  content:
-                    type: vertical-stack
-                    cards:
-                      - type: custom:bar-card
-                        positions:
-                          name: inside
-                          value: inside
-                          minmax: 'off'
-                          icon: 'off'
-                        height: 40px
-                        columns: 3
-                        entities:
-                          - entity: TAG_01
-                            name: Potenza
-                            max: 2000
-                            severity:
-                              - color: '#27b376'
-                                from: 0
-                                to: 99.9
-                              - color: '#fl9a73e'
-                                from: 100
-                                to: 399.9
-                              - color: '#bf212f'
-                                from: 400
-                                to: 1999
-                          - entity: TAG_03
-                            name: Tensione
-                            max: 255
-                            severity:
-                              - color: '#27b376'
-                                from: 230
-                                to: 249
-                              - color: '#fl9a73e'
-                                from: 220
-                                to: 229
-                              - color: rgb(163,0,0,0.80)
-                                from: 250
-                                to: 255
-                          - entity: TAG_04
-                            name: Corrente
-                            max: 10
-                            severity:
-                              - color: '#27b376'
-                                from: 1
-                                to: 5.9
-                              - color: '#fl9a73e'
-                                from: 6
-                                to: 7.9
-                              - color: '#bf212f'
-                                from: 8
-                                to: 10
-                      - type: grid
-                        square: false
-                        columns: 5
-                        cards:
-                          - type: statistic
-                            entity: TAG_02
-                            name: Mese corrente
-                            unit: kWh
-                            period:
-                              calendar:
-                                period: month
-                            stat_type: change
-                          - type: statistic
-                            entity: TAG_02
-                            name: Mese - 1
-                            unit: kWh
-                            period:
-                              calendar:
-                                period: month
-                                offset: -1
-                            stat_type: change
-                          - type: statistic
-                            entity: TAG_02
-                            name: Mese - 2
-                            unit: kWh
-                            period:
-                              calendar:
-                                period: month
-                                offset: -2
-                            stat_type: change
-                          - type: statistic
-                            entity: TAG_02
-                            name: Mese - 3
-                            unit: kWh
-                            period:
-                              calendar:
-                                period: month
-                                offset: -3
-                            stat_type: change
-                          - type: statistic
-                            entity: TAG_02
-                            name: Mese - 4
-                            unit: kWh
-                            period:
-                              calendar:
-                                period: month
-                                offset: -4
-                            stat_type: change
-                      - type: custom:apexcharts-card
-                        experimental:
-                          color_threshold: true
-                        apex_config:
-                          chart:
-                            height: 200px
-                          dataLabels:
-                            enabled: true
-                            dropShadow:
+              double_action:
+                action: fire-dom-event
+                browser_mod:
+                  service: browser_mod.popup
+                  data:
+                    style: |-
+                      --popup-min-width: 950px; 
+                      --popup-max-width: 1050px;
+                      --popup-border-radius: var(--ha-card-border-radius);
+                    title: Energia Lavatrice
+                    content:
+                      type: vertical-stack
+                      cards:
+                        - type: custom:bar-card
+                          ## INSERIRE LE ENTITA' CORRETTE O ELIMINARE SE NON SI HANNO ###
+                          positions:
+                            name: inside
+                            value: inside
+                            #indicator: inside
+                            minmax: 'off'
+                            icon: 'off'
+                          height: 40px
+                          columns: 3
+                          entities:
+                            - entity: TAG_01
+                              name: Potenza
+                              max: 2000
+                              severity:
+                                - color: '#27b376'
+                                  from: 0
+                                  to: 99.9
+                                - color: '#fl9a73e'
+                                  from: 100
+                                  to: 399.9
+                                - color: '#bf212f'
+                                  from: 400
+                                  to: 1999
+                            - entity: TAG_03
+                              name: Tensione
+                              max: 255
+                              severity:
+                                - color: '#27b376'
+                                  from: 230
+                                  to: 249
+                                - color: '#fl9a73e'
+                                  from: 220
+                                  to: 229
+                                - color: rgb(163,0,0,0.80)
+                                  from: 250
+                                  to: 255
+                            - entity: TAG_04
+                              name: Corrente
+                              max: 10
+                              severity:
+                                - color: '#27b376'
+                                  from: 1
+                                  to: 5.9
+                                - color: '#fl9a73e'
+                                  from: 6
+                                  to: 7.9
+                                - color: '#bf212f'
+                                  from: 8
+                                  to: 10
+                        - type: grid
+                          square: false
+                          columns: 5
+                          cards:
+                            - type: statistic
+                              entity: TAG_02
+                              name: Mese corrente
+                              unit: kWh
+                              period:
+                                calendar:
+                                  period: month
+                              stat_type: change
+                            - type: statistic
+                              entity: TAG_02
+                              name: Mese - 1
+                              unit: kWh
+                              period:
+                                calendar:
+                                  period: month
+                                  offset: -1
+                              stat_type: change
+                            - type: statistic
+                              entity: TAG_02
+                              name: Mese - 2
+                              unit: kWh
+                              period:
+                                calendar:
+                                  period: month
+                                  offset: -2
+                              stat_type: change
+                            - type: statistic
+                              entity: TAG_02
+                              name: Mese - 3
+                              unit: kWh
+                              period:
+                                calendar:
+                                  period: month
+                                  offset: -3
+                              stat_type: change
+                            - type: statistic
+                              entity: TAG_02
+                              name: Mese - 4
+                              unit: kWh
+                              period:
+                                calendar:
+                                  period: month
+                                  offset: -4
+                              stat_type: change
+                        - type: custom:apexcharts-card
+                          # style: |
+                          #     ha-card {
+                          #       border-radius: 0px;
+                          #       box-shadow: none;
+                          #       background-image: none;
+                          #       background-color: transparent; 
+                          #     }
+                          experimental:
+                            color_threshold: true
+                          apex_config:
+                            chart:
+                              height: 200px
+                            dataLabels:
                               enabled: true
-                          yaxis:
-                            forceNiceScale: true
-                            labels:
-                              style:
-                                fontSize: 10px
-                                fontFamily: Segoe UI Light
-                          xaxis:
-                            axisBorder:
+                              dropShadow:
+                                enabled: true
+                            yaxis:
+                              forceNiceScale: true
+                              labels:
+                                style:
+                                  fontSize: 10px
+                                  fontFamily: Segoe UI Light
+                            xaxis:
+                              axisBorder:
+                                show: true
+                              labels:
+                                show: false
+                                style:
+                                  fontSize: 10px
+                                  fontFamily: Segoe UI Light
+                            grid:
                               show: true
-                            labels:
-                              show: false
-                              style:
-                                fontSize: 10px
-                                fontFamily: Segoe UI Light
-                          grid:
+                              borderColor: rgba(112, 135, 164, 0.5)
+                          show:
+                            last_updated: false
+                          header:
+                            standard_format: false
                             show: true
-                            borderColor: rgba(112, 135, 164, 0.5)
-                        show:
-                          last_updated: false
-                        header:
-                          standard_format: false
-                          show: true
-                          show_states: true
-                          colorize_states: true
-                          title: Consumo giornaliero - ultimi 30 giorni
-                        graph_span: 30d
-                        update_interval: 1h
-                        series:
-                          - entity: TAG_02
-                            name: Energia
-                            type: column
-                            statistics:
-                              type: state
-                              period: day
-                              align: start
-                            show:
-                              datalabels: true
-                              header_color_threshold: true
-                              name_in_header: false
-                              legend_value: false
-                            opacity: 0.8
-                            color_threshold:
-                              - color: '#27b376'
-                                value: 0.4
-                              - color: '#006f3c'
-                                value: 0.8
-                              - color: '#fl9a73e'
-                                value: 1.2
-                              - color: '#bf212f'
-                                value: 1.6
+                            show_states: true
+                            colorize_states: true
+                            title: Consumo giornaliero - ultimi 30 giorni
+                          graph_span: 30d
+                          update_interval: 1h
+                          series:
+                            - entity: TAG_02
+                              name: Energia
+                              type: column
+                              statistics:
+                                type: state
+                                period: day
+                                align: start
+                              show:
+                                datalabels: true
+                                header_color_threshold: true
+                                name_in_header: false
+                                legend_value: false
+                              opacity: 0.8
+                              color_threshold:
+                                - color: "#27b376"
+                                  value: 0.4
+                                - color: "#006f3c"
+                                  value: 0.8
+                                - color: "#fl9a73e"
+                                  value: 1.2
+                                - color: "#bf212f"
+                                  value: 1.6
