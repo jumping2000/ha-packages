@@ -222,10 +222,10 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 
 
 ## Installazione
-| Download |
+| Download script|
 | :---: |
 
-Il download automatico dei packages è possibile con l'utilizzo dello script `smart_config.sh`, per cui è necessario effettuare il download del file e il posizionamento nella dir `/config` o altra nella propria istanza di Home Asisstant e quindi dare i giusti permessi di esecuzione, tutto questo è possibile con i seguenti passaggi attraverso la **CLI** (Command Line Interface) messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant:
+Il download automatico dei packages è possibile con l'utilizzo dello script `smart_config.sh`, per cui è necessario effettuare il download del file e il posizionamento nella dir `/config` o altra nella propria istanza di Home Asisstant e quindi dare i giusti permessi di esecuzione, tutto questo è possibile con i seguenti passaggi attraverso la **CLI** (Command Line Interface) messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant o su host nel caso di installazione HA COre su VENV:
 * avviare l'addon SSH o collegarsi alla CLI del container;
 * posizionarsi nella cartella  `/config`;
 * scaricare lo script da github `smart_config.sh`;
@@ -239,6 +239,8 @@ Di seguito la sequenza dei comandi:
 /config# chmod +x smart_config.sh
 
 ```
+
+**NOTA:** Se non riesci a lanciare i comandi precedenti dall'addon SSH, utilizza nella conf dell'addon l'username ***root***, potrai ripristinare il precedente username alla fine della configurazione.
 
 | Struttura dei file |
 | :---: |
@@ -295,18 +297,16 @@ Saranno presenti due cartelle _autoconfig_, una per PC (_autoconfig_x86_64_) e u
 
 ## Configurazione
 
-Tutti i packages ***"Elettrodomestici"*** dipendono da un unico blueprint con la procedura di download e configurazione automatica; l'iter di installazione e configurazione che risulta molto semplificato grazie ai due script:
-1. script di download (`smart_config.sh`)
-2. script di configurazione (`auto_config.py`):
+Tutti i packages ***"Elettrodomestici"*** dipendono da un unico blueprint e da uno script che permette download e configurazione automatici.
 
-| Script di download |
+| Download package & card |
 | :---: |
 
 Effettuare i seguenti passaggi attraverso l'addon SSH oppure da CLI del container:
 * effettuare il backup di HA;
-* avviare lo script `smart_config.sh`(--> `config# ./smart_config.sh` <--), questo script si preoccuperà di effettuare il download di tutti i files necessari;
-* seguire le istruzioni dello script inserendo l'elettromestico da configurare e l'entità di energia;
-* rinominare il file keys_XXX.txt relativo all'elettrodomestico da configurare (es. _keys_dryer.txt_ in _keys.txt_) (**IMPORTANTE**);
+* avviare lo script `smart_config.sh`con l'opzione `download` (--> `config# ./smart_config.sh download` <--), questo script si preoccuperà di effettuare il download di tutti i files necessari;
+* seguire le istruzioni dello script rispondendo "SI" alle prime tre domande relative alla scrittura dei file, inserendo l'elettromestico da configurare e l'entità di energia;
+* rinominare il file `keys_XXX.txt` nella cartella `/config/packages/` relativo all'elettrodomestico da configurare (es. _keys_dryer.txt_ in _keys.txt_) (**IMPORTANTE**);
 
 Fatto questo **riavviate  Home Assistant** e verificate che non ci siano nel log errori relativi al nuovo package ( ad esempio **dryer.yaml** oppure **oven.yaml**, etc).
 
@@ -353,53 +353,27 @@ LAVASTOVIGLIE
 * `counter.cicli_lavaggio_lavastoviglie`
 <br>
 
-| Script di configurazione |
+| Configurazione package & card |
 | :---: |
 
 Dopo le operazioni preliminare sul package e il completamento del blueprint si passa alla fase finale di configurazione "automatica":
-* lanciare lo script di configurazione _auto_config.py_ attraverso la CLI (Command Line Interface) messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant (*ATTENZIONE* l'addon core-ssh non è adatto, occorre usare obbligatoriamente l'addon nel link):
 
-**NOTA:** Se non riesci a lanciare i comandi sottostanti dal'addon SSH, utilizza nella conf dell'addon l'username ***root***, potrai ripristinare il precedente username alla fine della configurazione.
+* avviare lo script `smart_config.sh`con l'opzione `config` (--> `config# ./smart_config.sh config` <--), questo script si preoccuperà di configurare il pacchetto con i dati inseriti nel blueprint;
 
-```bash
-
-/config/packages# chmod +x autoconfig_x86_64/auto_config.py
-/config/packages# python autoconfig_x86_64/auto_config.py -v
-
-```
-
-oppure per Raspberry:
-
-```bash
-/config/packages# chmod +x autoconfig_rpi/auto_config.py
-/config/packages# python autoconfig_rpi/auto_config.py -v
-
-```
-
-dove ***/config/packages#*** è il path all'interno del filesystem del container.
-
-<br>
-
-* verificare che l'operazione sia andata a buon fine e lo script abbia effettuato le sostituzioni;
 * controllare package e card con un editor di testo e verificare che non ci siano tag "**ENTITA' NON NEL BLUEPRINT**", che può indicare 2 cose:
   * hai dimenticato di inserire nel blueprint delle entità necessarie;
   * ci sono delle entità da cancellare poichè non significative nella tua configurazione;
-* finiti questi passaggi inserire la card router o nella propria configurazione Lovelace in YAML oppure nella propria interfaccia costruita tramite UI come di seguito riportato;
+* finiti questi passaggi inserire la card dell'elettrodomestico (es. card_lavatrice.yaml) nella propria configurazione Lovelace in YAML oppure nella propria interfaccia costruita tramite UI come di seguito riportato;
 * controllare che non ci siano _errori nel log di HA_.
 
 ***Avvertenze***: 
 1. ricordarsi di effettuare l'avvio dello script subito dopo il completamento del blueprint;
 2. lo script va lanciato una sola volta sui file yaml scaricati da Github, se sbagli qualcosa occorre effetture il download di nuovo;
-2. se per qualche motivo avete cambiato o volete cambiare i percorsi standard è possibile utilizzare delle opzioni nella sintassi dello script:
-    * ***-a*** : per cambiare il percorso completo del file _automations.yaml_
-    * ***-c*** : per variare il percorso completo della card
-    * ***-p*** : per variare il percorso completo del package
-    * ***-k*** : per variare il percorso completo del file _keys.txt_
 
 | Lovelace - Storage |
 | :---: |
 
-Chi usa questa modalità potrà caricare l'intero file di configurazione dell'interfaccia grafica nella UI, ***dopo aver completato i passi precedenti***, e variare sempre da UI gli aspetti che più interessano.
+Chi usa questa modalità potrà fare copia e incolla del file Lovelace (es. card_asciugatrice.yaml) nella UI, ***dopo aver completato i passi precedenti***, e variare sempre da UI gli aspetti che più interessano.
 
 <br>
 
