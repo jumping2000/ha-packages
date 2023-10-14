@@ -79,7 +79,7 @@ function rename_keys() {
     if [ -f "$file" ]; then
         filename=$(basename "$file")
         if [[ "$filename" == *"$appliance"* ]]; then
-        cp "$file" "$directory/keys.txt"
+        cp "$file" "$dir/keys.txt"
         info "Copied '$filename' to 'keys.txt'"
         fi
     fi
