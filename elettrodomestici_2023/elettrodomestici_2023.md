@@ -305,8 +305,7 @@ Tutti i packages ***"Elettrodomestici"*** dipendono da un unico blueprint e da u
 Effettuare i seguenti passaggi attraverso l'addon SSH oppure da CLI del container:
 * effettuare il backup di HA;
 * avviare lo script `smart_config.sh`con l'opzione `download` (--> `config# ./smart_config.sh download` <--), questo script si preoccuperà di effettuare il download di tutti i files necessari;
-* seguire le istruzioni dello script rispondendo "SI" alle prime tre domande relative alla scrittura dei file, inserendo l'elettromestico da configurare e l'entità di energia;
-* rinominare il file `keys_XXX.txt` nella cartella `/config/packages/` relativo all'elettrodomestico da configurare (es. _keys_dryer.txt_ in _keys.txt_) (**IMPORTANTE**);
+* seguire le istruzioni dello script rispondendo "**Si**" alle prime tre domande relative alla scrittura dei file (se si tratta di prima installazione), inserendo l'elettromestico da configurare e l'entità di energia;
 
 Fatto questo **riavviate  Home Assistant** e verificate che non ci siano nel log errori relativi al nuovo package ( ad esempio **dryer.yaml** oppure **oven.yaml**, etc).
 
@@ -321,7 +320,7 @@ Lanciare il blueprint [CN FSM ](https://github.com/jumping2000/ha-templates/tree
 [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fjumping2000%2Fha-templates%2Fblob%2Fmain%2Fblueprints%2Fcn_fsm%2Fcn_fsm_appliances.yaml)
 
 
-Nel blueprint occorre indicare i sensori relativi a potenza ed energia, i servizi di notifica, alcuni helper e le entità relative allo stato dell'eletrodomestico  scelto, anche se poi ogni utilizzatore  è libero di cambiarli, vediamo le entità per singolo eletrodomestico:
+Nel blueprint occorre indicare i sensori relativi a potenza ed energia, i servizi di notifica, alcuni helper e le entità relative allo stato dell'eletrodomestico  scelto, anche se poi ogni utilizzatore è libero di cambiarli; vediamo le entità per singolo eletrodomestico:
 
 
 ASCIUGATRICE

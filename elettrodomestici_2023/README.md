@@ -5,10 +5,10 @@
 
 | 📡 Elettrodomestici Smart 📶| Appeared in release | AUTO-CONF VERSION | ESPHOME VERSION |
 | :---: | --- | --- | --- |
-| [Lavatrice 💧](lavatrice.md) | **2023.4.2** | Not yet | YES |
-| [Lavastoviglie 🍽](lavastoviglie.md) | **2023.5.1**| Not yet | YES |
-| [Forno 👨‍🍳](forno.md) | **2023.4.5** | Not yet | YES |
-| [Asciugatrice 🌀](asciugatrice.md) | **2023.9.0** | YES | NO |
+| [Lavatrice 💧](elettrodomestici_2023.md) | **2023.4.2** | YES | YES |
+| [Lavastoviglie 🍽](elettrodomestici_2023.md) | **2023.5.1**| YES | YES |
+| [Forno 👨‍🍳](elettrodomestici_2023md) | **2023.4.5** | YES | YES |
+| [Asciugatrice 🌀](elettrodomestici_2023md) | **2023.9.0** | YES | NO |
 | [Inverter ☀](#inverter) | NOT YET RELEASED | - | - |  
 | [Condizionatore 🌪](#condizionatore) | NOT YET RELEASED | - | - | 
 | [Termostato 🔥](#termostato)| NOT YET RELEASED | - | - |
