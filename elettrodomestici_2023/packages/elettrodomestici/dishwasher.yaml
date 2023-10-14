@@ -172,6 +172,13 @@
       max: 100
       step: 5
       icon: mdi:bullhorn
+    costo_energia:
+      name: Costo Energia
+      initial: 0.2
+      min: 0.05
+      max: 0.6
+      step: 0.01
+      icon: mdi:currency-eur
 
   input_boolean:
     lavastoviglie_runtime:
