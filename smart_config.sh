@@ -65,8 +65,6 @@ function replace_string() {
 function rename_files() {
     local appliance="$1"
     local dir="$2"
-    info "$appliance"
-    info "$dir"
     # Loop through files in the directory and copy if search_string is found
     for file in "$dir"/*; do
     if [ -f "$file" ]; then
@@ -75,8 +73,8 @@ function rename_files() {
             cp "$file" "$dir/keys.txt"
             info "Copied '$filename' to 'keys.txt'"
         elif [[ "$filename" != *keys* ]] && [[ "$filename" != *"$appliance"* ]]; then
-            cp "$file" "$dir/$filename.txt"
-            info "Copied '$file' to '$filename.txt'"
+            mv "$file" "$dir/$filename.txt"
+            info "Rename '$file' to '$filename.txt'"
 
         fi
     fi
