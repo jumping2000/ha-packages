@@ -89,7 +89,7 @@ checkRequirement "sed"
 checkRequirement "awk"
 checkRequirement "arch"
 
-echo "Automatic download of packages and cards v1.0 - Copyright @ 2023 github.com/jumping2000. All rights reserved"
+echo "Automatic download of packages and cards v1.1 - Copyright @ 2023 github.com/jumping2000. All rights reserved"
 # Verifica che sia stato fornito un argomento
 if [ $# -eq 0 ]; then
   echo "Utilizzo: $0 [download] oppure $0 [config]"
@@ -179,12 +179,12 @@ case "$option" in
     "config")
         if [[ $(arch) == "aarch"* ]]; then
             info "Running on a Raspberry Pi"
-            chmod +x /config/packages/autoconfig_x86_64/auto_config.py
-            python /config/packages/autoconfig_x86_64/auto_config.py -v
-        else
-            info "Running on an x86-based machine."
             chmod +x /config/packages/autoconfig_rpi/auto_config.py
             python /config/packages/autoconfig_rpi/auto_config.py -v
+        else
+            info "Running on an x86-based machine."
+            chmod +x /config/packages/autoconfig_x86_64/auto_config.py
+            python /config/packages/autoconfig_x86_64/auto_config.py -v
         fi
         ;;
     *)
