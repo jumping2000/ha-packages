@@ -305,7 +305,7 @@ Tutti i packages ***"Elettrodomestici"*** dipendono da un unico blueprint e da u
 Effettuare i seguenti passaggi attraverso l'addon SSH oppure da CLI del container:
 * effettuare il backup di HA;
 * avviare lo script `smart_config.sh`con l'opzione `download` (--> `config# ./smart_config.sh download` <--), questo script si preoccuperà di effettuare il download di tutti i files necessari;
-* seguire le istruzioni dello script rispondendo "**Si**" alle prime tre domande relative alla scrittura dei file (se si tratta di prima installazione), inserendo l'elettromestico da configurare e l'entità di energia;
+* seguire le istruzioni dello script rispondendo "**Si**" alle prime tre domande relative alla scrittura dei file (ovviamente se si tratta della prima installazione di un package, già per i successivi occorre prestare attenzione altrimenti sovrascriverete i package già configurati), inserendo l'elettromestico da configurare e l'entità di energia;
 
 Fatto questo **riavviate  Home Assistant** e verificate che non ci siano nel log errori relativi al nuovo package (ad esempio **dryer.yaml** oppure **oven.yaml**, etc). 
 **In particolare** occorre prestare attenzione a non avere entità con lo stesso nome di altri package, un esempio è `input_number.costo_energia` che è presente in tutti e quattro i packages di ***Elettrodomestici 2023***, per cui se si installano due o più package occorre fare in modo che questa entità sia unica.
