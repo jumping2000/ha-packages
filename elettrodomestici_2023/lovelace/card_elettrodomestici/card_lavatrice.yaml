@@ -538,7 +538,6 @@ custom_fields:
                                     name: Costo
                                     unit: '€'
                               - type: divider
-                              - entity: button.plug_lavatrice_restart
                               - type: button
                                 icon: mdi:restore-alert
                                 name: Reset Cicli / Energia
@@ -596,9 +595,8 @@ custom_fields:
                               - type: divider
                               - entity: binary_sensor.washing_machine_maintenance
                               - entity: sensor.lavatrice_modulo_manutenzione
-                              - entity: input_number.lavatrice_ripetizioni_notifica
                               - entity: input_number.lavatrice_avviso_manutenzione
-                              - entity: input_boolean.lavatrice_grocy_utilization
+                              - entity: input_number.costo_energia
           - type: custom:button-card
             name: Settimana
             entity: sensor.lavatrice_settimana_energy

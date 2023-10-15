@@ -62,25 +62,20 @@ function replace_string() {
     sed -i "s/$stringa_old/$stringa_new/g" "$file"
     info "Sostituzione dei tag completata nel file $file."
 }
-function check_arch() {
-    if [[ $(arch) == "aarch"* ]]; then
-        info "Running on a Raspberry Pi"
-        return "pi"
-    else
-        info "Running on an x86-based machine."
-        return "x86"
-    fi
-}
-function rename_keys() {
+function rename_files() {
     local appliance="$1"
-    local dir="$haPath/packages"
+    local dir="$2"
     # Loop through files in the directory and copy if search_string is found
     for file in "$dir"/*; do
     if [ -f "$file" ]; then
         filename=$(basename "$file")
-        if [[ "$filename" == *"$appliance"* ]]; then
-        cp "$file" "$dir/keys.txt"
-        info "Copied '$filename' to 'keys.txt'"
+        if [[ "$filename" == *keys* ]] && [[ "$filename" == *"$appliance"* ]]; then
+            cp "$file" "$dir/keys.txt"
+            info "Copied '$filename' to 'keys.txt'"
+        else            
+            cp "$file" "$dir/$file.txt"
+            info "Copied '$file' to '$file.txt'"
+
         fi
     fi
     done
@@ -104,7 +99,6 @@ option="$1"
 
 case "$option" in
     "download")
-
         info "Trying to find the correct directory..."
         for path in "${paths[@]}"; do
             if [ -n "$haPath" ]; then
@@ -161,12 +155,15 @@ case "$option" in
             
             info "Hai scelto: $selected_appliance"
             # Scegli sensore energia
-            read -p "[REQUIRED] Enter energy sensor for the chosen appliance / [OBBLIGATORIO] Inserisci il sensore di energia per l'elettrodomestico scelto: " energy_sensor
+            read -p "[REQUIRED] Enter energy sensor for the chosen appliance / [OBBLIGATORIO] Inserisci il sensore di energia (kWh) per l'elettrodomestico scelto: " energy_sensor
             info "Il sensore inserito è: $energy_sensor"
             result=$(echo "$selected_appliance" | awk '{print $1}' | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
             replace_string "TAG_02" "$energy_sensor" "$haPath/packages/elettrodomestici/$result.yaml"
             echo
-            rename_keys "$result"
+            #rinomino le keys"
+            rename_files "$result" "$haPath/packages"
+            #rinomino gli altri packages"
+            rename_files "$result" "$haPath/packages/elettrodomestici"
             info "Now you can restart Home Assistant / Prima parte della configurazione finita, riavvia Home Assistant e continua con la configurazione"
         else
             echo
@@ -178,11 +175,12 @@ case "$option" in
         fi
         ;;
     "config")
-        if [ "$check_arch" == "pi" ]; 
-        then
+        if [[ $(arch) == "aarch"* ]]; then
+            info "Running on a Raspberry Pi"
             chmod +x /config/packages/autoconfig_x86_64/auto_config.py
             python /config/packages/autoconfig_x86_64/auto_config.py -v
         else
+            info "Running on an x86-based machine."
             chmod +x /config/packages/autoconfig_rpi/auto_config.py
             python /config/packages/autoconfig_rpi/auto_config.py -v
         fi

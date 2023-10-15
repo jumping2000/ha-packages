@@ -506,7 +506,6 @@ custom_fields:
                                     name: Costo
                                     unit: '€'
                               - type: divider
-                              - entity: button.plug_lavastoviglie_restart
                               - type: button
                                 icon: mdi:restore-alert
                                 name: Reset Cicli / Energia
@@ -564,9 +563,8 @@ custom_fields:
                               - type: divider
                               - entity: binary_sensor.dishwasher_maintenance
                               - entity: sensor.lavastoviglie_modulo_manutenzione
-                              - entity: input_number.lavastoviglie_ripetizioni_notifica
                               - entity: input_number.lavastoviglie_avviso_manutenzione
-                              - entity: input_boolean.lavastoviglie_grocy_utilization
+                              - entity: input_number.costo_energia
           - type: custom:button-card
             name: Settimana
             entity: sensor.lavastoviglie_settimana_energy
