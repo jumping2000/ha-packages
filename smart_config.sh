@@ -75,11 +75,8 @@ function rename_files() {
             cp "$file" "$dir/keys.txt"
             info "Copied '$filename' to 'keys.txt'"
         elif [[ "$filename" == *"$appliance"* ]]; then
-            info "$filename"
-            info "$file"
-            inf0 "$dir"
-            cp "$file" "$dir/$file.txt"
-            info "Copied '$file' to '$file.txt'"
+            cp "$file" "$dir/$filename.txt"
+            info "Copied '$file' to '$filename.txt'"
 
         fi
     fi
