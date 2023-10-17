@@ -222,7 +222,15 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 
 
 ## Installazione
-| Download script|
+L'installazione di ognuno dei quattro package si compone di quattro passaggi:
+1. download da Github dello script di installazione
+2. avvio dello script in modalità "download"
+3. completamento del blueprint relativo all'elettrodomestico scelto
+4. avvio dello script in modalità "config"
+
+Vediamo nel dettaglio i passaggi.
+
+| Download dello script|
 | :---: |
 
 Il download automatico dei packages è possibile con l'utilizzo dello script `smart_config.sh`, per cui è necessario effettuare il download del file e il posizionamento nella dir `/config` o altra nella propria istanza di Home Asisstant e quindi dare i giusti permessi di esecuzione, tutto questo è possibile con i seguenti passaggi attraverso la **CLI** (Command Line Interface) messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant o su host nel caso di installazione HA COre su VENV:
@@ -427,7 +435,7 @@ Il risultato sembra piacevole, lasciate pure le vostre impressioni sui nostri ca
 | Ispirazione e ringraziamenti |
 | :---: |
 
-L'idea alla base di questo package è sempre l'ottimo lavoro di [Phil Hawthorne](https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/) del 2017 ma sempre fonte di ispirazioni per tutti i lavori di questo tipo. Per la parte FSM realizzata con blueprint esiste una buona discussion nel forum di [HA](https://community.home-assistant.io/t/detect-and-monitor-the-state-of-an-appliance-based-on-its-power-consumption-v2-1-1-updated/421670).
+L'idea alla base di questo package è sempre l'ottimo lavoro di [Phil Hawthorne](https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/) del 2017 ma sempre fonte di ispirazioni per tutti i lavori di questo tipo. Per la parte FSM realizzata con blueprint esiste una buona discussione nel forum di [HA](https://community.home-assistant.io/t/detect-and-monitor-the-state-of-an-appliance-based-on-its-power-consumption-v2-1-1-updated/421670).
 Per la parte FSM in ESPHOME Mikhail Diatchenko ha realizzato un ottimo componente: [ESPHome State Machine](https://github.com/muxa/esphome-state-machine).
 
 Tutti i  nostri "follower" 😄
