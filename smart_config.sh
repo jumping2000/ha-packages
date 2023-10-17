@@ -122,33 +122,39 @@ case "$option" in
                 mkdir -p "$temp_dir"
             fi
             ### 
-            read -p "Do you want to download Elettrodomestici Smart 2023? / Vuoi scaricare il pacchetto Elettrodomestici Smart 2023 (Sì/No): " download_pack
-            case $download_pack in
-                [Ss]* )
+            while true; do
+                read -p "Do you want to download Elettrodomestici Smart 2023? / Vuoi scaricare il pacchetto Elettrodomestici Smart 2023 (Sì/No): " download_pack
+                case $download_pack in
+                    [Ss]* )
 
-                    info "Downloading Elettrodomestici Smart 2023"
-                    wget "https://github.com/jumping2000/ha-packages/releases/latest/download/elettrodomestici_2023.zip"
-                    info "Unpacking Elettrodomestici Smart 2023..."
-                    unzip "$haPath/elettrodomestici_2023.zip" -d "$temp_dir" >/dev/null 2>&1
-                    # Copia i file e le cartelle dalla directory temporanea alla directory di destinazione
-                    for item in "$temp_dir"/*; do
-                    if [ -d "$item" ]; then
-                        copy_folder "$item" "$haPath"
-                    elif [ -f "$item" ]; then
-                        copy_folder "$item" "$haPath"
-                    fi
-                    done
-                    echo
-                    info "Removing Elettrodomestici Smart 2023 old zip file..."
-                    rm -f "$haPath/elettrodomestici_2023.zip"
-                    rm -rf "$temp_dir"
-                    info "Download files complete / Copia file completata."
-                    ;;
-                [Nn]* ) 
-                    ;;
-                * ) warn "Per favore, rispondi Sì o No.";;
-            esac
-
+                        info "Downloading Elettrodomestici Smart 2023"
+                        wget "https://github.com/jumping2000/ha-packages/releases/latest/download/elettrodomestici_2023.zip"
+                        info "Unpacking Elettrodomestici Smart 2023..."
+                        unzip "$haPath/elettrodomestici_2023.zip" -d "$temp_dir" >/dev/null 2>&1
+                        # Copia i file e le cartelle dalla directory temporanea alla directory di destinazione
+                        for item in "$temp_dir"/*; do
+                        if [ -d "$item" ]; then
+                            copy_folder "$item" "$haPath"
+                        elif [ -f "$item" ]; then
+                            copy_folder "$item" "$haPath"
+                        fi
+                        done
+                        echo
+                        info "Removing Elettrodomestici Smart 2023 old zip file..."
+                        rm -f "$haPath/elettrodomestici_2023.zip"
+                        rm -rf "$temp_dir"
+                        info "Download files complete / Copia file completata."
+                        break
+                        ;;
+                    [Nn]* )
+                        info "Non effettuo il download"
+                        break
+                        ;;
+                    * ) 
+                        warn "Per favore, rispondi Sì o No."
+                        ;;
+                esac
+            done
             echo "Choose a package: / Scegli un package da installare dalla lista:"
             select choice in "${elettrodomestici[@]}"; do
                 case "$REPLY" in
