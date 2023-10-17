@@ -375,8 +375,8 @@ Dopo le operazioni preliminare sul package e il completamento del blueprint si p
 * controllare che non ci siano _errori nel log di HA_.
 
 ***Avvertenze***: 
-1. ricordarsi di effettuare l'avvio dello script subito dopo il completamento del blueprint;
-2. lo script va lanciato una sola volta sui file yaml scaricati da Github, se sbagli qualcosa occorre effetture il download di nuovo;
+1. ricordarsi di seguire i passaggi nell'ordine presentato in questo articolo;
+2. se sbagli qualcosa conviene cancellare i files scaricati e ripartire dall'inizio; oppure se si è più esperti effettuare le correzioni sui file YAML;
 
 | Lovelace - Storage |
 | :---: |
