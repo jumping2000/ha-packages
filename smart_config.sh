@@ -65,16 +65,18 @@ function replace_string() {
 function rename_files() {
     local appliance="$1"
     local dir="$2"
+    local output_file
     # Loop through files in the directory and copy if search_string is found
     for file in "$dir"/*; do
     if [ -f "$file" ]; then
         filename=$(basename "$file")
         if [[ "$filename" == *keys* ]] && [[ "$filename" == *"$appliance"* ]]; then
             cp "$file" "$dir/keys.txt"
-            info "Copied '$filename' to 'keys.txt'"
+            info "Copied '$filename' to 'keys.txt' - Ready to use file"
         elif [[ "$filename" != *keys* ]] && [[ "$filename" == *"$appliance"* ]]; then
-            mv "$file" "$dir/$filename.yaml"
-            info "Rename '$file' to '$filename.yaml'"
+            output_file="${filename%.ya__}.yaml"
+            cp "$file" "$dir/$output_file"
+            info "Copied '$file' to '$output_file' - Ready to use file"
 
         fi
     fi
