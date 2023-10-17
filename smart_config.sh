@@ -89,7 +89,7 @@ checkRequirement "sed"
 checkRequirement "awk"
 checkRequirement "arch"
 
-echo "Automatic download of packages and cards v1.1 - Copyright @ 2023 github.com/jumping2000. All rights reserved"
+echo "Automatic download of packages and cards v1.2 - Copyright @ 2023 github.com/jumping2000. All rights reserved"
 # Verifica che sia stato fornito un argomento
 if [ $# -eq 0 ]; then
   echo "Utilizzo: $0 [download] oppure $0 [config]"
