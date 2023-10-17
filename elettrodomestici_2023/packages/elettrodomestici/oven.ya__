@@ -1,17 +1,17 @@
   #################################################################
   #                                                               #
-  #                        Packages/Dryer FSM                     #
+  #                    Packages/Forno e Cucina                    #
   #                                                               #
   #################################################################
-  ## package_asciugatrice:
+  ## package_forno:
   ## INFO 📦
   ##  😅 Gianpi [hassiohelp.eu]
-  ##  📅 29/04/2023
+  ##  📅 01/05/2023
   ##  📌 INFORMATION provided by plug and energy meter
   ##  📂 PATH IMAGE /config/www/hassiohelp/pkg_elettrodomestici
   ##  🎁 THANKS TO: https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/
   ##  🎫 INFO https://www.elettro-domestici.com/articoli-elettrodomestici.asp?id=286
-  ##  🛠  BLUEPRINT:  https://github.com/jumping2000/ha-templates/blob/main/blueprints/fsm/cn_fsm_appliances.yaml
+  ##  🛠  BLUEPRINT https://github.com/jumping2000/ha-templates/blob/main/blueprints/fsm/fsm_lite.yaml
   ##--------------------------------------------------------------|
 
   #################################################################
@@ -25,9 +25,9 @@
       ############################################################################
       ## CUSTOMIZE NODE ANCHORS
       ############################################################################
-      package.dryer:
+      package.oven:
         version: &v "2023.10.0"
-        date: 📅 01/09/2023 - Updated 30/09/2023
+        date: 📅 01/05/2023 - Updated 12/10/2023
         info: https://github.com/jumping2000/
         information provided by: Smart Plug
         links: 
@@ -36,86 +36,86 @@
 
         extra_attributes: &extra_attributes
           version: *v
-          package: "Dryer🌍"
-          attribution: "Gianpi - Dryer - hassiohelp.eu"
+          package: "Oven🌍"
+          attribution: "Gianpi - Oven - hassiohelp.eu"
 
         ##---------------------- IMPOSTAZIONI DEL PACKAGE ----------------------##
         ## CONFIGURATION
-        PLUG ASCIUGATRICE ENERGIA (kWh): &CONF_ENERGY_ENTITY "TAG_02"
+        PLUG FORNO ENERGIA (kWh): &CONF_ENERGY_ENTITY "TAG_02"
         ## NON CAMBIARE ##
-        COUNTER CICLI LAVAGGIO: &CONF_CICLI_TOTALE "counter.cicli_asciugatrice"
-        DURATA LAVAGGIO OGGI: &CONF_OGGI_RUNTIME "sensor.asciugatrice_oggi_runtime"
+        COUNTER CICLI COTTURA: &CONF_CICLI_TOTALE "counter.cicli_cottura_forno"
+        DURATA COTTURE OGGI: &CONF_OGGI_RUNTIME "sensor.forno_oggi_runtime"
         ##---------------------- FINE IMPOSTAZIONI PACKAGE ---------------------##
 
       ################################################
-      ## sensor
+      ## Sensor
       ################################################
-      sensor.dryer_status:
+      sensor.oven_status:
         <<: *extra_attributes
-        icon: mdi:tumble-dryer
-        friendly_name: "Stato Asciugatrice"
-      binary_sensor.dryer_status:
+        icon: mdi:toaster-oven
+        friendly_name: "Stato Forno"
+      binary_sensor.oven_status:
         <<: *extra_attributes
-        icon: mdi:tumble-dryer
-        friendly_name: "Asciugatrice ON/OFF"
-      binary_sensor.dryer_maintenance:
+        icon: mdi:stove
+        friendly_name: "Forno ON/OFF"
+      binary_sensor.oven_maintenance:
         <<: *extra_attributes
-        icon: mdi:tumble-dryer-alert
+        icon: mdi:alert-box
         friendly_name: "Avviso Manutenzione"
-      sensor.dryer_time_left:
+      sensor.oven_time_left:
         <<: *extra_attributes
-        icon: mdi:progress-clock
+        icon: mdi:timer-sand
         friendly_name: "Fine prevista in "
-      sensor.asciugatrice_modulo_manutenzione:
+      sensor.forno_modulo_manutenzione:
         <<: *extra_attributes
         icon: mdi:progress-clock
         friendly_name: "Cicli effettuati"
-      sensor.asciugatrice_oggi_runtime:
+      sensor.forno_oggi_runtime:
         <<: *extra_attributes
-        friendly_name: Durata asciugatura oggi
-      sensor.asciugatrice_ieri_runtime:
+        friendly_name: Durata cotture oggi
+      sensor.forno_ieri_runtime:
         <<: *extra_attributes
-        friendly_name: Durata asciugature ieri
-      sensor.asciugatrice_ultimo_runtime:
+        friendly_name: Durata cotture ieri
+      sensor.forno_ultimo_runtime:
         <<: *extra_attributes
-        friendly_name: Durata ultima asciugatura
-      sensor.asciugatrice_total_runtime:
+        friendly_name: Durata ultima cottura
+      sensor.forno_total_runtime:
         <<: *extra_attributes
         friendly_name: "Total Runtime"
         icon: mdi:chart-areaspline
-      sensor.asciugatrice_oggi_cicli:
+      sensor.forno_oggi_cicli:
         <<: *extra_attributes
         icon: mdi:autorenew
-        friendly_name: "Cicli oggi"
-      sensor.asciugatrice_settimana_cicli:
+        friendly_name: "Cotture oggi"
+      sensor.forno_settimana_cicli:
         <<: *extra_attributes
         icon: mdi:autorenew
-        friendly_name: "Cicli settimanali"
-      sensor.asciugatrice_mese_cicli:
+        friendly_name: "Cotture settimanali"
+      sensor.forno_mese_cicli:
         <<: *extra_attributes
         icon: mdi:autorenew
-        friendly_name: "Cicli mensili"
-      sensor.asciugatrice_anno_cicli:
+        friendly_name: "Cotture mensili"
+      sensor.forno_anno_cicli:
         <<: *extra_attributes
         icon: mdi:autorenew
-        friendly_name: "Cicli annuali"
-      sensor.asciugatrice_oggi_energy:
+        friendly_name: "Cotture annuali"
+      sensor.forno_oggi_energy:
         <<: *extra_attributes
         icon: mdi:transmission-tower-import
         friendly_name: "Energia oggi"
-      sensor.asciugatrice_settimana_energy:
+      sensor.forno_settimana_energy:
         <<: *extra_attributes
         icon: mdi:transmission-tower-import
         friendly_name: "Energia settimanale"
-      sensor.asciugatrice_mese_energy:
+      sensor.forno_mese_energy:
         <<: *extra_attributes
         icon: mdi:transmission-tower-import
         friendly_name: "Energia mensile"
-      sensor.asciugatrice_anno_energy:
+      sensor.forno_anno_energy:
         <<: *extra_attributes
         icon: mdi:transmission-tower-import
         friendly_name: "Energia annuale"
-      sensor.asciugatrice_cost:
+      sensor.forno_cost:
         <<: *extra_attributes
         icon: mdi:currency-eur
         friendly_name: "Costo"
@@ -126,66 +126,73 @@
   #                                                               #
   #################################################################  
   input_select:
-    dryer_status:
-      name: Stato asciugatrice
+    oven_status:
+      name: Stato Forno
       options:
         - Idle
-        - Asciugatura
+        - Riscaldamento
         - Mantenimento
-        - Svuotare
+        - Raffreddamento
       initial: Idle
 
-    asciugatrice_program:
-      name: Programma asciugatrice
+    forno_program:
+      name: Programma Forno
       options:
-        - Daily
-        - Lana
-        - Risparmio
-        - Sintetici
-        - Relax
-        - Accappatoi
+        - Pane # 30 min
+        - Pizza #35 min
+        - Lasagne # 40
+        - Pasta al forno #80
+        - Arrosto # 60
+        - Agnello # 50 min
+        - Polpette #30
+        - Patate #65
+        - Verdure #80
+        - Torta di mele #55
+        - Crostata #45
+        - Ciambellone #40
         - 'Off'
 
+
   input_datetime:
-    asciugatrice_time_end:
+    forno_time_end:
       name: End time
       has_time: true
       has_date: true
 
   input_number:
-    asciugatrice_runtime:
-      name: Runtime totale asciugatrice
+    forno_runtime:
+      name: Runtime totale forno
       min: 0
       max: 1000
       step: 0.01
       mode: box
       icon: mdi:chart-areaspline
-    asciugatrice_energia_iniziale:
-      name: Energia iniziale asciugatrice
+    forno_energia_iniziale:
+      name: Energia iniziale forno
       min: 0
       max: 1000
       step: 0.01
       mode: box
       icon: mdi:chart-areaspline
-    asciugatrice_avviso_manutenzione:
+    forno_avviso_manutenzione:
       name: Cicli di avviso di manutenzione
       min: 10
       max: 100
       step: 5
       icon: mdi:bullhorn
     costo_energia:
-      name: Costo Energia €/kWh
+      name: Costo Energia
       initial: 0.2
       min: 0.05
-      max: 0.8
+      max: 0.6
       step: 0.01
       icon: mdi:currency-eur
-
+      
   input_boolean:
-    asciugatrice_runtime:
-      name: Durata ciclo di asciugatura
+    forno_runtime:
+      name: Durata accensione forno
       icon: mdi:timer-sand
-      initial: 'off'    
+      initial: "off"
 
   #################################################################
   #                                                               #
@@ -193,168 +200,174 @@
   #                                                               #
   #################################################################
   counter:
-    cicli_asciugatrice:
-      name: Cicli totali asciugatrice
+    cicli_cottura_forno:
+      name: Cicli cottura forno
       step: 1
       restore: true
       icon: mdi:counter
-
+  
   #################################################################
   #                                                               #
   #                           SENSOR                              #
   #                                                               #
   #################################################################
-  ## binary_sensor.dryer_status DA INSERIRE NEL RECORDER ##
+  ## DA INSERIRE NEL RECORDER binary_sensor.oven_status ##
   sensor:
     - platform: history_stats
-      name: Asciugatrice ultimo runtime
-      entity_id: binary_sensor.dryer_status
+      name: Forno ultimo runtime
+      entity_id: binary_sensor.oven_status
       state: "on"
       type: time
-      start: "{{ as_timestamp(states['input_boolean.asciugatrice_runtime'].last_changed | default, 0)}}"
+      start: "{{ as_timestamp(states['input_boolean.forno_runtime'].last_changed | default, 0)}}"
       end: "{{ now() }}"
 
     - platform: history_stats
-      name: Asciugatrice oggi runtime
-      entity_id: binary_sensor.dryer_status
+      name: Forno oggi runtime
+      entity_id: binary_sensor.oven_status
       state: "on"
       type: time
-      start: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
+      start: " {{ now().replace(hour=0).replace(minute=0).replace(second=0) }} "
       end: "{{ now() }}"
 
   #################################################################
   #                                                               #
-  #                          TEMPLATE                             #
+  #                           TEMPLATE                            #
   #                                                               #
   #################################################################
   template:
     - trigger:
         - platform: state
-          entity_id: sensor.dryer_status
-          to: "Svuotare"
+          entity_id: sensor.oven_status
+          to: "Idle"
       sensor:
-        - name: asciugatrice_run_energy
+        - name: forno_run_energy
           state: >
             {% set sensore_energia = "TAG_02"%}
-            {% set value1 =  states('input_number.asciugatrice_energia_iniziale') |float(default=0) %}
+            {% set value1 =  states('input_number.forno_energia_iniziale') |float(default=0) %}
             {% set value2 =  states(sensore_energia) |float(default=0) %}
             {{ (value2 - value1)|round(2,default=0)}}
           availability: >
-            {% set sensore_energia = "TAG_02" %}
-            {{ states(sensore_energia) not in ['unavailable', 'unknown', 'none'] }}
+            {% set sensore_energia = "TAG_02"%}
+            {{ states(sensore_energia) not in ['unavailable', 'unknown', 'None'] }}
 
     - sensor:
-      - name: dryer_status
-        state: "{{ states('input_select.dryer_status') }}"
+      - name: oven_status
+        state: "{{ states('input_select.oven_status') }}"
 
-      - name: asciugatrice_total_runtime
+      - name: forno_total_runtime
         state: >
-          {% set value =  states('input_number.asciugatrice_runtime') %}
+          {% set value =  states('input_number.forno_runtime') %}
           {%  if ((value|float % 1)|round(2) * 60)|int >9  %}
             {{ value|int }}:{{ ((value|float % 1)|round(2) * 60)|int(default=0) }}:00
           {%  else %}
             {{ value|int }}:0{{ ((value|float % 1)|round(2) * 60)|int(default=0) }}:00
           {%  endif %}
         availability: >
-          {{ states('input_number.asciugatrice_runtime') not in ['unavailable', 'unknown', 'none'] }}
+          {{ states('input_number.fornoruntime') not in ['unavailable', 'unknown', 'None'] }}
 
-      - name: dryer_time_left
-        state: >
-          {% set timer = ((states.input_datetime.asciugatrice_time_end.attributes.timestamp - as_timestamp(now())) / 60 ) | round(0) | default(1) %}
-          {% if states('sensor.dryer_status') != 'Idle' %}
-            {{ timer if timer>0 else 0 }} min
+      - name: oven_time_left
+        state: >-
+          {% set timer = ((states.input_datetime.forno_time_end.attributes.timestamp - as_timestamp(now())) / 60 ) | round(0) | default %}
+          {% if states('sensor.oven_status') != 'Idle' %}
+            {{ timer if timer>0 else 0  }} min
           {% else %}
-            {% set program = states('input_select.asciugatrice_program') | default("Off") %}
+            {% set program = states('input_select.forno_program') | default("Off") %}
             {% set dict_time_program = {
-              'Daily': '00:45:00',
-              'Lana':'01:10:00',
-              'Risparmio': '00:30:00',
-              'Sintetici': '00:20:00',
-              'Relax': '00:15:00',
-              'Accappatoi': '00:40:00',
+              'Pane': '00:30:00',
+              'Pizza': '00:40:00',
+              'Lasagne': '00:40:00',
+              'Pasta al forno': '01:20:00',
+              'Arrosto': '01:00:00',
+              'Agnello': '00:50:00',
+              'Polpette': '00:30:00',
+              'Patate': '01:05:00',
+              'Verdure': '01:20:00',
+              'Torta di mele': '00:55:00',
+              'Crostata': '00:45:00',
+              'Ciambellone': '00:40:00',
               'Off': '00:00:00' } %}
-            {{ dict_time_program[program] if program in dict_time_program else '00:00:00'}}
+            {{ dict_time_program[program] if program in dict_time_program }}
           {% endif %}
         availability: >
-          {{ states('input_datetime.asciugatrice_time_end') not in ['unavailable', 'unknown', 'none'] }}
+          {{ states('input_datetime.forno_time_end') not in ['unavailable', 'unknown', 'None'] }}
 
-      - name: asciugatrice_modulo_manutenzione
+      - name: forno_modulo_manutenzione
         state: >
-          {%- set value1 =  states('counter.cicli_asciugatrice') |int(default=0) -%}
-          {%- set value2 =  states('input_number.asciugatrice_avviso_manutenzione') |int(default=0) -%}
+          {%- set value1 =  states('counter.cicli_cottura_forno') | int(default=0) -%}
+          {%- set value2 =  states('input_number.forno_avviso_manutenzione') | int(default=0) -%}
           {{ value1 % value2 if value2 !=0 else 0 }}
         availability: >
-          {{ states('counter.cicli_asciugatrice') not in ['unavailable', 'unknown', 'none'] }}
+          {{ states('counter.cicli_cottura_forno') not in ['unavailable', 'unknown', 'None'] }}
 
-      - name: asciugatrice_cost
-        state: "{{(states('sensor.asciugatrice_run_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
+      - name: forno_cost
+        state: "{{(states('sensor.forno_run_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
         attributes:
-          oggi_cost: "{{(states('sensor.asciugatrice_oggi_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
-          settimana_cost: "{{(states('sensor.asciugatrice_settimana_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
-          mese_cost: "{{(states('sensor.asciugatrice_mese_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
-          anno_cost: "{{(states('sensor.asciugatrice_anno_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
+          oggi_cost: "{{(states('sensor.forno_oggi_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
+          settimana_cost: "{{(states('sensor.forno_settimana_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
+          mese_cost: "{{(states('sensor.forno_mese_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
+          anno_cost: "{{(states('sensor.forno_anno_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
         unit_of_measurement: '€'
         device_class: monetary
         availability: >
-          {{ states('sensor.asciugatrice_oggi_energy') not in ['unavailable', 'unknown', 'none'] }}
+          {{ states('sensor.forno_oggi_energy') not in ['unavailable', 'unknown', 'None'] }}
 
     - binary_sensor:
-      - name: dryer_status
+      - name: oven_status
         device_class: power
         state: >
-          {{ states('sensor.dryer_status') in ['Riempimento','Lavaggio','Risciacquo','Centrifuga'] }}
+          {{ states('sensor.oven_status') in ['Riscaldamento','Mantenimento','Raffreddamento'] }}
         availability: >
-          {{ states('sensor.dryer_status') not in ['unavailable', 'unknown', 'none'] }}
+          {{ states('sensor.oven_status') not in ['unavailable', 'unknown', 'None'] }}
 
-      - name: dryer_maintenance
+      - name: oven_maintenance
         device_class: problem
         state: >
-          {%- set value1 =  states('counter.cicli_asciugatrice') | int(default=0) -%}
-          {%- set value2 =  states('input_number.asciugatrice_avviso_manutenzione') | int(default=0) -%}
+          {%- set value1 =  states('counter.cicli_cottura_forno') | int(default=0) -%}
+          {%- set value2 =  states('input_number.forno_avviso_manutenzione') | int(default=0) -%}
           {{ (value1 % value2 == 0) if value2 !=0 else False}}
         availability: >
-          {{ states('counter.cicli_asciugatrice') not in ['unavailable', 'unknown', 'none'] }}
+          {{ states('counter.cicli_cottura_forno') not in ['unavailable', 'unknown', 'None'] }}
 
   #################################################################
   #                                                               #
   #                      UTILITY METER                            #
   #                                                               #
-  #################################################################  
+  #################################################################
   utility_meter:
-  ## CICLI ASCIUGATURE ##
-    asciugatrice_oggi_cicli:
+  ## CICLI COTTURA FORNO ##
+    forno_oggi_cicli:
       source: *CONF_CICLI_TOTALE
       cycle: daily
-    asciugatrice_settimana_cicli:
+    forno_settimana_cicli:
       source: *CONF_CICLI_TOTALE
       cycle: weekly
-    asciugatrice_mese_cicli:
+    forno_mese_cicli:
       source: *CONF_CICLI_TOTALE
       cycle: monthly
-    asciugatrice_anno_cicli:
+    forno_anno_cicli:
       source: *CONF_CICLI_TOTALE
       cycle: yearly
-  ## ENERGIA ASCIUGATRICE ##
-    asciugatrice_oggi_energy:
+  ## ENERGIA FORNO ##
+    forno_oggi_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: daily
-    asciugatrice_settimana_energy:
+    forno_settimana_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: weekly
-    asciugatrice_mese_energy:
+    forno_mese_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: monthly
-    asciugatrice_anno_energy:
+    forno_anno_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: yearly
-  ## DURATA ASCIUGATURE ##
-    asciugatrice_settimana_runtime:
-      source: *CONF_OGGI_RUNTIME 
+  ## DURATA FORNO ##
+    forno_settimana_runtime:
+      source: *CONF_OGGI_RUNTIME
       cycle: weekly
-    asciugatrice_mese_runtime:
+    forno_mese_runtime:
       source: *CONF_OGGI_RUNTIME 
       cycle: monthly
-    asciugatrice_anno_runtime:
+    forno_anno_runtime:
       source: *CONF_OGGI_RUNTIME 
       cycle: yearly
 
@@ -364,25 +377,25 @@
   #                                                               #
   #################################################################
   script:
-    reset_contatori_asciugatrice:
+    reset_forno_cicli:
       sequence:
-        - alias: "Reset contatori asciugatrice"
+        - alias: "Reset cotture forno"
           service: utility_meter.calibrate
           data:
             value: '0'
           target:
             entity_id: 
-            - sensor.asciugatrice_settimana_cicli
-            - sensor.asciugatrice_mese_cicli
-            - sensor.asciugatrice_anno_cicli
-            - sensor.asciugatrice_settimana_energy
-            - sensor.asciugatrice_mese_energy
-            - sensor.asciugatrice_anno_energy
-            - sensor.asciugatrice_settimana_runtime
-            - sensor.asciugatrice_mese_runtime
-            - sensor.asciugatrice_anno_runtime
+            - sensor.forno_settimana_cicli
+            - sensor.forno_mese_cicli
+            - sensor.forno_anno_cicli
+            - sensor.forno_settimana_energy
+            - sensor.forno_mese_energy
+            - sensor.forno_anno_energy
+            - sensor.forno_settimana_runtime
+            - sensor.forno_mese_runtime
+            - sensor.forno_anno_runtime
 
-    reset_totali_asciugatrice:
+    reset_forno_totale:
       sequence:
         - alias: "Reset cicli totale"
           service: counter.reset
@@ -393,7 +406,7 @@
           data:
             value: 0
           target:
-            entity_id: input_number.asciugatrice_runtime
+            entity_id: input_number.forno_runtime 
 
   #################################################################
   #                                                               #
@@ -402,49 +415,54 @@
   #################################################################
   automation:
   ## INSERIRE il SENSORE DI DURATA ##
-    - alias: "Durata totale accensione asciugatrice"
+    - alias: "Durata totale accensione forno"
       trigger:
         platform: time
         at: "23:59"
       action:
         - service: input_number.set_value
           target:
-            entity_id: input_number.asciugatrice_runtime
+            entity_id: input_number.forno_runtime
           data:
-            value: "{{ states('input_number.asciugatrice_runtime') | float(default=0) + states('sensor.asciugatrice_oggi_runtime') | float(default=0) }}"
+            value: "{{ states('input_number.forno_runtime') | float(default=0) + states('sensor.forno_oggi_runtime') | float(default=0) }}"
   
   #################################################################
-  ## la durata dei programmi è da personalizzare
-    - alias: Asciugatrice Program
+  ## la durata dei tempi di cottura è da personalizzare
+    - alias: Forno Program
       mode: queued
       trigger:
-        - platform: state
-          entity_id: input_select.asciugatrice_program
-        - platform: state
-          entity_id: sensor.dryer_status
-          from: "Idle"
-          to: "Asciugatura"
+      - platform: state
+        entity_id: input_select.forno_program
+      - platform: state
+        entity_id: sensor.oven_status
+        not_to: "Idle"
       action:
-        - service: input_datetime.set_datetime
-          target:
-            entity_id: input_datetime.asciugatrice_time_end
-          data:
-            time: >-
-              {% set program = states('input_select.asciugatrice_program') %}
-              {% set dict_time_program = {
-                'Daily': '00:45:00',
-                'Lana':'01:10:00',
-                'Risparmio': '00:30:00',
-                'Sintetici': '00:20:00',
-                'Relax': '00:15:00',
-                'Accappatoi': '00:40:00',
-                'Off': '00:00:00' } %}
-              {% set t = now().timestamp() %}
-              {% set sec = strptime(dict_time_program[program], "%H:%M:%S").hour*3600 + strptime(dict_time_program[program], "%H:%M:%S").minute*60  %}
-              {{ (t+sec) | timestamp_custom("%H:%M:%S", true) }}
-            date: >-
-              {{ now().timestamp() | timestamp_custom("%Y-%m-%d", true)  }}
-        
+      - service: input_datetime.set_datetime
+        target:
+          entity_id: input_datetime.forno_time_end
+        data:
+          time: >-
+            {% set program = states('input_select.forno_program') %}
+            {% set dict_time_program = {
+              'Pane': '00:30:00',
+              'Pizza': '00:35:00',
+              'Lasagne': '00:40:00',
+              'Pasta al forno': '01:20:00',
+              'Arrosto': '01:00:00',
+              'Agnello': '00:50:00',
+              'Polpette': '00:30:00',
+              'Patate': '01:05:00',
+              'Verdure': '01:20:00',
+              'Torta di mele': '00:55:00',
+              'Crostata': '00:45:00',
+              'Ciambellone': '00:40:00',
+              'Off': '00:00:00' } %}
+            {% set t = now().timestamp() %}
+            {% set sec = strptime(dict_time_program[program], "%H:%M:%S").hour*3600 + strptime(dict_time_program[program], "%H:%M:%S").minute*60  %}
+            {{ (t+sec) | timestamp_custom("%H:%M:%S", true) }}
+          date: >-
+            {{ now().timestamp() | timestamp_custom("%Y-%m-%d", true)  }}
+
   #################################################################
   #                                                               #
   #                     END OF CONFIGURATION FILE                 #

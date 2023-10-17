@@ -72,9 +72,9 @@ function rename_files() {
         if [[ "$filename" == *keys* ]] && [[ "$filename" == *"$appliance"* ]]; then
             cp "$file" "$dir/keys.txt"
             info "Copied '$filename' to 'keys.txt'"
-        elif [[ "$filename" != *keys* ]] && [[ "$filename" != *"$appliance"* ]]; then
-            mv "$file" "$dir/$filename.txt"
-            info "Rename '$file' to '$filename.txt'"
+        elif [[ "$filename" != *keys* ]] && [[ "$filename" == *"$appliance"* ]]; then
+            mv "$file" "$dir/$filename.yaml"
+            info "Rename '$file' to '$filename.yaml'"
 
         fi
     fi
@@ -160,9 +160,9 @@ case "$option" in
             result=$(echo "$selected_appliance" | awk '{print $1}' | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
             replace_string "TAG_02" "$energy_sensor" "$haPath/packages/elettrodomestici/$result.yaml"
             echo
-            #rinomino le keys"
+            #rinomino le keys
             rename_files "$result" "$haPath/packages"
-            #rinomino gli altri packages"
+            #rinomino il package di interesse"
             rename_files "$result" "$haPath/packages/elettrodomestici"
             info "Now you can restart Home Assistant / Prima parte della configurazione finita, riavvia Home Assistant e continua con la configurazione"
         else

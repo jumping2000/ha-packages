@@ -1,17 +1,17 @@
   #################################################################
   #                                                               #
-  #                    Packages/washing Machine FSM               #
+  #                    Packages/Dishwashwer                       #
   #                                                               #
   #################################################################
-  ## package_lavatrice:
+  ## package_lavastoviglie:
   ## INFO 📦
   ##  😅 Gianpi [hassiohelp.eu]
-  ##  📅 29/04/2023
+  ##  📅 01/04/2023
   ##  📌 INFORMATION provided by plug and energy meter
-  ##  📂 PATH IMAGE /config/www/hassiohelp/pkg_elettrodomestici
+  ##  📂 PATH IMAGE /config/www/hassiohelp/elettrodomestici
   ##  🎁 THANKS TO: https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/
   ##  🎫 INFO https://www.elettro-domestici.com/articoli-elettrodomestici.asp?id=286
-  ##  🛠  BLUEPRINT https://github.com/jumping2000/ha-templates/blob/main/blueprints/fsm/fsm_lite.yaml
+  ##  🛠  BLUEPRINT https://github.com/jumping2000/ha-templates/blob/main/blueprints/fsm/fsm_lite.yaml  
   ##--------------------------------------------------------------|
 
   #################################################################
@@ -22,12 +22,12 @@
   homeassistant:
     customize:
 
-      ############################################################################
+      #############################################################
       ## CUSTOMIZE NODE ANCHORS
-      ############################################################################
-      package.washing_machine:
+      #############################################################
+      package.dishwasher:
         version: &v "2023.10.0"
-        date: 📅 29/04/2023 - Updated 12/10/2023
+        date: 📅 01/04/2023 - Updated 12/10/2023
         info: https://github.com/jumping2000/
         information provided by: Smart Plug
         links: 
@@ -36,86 +36,86 @@
 
         extra_attributes: &extra_attributes
           version: *v
-          package: "Washing Machine🌍"
-          attribution: "Gianpi - Washing Machine - hassiohelp.eu"
+          package: "Dishwasher🌍"
+          attribution: "Gianpi - Dishwasher - hassiohelp.eu"
 
         ##---------------------- IMPOSTAZIONI DEL PACKAGE ----------------------##
         ## CONFIGURATION
-        PLUG LAVATRICE ENERGIA (kWh): &CONF_ENERGY_ENTITY "TAG_02"
+        PLUG LAVASTOVIGLIE ENERGIA (kWh): &CONF_ENERGY_ENTITY "TAG_02"
         ## NON CAMBIARE ##
-        COUNTER CICLI LAVAGGIO: &CONF_CICLI_TOTALE "counter.cicli_lavaggio_lavatrice"
-        DURATA LAVAGGIO OGGI: &CONF_OGGI_RUNTIME "sensor.lavatrice_oggi_runtime"
+        COUNTER CICLI LAVAGGIO: &CONF_CICLI_TOTALE "counter.cicli_lavaggio_lavastoviglie"
+        DURATA LAVAGGIO OGGI: &CONF_OGGI_RUNTIME "sensor.lavastoviglie_oggi_runtime"
         ##---------------------- FINE IMPOSTAZIONI PACKAGE ---------------------##
 
       ################################################
       ## sensor
       ################################################
-      sensor.washing_machine_status:
+      sensor.dishwasher_status:
         <<: *extra_attributes
-        icon: mdi:washing-machine
-        friendly_name: "Stato Lavatrice"
-      binary_sensor.washing_machine_status:
+        icon: mdi:dishwasher
+        friendly_name: "Stato lavastoviglie"
+      binary_sensor.dishwasher_status:
         <<: *extra_attributes
-        icon: mdi:washing-machine
-        friendly_name: "Lavatrice ON/OFF"
-      binary_sensor.washing_machine_maintenance:
+        icon: mdi:dishwasher
+        friendly_name: "Lavastoviglie ON/OFF"
+      binary_sensor.dishwasher_maintenance:
         <<: *extra_attributes
-        icon: mdi:washing-machine-alert
-        friendly_name: "Manutenzione ON/OFF"
-      sensor.washing_machine_time_left:
+        icon: mdi:dishwasher-alert
+        friendly_name: "Avviso Manutenzione"
+      sensor.dishwasher_time_left:
         <<: *extra_attributes
         icon: mdi:progress-clock
         friendly_name: "Fine prevista in "
-      sensor.lavatrice_modulo_manutenzione:
+      sensor.lavastoviglie_modulo_manutenzione:
         <<: *extra_attributes
         icon: mdi:progress-clock
-        friendly_name: "Cicli effettuati"
-      sensor.lavatrice_oggi_runtime:
+        friendly_name: "Cicli man. effettuati"
+      sensor.lavastoviglie_oggi_runtime:
         <<: *extra_attributes
         friendly_name: Durata lavaggi oggi
-      sensor.lavatrice_ieri_runtime:
+      sensor.lavastoviglie_ieri_runtime:
         <<: *extra_attributes
         friendly_name: Durata lavaggi ieri
-      sensor.lavatrice_ultimo_runtime:
+      sensor.lavastoviglie_ultimo_runtime:
         <<: *extra_attributes
         friendly_name: Durata ultimo lavaggio
-      sensor.lavatrice_total_runtime:
+      sensor.lavastoviglie_total_runtime:
         <<: *extra_attributes
         friendly_name: "Total Runtime"
         icon: mdi:chart-areaspline
-      sensor.lavatrice_oggi_cicli:
+      sensor.lavastoviglie_oggi_cicli:
         <<: *extra_attributes
         icon: mdi:autorenew
         friendly_name: "Cicli oggi"
-      sensor.lavatrice_settimana_cicli:
+      sensor.lavastoviglie_settimana_cicli:
         <<: *extra_attributes
         icon: mdi:autorenew
         friendly_name: "Cicli settimanali"
-      sensor.lavatrice_mese_cicli:
+      sensor.lavastoviglie_mese_cicli:
         <<: *extra_attributes
         icon: mdi:autorenew
         friendly_name: "Cicli mensili"
-      sensor.lavatrice_anno_cicli:
+      sensor.lavastoviglie_anno_cicli:
         <<: *extra_attributes
         icon: mdi:autorenew
         friendly_name: "Cicli annuali"
-      sensor.lavatrice_oggi_energy:
+      sensor.lavastoviglie_oggi_energy:
         <<: *extra_attributes
         icon: mdi:transmission-tower-import
         friendly_name: "Energia oggi"
-      sensor.lavatrice_settimana_energy:
+      sensor.lavastoviglie_settimana_energy:
         <<: *extra_attributes
         icon: mdi:transmission-tower-import
         friendly_name: "Energia settimanale"
-      sensor.lavatrice_mese_energy:
+      sensor.lavastoviglie_mese_energy:
         <<: *extra_attributes
         icon: mdi:transmission-tower-import
         friendly_name: "Energia mensile"
-      sensor.lavatrice_anno_energy:
+      sensor.lavastoviglie_anno_energy:
         <<: *extra_attributes
         icon: mdi:transmission-tower-import
         friendly_name: "Energia annuale"
-      sensor.lavatrice_cost:
+      sensor.lavastoviglie_cost:
         <<: *extra_attributes
         icon: mdi:currency-eur
         friendly_name: "Costo"
@@ -126,52 +126,48 @@
   #                                                               #
   #################################################################  
   input_select:
-    washing_machine_status:
-      name: Stato Lavatrice
+    dishwasher_status:
+      name: Stato Lavastoviglie
       options:
         - Idle
         - Lavaggio
         - Risciacquo
-        - Svuotare
+        - Asciugatura
       initial: Idle
 
-    lavatrice_program:
-      name: Programma Lavatrice
+    lavastoviglie_program:
+      name: Programma Lavastoviglie
       options:
-        - Cotone #3,2
-        - Misti #1,10
-        - Sintetici #1,4
-        - Delicati #0,4
-        - Lana #0,40
-        - Rapido # 0,30
-        - Colorati # 1,20
-        - Centrifuga # 0,15
+        - Eco #3,2
+        - Intensivo #1,10
+        - Normale #1,4
+        - Ammollo #0,4
         - 'Off'
-      initial: Colorati
+      initial: Eco
 
   input_datetime:
-    lavatrice_time_end:
+    lavastoviglie_time_end:
       name: End time
       has_time: true
       has_date: true
 
   input_number:
-    lavatrice_runtime:
-      name: Runtime totale lavatrice
+    lavastoviglie_runtime:
+      name: Runtime totale lavastoviglie
       min: 0
       max: 1000
       step: 0.01
       mode: box
       icon: mdi:chart-areaspline
-    lavatrice_energia_iniziale:
-      name: Energia iniziale lavatrice
+    lavastoviglie_energia_iniziale:
+      name: Energia iniziale lavastoviglie
       min: 0
       max: 1000
       step: 0.01
       mode: box
       icon: mdi:chart-areaspline
-    lavatrice_avviso_manutenzione:
-      name: Cicli di avviso di manutenzione
+    lavastoviglie_avviso_manutenzione:
+      name: Avviso di manutenzione
       min: 10
       max: 100
       step: 5
@@ -185,10 +181,10 @@
       icon: mdi:currency-eur
 
   input_boolean:
-    lavatrice_runtime:
+    lavastoviglie_runtime:
       name: Durata ciclo di lavaggio
       icon: mdi:timer-sand
-      initial: 'off'    
+      initial: "off"
 
   #################################################################
   #                                                               #
@@ -196,30 +192,30 @@
   #                                                               #
   #################################################################
   counter:
-    cicli_lavaggio_lavatrice:
-      name: Cicli totali lavatrice
+    cicli_lavaggio_lavastoviglie:
+      name: Cicli totali lavastoviglie
       step: 1
       restore: true
       icon: mdi:counter
 
   #################################################################
   #                                                               #
-  #                           SENSOR                              #
+  #                            SENSOR                             #
   #                                                               #
-  #################################################################
-  ## binary_sensor.washing_machine_status DA INSERIRE NEL RECORDER ##
+  #################################################################  
+  ## binary_sensor.dishwasher_status DA INSERIRE NEL RECORDER ##
   sensor:
     - platform: history_stats
-      name: Lavatrice ultimo runtime
-      entity_id: binary_sensor.washing_machine_status
+      name: Lavastoviglie ultimo runtime
+      entity_id: binary_sensor.dishwasher_status
       state: "on"
       type: time
-      start: "{{ as_timestamp(states['input_boolean.lavatrice_runtime'].last_changed | default, 0)}}"
+      start: "{{ as_timestamp(states['input_boolean.lavastoviglie_runtime'].last_changed | default, 0)}}"
       end: "{{ now() }}"
 
     - platform: history_stats
-      name: Lavatrice oggi runtime
-      entity_id: binary_sensor.washing_machine_status
+      name: Lavastoviglie oggi runtime
+      entity_id: binary_sensor.dishwasher_status
       state: "on"
       type: time
       start: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
@@ -230,17 +226,17 @@
   #                          TEMPLATE                             #
   #                                                               #
   #################################################################
-  ### personalizzare l'entità di energia ###
+  ### personalizzare l'entità di energia in "sensore_energia" ###
   template:
     - trigger:
         - platform: state
-          entity_id: sensor.washing_machine_status
-          to: "Svuotare"
+          entity_id: sensor.dishwasher_status
+          to: "Asciugatura"
       sensor:
-        - name: lavatrice_run_energy
+        - name: lavastoviglie_run_energy
           state: >
             {% set sensore_energia = "TAG_02"%}
-            {% set value1 =  states('input_number.lavatrice_energia_iniziale') |float(default=0) %}
+            {% set value1 =  states('input_number.lavastoviglie_energia_iniziale') |float(default=0) %}
             {% set value2 =  states(sensore_energia) |float(default=0) %}
             {{ (value2 - value1)|round(2,default=0)}}
           availability: >
@@ -248,120 +244,116 @@
             {{ states(sensore_energia) not in ['unavailable', 'unknown', 'None'] }}
 
     - sensor:
-      - name: washing_machine_status
-        state: "{{ states('input_select.washing_machine_status') }}"
+      - name: dishwasher_status
+        state: "{{ states('input_select.dishwasher_status') }}"
 
-      - name: lavatrice_total_runtime
+      - name: lavastoviglie_total_runtime
         state: >
-          {% set value =  states('input_number.lavatrice_runtime') %}
+          {% set value =  states('input_number.lavastoviglie_runtime') %}
           {%  if ((value|float % 1)|round(2) * 60)|int >9  %}
             {{ value|int }}:{{ ((value|float % 1)|round(2) * 60)|int(default=0) }}:00
           {%  else %}
             {{ value|int }}:0{{ ((value|float % 1)|round(2) * 60)|int(default=0) }}:00
           {%  endif %}
         availability: >
-          {{ states('input_number.lavatrice_runtime') not in ['unavailable', 'unknown', 'None'] }}
+          {{ states('input_number.lavastoviglie_runtime') not in ['unavailable', 'unknown', 'None'] }}
 
-      - name: washing_machine_time_left
+      - name: dishwasher_time_left
         state: >
-          {% set timer = ((states.input_datetime.lavatrice_time_end.attributes.timestamp - as_timestamp(now())) / 60 ) | round(0) | default(1) %}
-          {% if states('sensor.washing_machine_status') != 'Idle' %}
-            {{ timer if timer>0 else 0 }} min
+          {% set timer = ((states.input_datetime.lavastoviglie_time_end.attributes.timestamp - as_timestamp(now())) / 60 ) | round(0) %}
+          {% if states('sensor.dishwasher_status') != 'Idle' %}
+            {{ timer if timer>0 else 0  }} min
           {% else %}
-            {% set program = states('input_select.lavatrice_program') | default("Off") %}
+            {% set program = states('input_select.lavastoviglie_program') | default("Off") %}
             {% set dict_time_program = {
-              'Cotone': '03:20:00',
-              'Misti': '01:10:00',
-              'Sintetici': '01:40:00',
-              'Delicati': '00:40:00',
-              'Lana': '00:40:00',
-              'Rapido': '00:30:00',
-              'Colorati': '01:20:00',
-              'Centrifuga': '00:15:00',
+              'Eco': '02:20:00',
+              'Intensivo': '02:30:00',
+              'Normale': '02:00:00',
+              'Ammollo': '00:10:00',
               'Off': '00:00:00' } %}
             {{ dict_time_program[program] if program in dict_time_program else '00:00:00'}}
           {% endif %}
         availability: >
-          {{ states('input_datetime.lavatrice_time_end') not in ['unavailable', 'unknown', 'None'] }}
+          {{ states('input_datetime.lavastoviglie_time_end') not in ['unavailable', 'unknown', 'None'] }}
 
-      - name: lavatrice_modulo_manutenzione
+      - name: lavastoviglie_modulo_manutenzione
         state: >
-          {%- set value1 =  states('counter.cicli_lavaggio_lavatrice') |int(default=0) -%}
-          {%- set value2 =  states('input_number.lavatrice_avviso_manutenzione') |int(default=0) -%}
+          {%- set value1 =  states('counter.cicli_lavaggio_lavastoviglie') | int(default=0) -%}
+          {%- set value2 =  states('input_number.lavastoviglie_avviso_manutenzione') | int(default=0) -%}
           {{ value1 % value2 if value2 !=0 else 0 }}
         availability: >
-          {{ states('counter.cicli_lavaggio_lavatrice') not in ['unavailable', 'unknown', 'None'] }}
+          {{ states('counter.cicli_lavaggio_lavastoviglie') not in ['unavailable', 'unknown', 'None'] }}
 
-      - name: lavatrice_cost
-        state: "{{(states('sensor.lavatrice_run_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+      - name: lavastoviglie_cost
+        state: "{{(states('sensor.lavastoviglie_run_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
         attributes:
-          oggi_cost: "{{(states('sensor.lavatrice_oggi_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
-          settimana_cost: "{{(states('sensor.lavatrice_settimana_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
-          mese_cost: "{{(states('sensor.lavatrice_mese_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
-          anno_cost: "{{(states('sensor.lavatrice_anno_energy') | float(default=0) * states('sensor.pun_f1') | float(default=0) ) | round(2, default=0) }}"
+          oggi_cost: "{{(states('sensor.lavastoviglie_oggi_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
+          settimana_cost: "{{(states('sensor.lavastoviglie_settimana_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
+          mese_cost: "{{(states('sensor.lavastoviglie_mese_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
+          anno_cost: "{{(states('sensor.lavastoviglie_anno_energy') | float(default=0) * states('input_number.costo_energia') | float(default=0) ) | round(2, default=0) }}"
         unit_of_measurement: '€'
         device_class: monetary
         availability: >
-          {{ states('sensor.lavatrice_oggi_energy') not in ['unavailable', 'unknown', 'None'] }}
+          {{ states('sensor.lavastoviglie_oggi_energy') not in ['unavailable', 'unknown', 'None'] }}
 
     - binary_sensor:
-      - name: washing_machine_status
+      - name: dishwasher_status
         device_class: power
         state: >
-          {{ states('sensor.washing_machine_status') in ['Riempimento','Lavaggio','Risciacquo','Centrifuga'] }}
+          {{ True if states('sensor.dishwasher_status') in ['Lavaggio','Risciacquo','Asciugatura'] else False}}
         availability: >
-          {{ states('sensor.washing_machine_status') not in ['unavailable', 'unknown', 'none'] }}
+          {{ states('sensor.dishwasher_status') not in ['unavailable', 'unknown', 'None'] }}
 
-      - name: washing_machine_maintenance
+      - name: dishwasher_maintenance
         device_class: problem
         state: >
-          {%- set value1 =  states('counter.cicli_lavaggio_lavatrice') | int(default=0) -%}
-          {%- set value2 =  states('input_number.lavatrice_avviso_manutenzione') | int(default=0) -%}
+          {%- set value1 =  states('counter.cicli_lavaggio_lavastoviglie') | int(default=0) -%}
+          {%- set value2 =  states('input_number.lavastoviglie_avviso_manutenzione') | int(default=0) -%}
           {{ (value1 % value2 == 0) if value2 !=0 else False}}
         availability: >
-          {{ states('counter.cicli_lavaggio_lavatrice') not in ['unavailable', 'unknown', 'none'] }}
+          {{ states('counter.cicli_lavaggio_lavastoviglie') not in ['unavailable', 'unknown', 'None'] }}
 
   #################################################################
   #                                                               #
   #                      UTILITY METER                            #
   #                                                               #
-  #################################################################  
+  #################################################################
   utility_meter:
   ## CICLI LAVAGGIO ##
-    lavatrice_oggi_cicli:
+    lavastoviglie_oggi_cicli:
       source: *CONF_CICLI_TOTALE
       cycle: daily
-    lavatrice_settimana_cicli:
+    lavastoviglie_settimana_cicli:
       source: *CONF_CICLI_TOTALE
       cycle: weekly
-    lavatrice_mese_cicli:
+    lavastoviglie_mese_cicli:
       source: *CONF_CICLI_TOTALE
       cycle: monthly
-    lavatrice_anno_cicli:
+    lavastoviglie_anno_cicli:
       source: *CONF_CICLI_TOTALE
       cycle: yearly
-  ## ENERGIA LAVATRICE ##
-    lavatrice_oggi_energy:
+  ## ENERGIA lavastoviglie ##
+    lavastoviglie_oggi_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: daily
-    lavatrice_settimana_energy:
+    lavastoviglie_settimana_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: weekly
-    lavatrice_mese_energy:
+    lavastoviglie_mese_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: monthly
-    lavatrice_anno_energy:
+    lavastoviglie_anno_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: yearly
-  ## DURATA LAVAGGI ##
-    lavatrice_settimana_runtime:
-      source: *CONF_OGGI_RUNTIME 
+  ## LAVASTOVIGLIE RUNTIME ##
+    lavastoviglie_settimana_runtime:
+      source: *CONF_OGGI_RUNTIME
       cycle: weekly
-    lavatrice_mese_runtime:
-      source: *CONF_OGGI_RUNTIME 
+    lavastoviglie_mese_runtime:
+      source: *CONF_OGGI_RUNTIME
       cycle: monthly
-    lavatrice_anno_runtime:
-      source: *CONF_OGGI_RUNTIME 
+    lavastoviglie_anno_runtime:
+      source: *CONF_OGGI_RUNTIME
       cycle: yearly
 
   #################################################################
@@ -370,25 +362,25 @@
   #                                                               #
   #################################################################
   script:
-    reset_contatori_lavatrice:
+    reset_contatori_lavastoviglie:
       sequence:
-        - alias: "Reset contatori lavatrice"
+        - alias: "Reset contatori lavastoviglie"
           service: utility_meter.calibrate
           data:
             value: '0'
           target:
             entity_id: 
-            - sensor.lavatrice_settimana_cicli
-            - sensor.lavatrice_mese_cicli
-            - sensor.lavatrice_anno_cicli
-            - sensor.lavatrice_settimana_energy
-            - sensor.lavatrice_mese_energy
-            - sensor.lavatrice_anno_energy
-            - sensor.lavatrice_settimana_runtime
-            - sensor.lavatrice_mese_runtime
-            - sensor.lavatrice_anno_runtime
+            - sensor.lavastoviglie_settimana_cicli
+            - sensor.lavastoviglie_mese_cicli
+            - sensor.lavastoviglie_anno_cicli
+            - sensor.lavastoviglie_settimana_energy
+            - sensor.lavastoviglie_mese_energy
+            - sensor.lavastoviglie_anno_energy
+            - sensor.lavastoviglie_settimana_runtime
+            - sensor.lavastoviglie_mese_runtime
+            - sensor.lavastoviglie_anno_runtime
 
-    reset_totali_lavatrice:
+    reset_lavastoviglie_totale:
       sequence:
         - alias: "Reset cicli totale"
           service: counter.reset
@@ -399,7 +391,7 @@
           data:
             value: 0
           target:
-            entity_id: input_number.lavatrice_runtime
+            entity_id: input_number.lavastoviglie_runtime 
 
   #################################################################
   #                                                               #
@@ -408,77 +400,60 @@
   #################################################################
   automation:
   ## INSERIRE il SENSORE DI DURATA ##
-    - alias: "Durata totale accensione lavatrice"
+    - alias: "Durata totale accensione lavastoviglie"
       trigger:
         platform: time
         at: "23:59"
       action:
         - service: input_number.set_value
           target:
-            entity_id: input_number.lavatrice_runtime
+            entity_id: input_number.lavastoviglie_runtime
           data:
-            value: "{{ states('input_number.lavatrice_runtime') | float(default=0) + states('sensor.lavatrice_oggi_runtime') | float(default=0) }}"
+            value: "{{ states('input_number.lavastoviglie_runtime') | float(default=0) + states('sensor.lavastoviglie_oggi_runtime') | float(default=0) }}"
   
   #################################################################
   ## la durata dei programmi è da personalizzare
-    - alias: Lavatrice Program
-      mode: queued
+    - alias: Lavastoviglie Program
       trigger:
         - platform: state
-          entity_id: input_select.lavatrice_program
+          entity_id: input_select.lavastoviglie_program
         - platform: state
-          entity_id: sensor.washing_machine_status
-          from: "Idle"
-          to: "Lavaggio"
+          entity_id: sensor.dishwasher_status
+          to: "Prelavaggio"
       action:
         - service: input_datetime.set_datetime
-          target:
-            entity_id: input_datetime.lavatrice_time_end
+          entity_id: input_datetime.lavastoviglie_time_end
           data:
             time: >-
-              {% set program = states('input_select.lavatrice_program') %}
+              {% set program = states('input_select.lavastoviglie_program') %}
               {% set dict_time_program = {
-                'Cotone': '03:20:00',
-                'Misti': '01:10:00',
-                'Sintetici': '01:40:00',
-                'Delicati': '00:40:00',
-                'Lana': '00:40:00',
-                'Rapido': '00:30:00',
-                'Colorati': '01:20:00',
-                'Centrifuga': '00:15:00',
-                'Off': '00:00:00' } %}
+                  'Eco': '02:20:00',
+                  'Intensivo': '02:30:00',
+                  'Normale': '02:00:00',
+                  'Ammollo': '00:10:00',
+                  'Off': '00:00:00' } %}
               {% set t = now().timestamp() %}
               {% set sec = strptime(dict_time_program[program], "%H:%M:%S").hour*3600 + strptime(dict_time_program[program], "%H:%M:%S").minute*60  %}
-              {{ (t+sec) | timestamp_custom("%H:%M:%S", true) }}
+              {{ (t+sec | default(0) | int(0)) | timestamp_custom("%H:%M:%S", true) }}
             date: >-
               {{ now().timestamp() | timestamp_custom("%Y-%m-%d", true)  }}
-        
+
   #################################################################
   #                                                               #
   #                     END OF CONFIGURATION FILE                 #
   #                                                               #
   #################################################################
-  #################################################################
-  #                                                               #
-  #                           SCRAPE                              #
-  #                                                               #
-  #################################################################
-  # DA SCEGLIERE SE USARE AL POST DELL'HELPER input_number.costo_energia
-  # scrape:
-  #   - resource: https://www.a2aenergia.eu/assistenza/tutela-cliente/indici/indice-pun
-  #     sensor:
-  #       - name: PUN F1
-  #         value_template: "{{ (value | replace (',', '.'))| float(default=0)}}"
-  #         select: "td"
-  #         index: 2
-  #         device_class: monetary
-  #         unit_of_measurement: EUR/kWh
-  #   - resource: https://www.servizioelettriconazionale.it/it-IT/tariffe/uso-domestico/biorarie/residente
-  #     sensor:
-  #       - name: SEN F1
-  #         value_template: "{{ (value | replace (',', '.'))| float(default=0)}}"
-  #         select: "td"
-  #         index: 3
-  #         device_class: monetary
-  #         unit_of_measurement: EUR/kWh
-  #
+      # - name: dishwasher_info
+      #   state: >
+      #     {%- macro as_formatted_elapsed_time(now, other_date_time) %}
+      #     {% set duration = as_timestamp(now) - as_timestamp(other_date_time) %}
+      #     {% set seconds = (duration % 60) | int %}
+      #     {% set minutes = ((duration / 60) | int) % 60 %}
+      #     {% set hours = (duration / 3600) | int %}
+      #     {{ [hours, "ore", minutes, "minuti", seconds, "secondi"] | join(' ') }}
+      #     {%- endmacro %}
+      #     {% if states('binary_sensor.dishwasher_status') == 'on' %}
+      #       {{ as_formatted_elapsed_time(now(), states.input_boolean.dishwasher_clothes_in.last_changed) }} 
+      #     {% else %}
+      #       {{ 'dishwasher is off' }}
+      #     {% endif %}
