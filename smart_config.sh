@@ -160,12 +160,12 @@ case "$option" in
             read -p "[REQUIRED] Enter energy sensor for the chosen appliance / [OBBLIGATORIO] Inserisci il sensore di energia (kWh) per l'elettrodomestico scelto: " energy_sensor
             info "Il sensore inserito è: $energy_sensor"
             result=$(echo "$selected_appliance" | awk '{print $1}' | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
-            replace_string "TAG_02" "$energy_sensor" "$haPath/packages/elettrodomestici/$result.yaml"
             echo
             #rinomino le keys
             rename_files "$result" "$haPath/packages"
             #rinomino il package di interesse"
             rename_files "$result" "$haPath/packages/elettrodomestici"
+            replace_string "TAG_02" "$energy_sensor" "$haPath/packages/elettrodomestici/$result.yaml"
             info "Now you can restart Home Assistant / Prima parte della configurazione finita, riavvia Home Assistant e continua con la configurazione"
         else
             echo
