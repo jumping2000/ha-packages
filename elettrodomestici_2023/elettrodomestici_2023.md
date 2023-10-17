@@ -233,7 +233,7 @@ Vediamo nel dettaglio i passaggi.
 | Download dello script|
 | :---: |
 
-Il download automatico dei packages è possibile con l'utilizzo dello script `smart_config.sh`, per cui è necessario effettuare il download del file e il posizionamento nella dir `/config` o altra nella propria istanza di Home Asisstant e quindi dare i giusti permessi di esecuzione, tutto questo è possibile con i seguenti passaggi attraverso la **CLI** (Command Line Interface) messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant o su host nel caso di installazione HA COre su VENV:
+Il download automatico dei packages è possibile con l'utilizzo dello script `smart_config.sh`, per cui è necessario effettuare il download del file e il posizionamento nella dir `/config` o altra nella propria istanza di Home Assistant e quindi dare i giusti permessi di esecuzione, tutto questo è possibile con i seguenti passaggi attraverso la **CLI** (Command Line Interface) messa a disposizione dall'[addon SSH](https://github.com/hassio-addons/addon-ssh) oppure da CLI del container di Home Assistant o su host nel caso di installazione HA Core su VENV:
 * avviare l'addon SSH o collegarsi alla CLI del container;
 * posizionarsi nella cartella  `/config`;
 * scaricare lo script da github `smart_config.sh`;
