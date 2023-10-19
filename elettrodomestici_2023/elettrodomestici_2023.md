@@ -322,7 +322,7 @@ Fatto questo **riavviate  Home Assistant** e verificate che non ci siano nel log
 | :---: |
 
 Lanciare il blueprint [CN FSM ](https://github.com/jumping2000/ha-templates/tree/main/blueprints/cn_fsm):
-* impostare le entità richieste relative all'integrazione FritzBox;
+* impostare le entità richieste come sensori di potenza e energia e le soglie di potenza relative all'attivazioni dell'elettrodomestico
 * impostare le modalità di notifica, il blueprint funziona sia con il ***Centro Notifiche*** che senza;
 * nel link precedente trovi la descrizione delle funzionalità offerte.
 
