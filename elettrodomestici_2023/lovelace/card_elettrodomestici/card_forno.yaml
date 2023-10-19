@@ -124,7 +124,7 @@ custom_fields:
   ### ENERGY LABEL
   #######################################
         - type: state-label
-          entity: TAG_02
+          entity: sensor.forno_oggi_energy
           prefix: '🏭 '
           style:
             top: 0%
@@ -513,14 +513,14 @@ custom_fields:
                                 action_name: Reset
                                 tap_action:
                                   action: call-service
-                                  service: script.reset_forno_cicli
+                                  service: script.reset_contatori_forno
                               - type: button
                                 icon: mdi:restore-alert
                                 name: Reset Valori Totali
                                 action_name: Reset
                                 tap_action:
                                   action: call-service
-                                  service: script.reset_forno_totale
+                                  service: script.reset_totali_forno
                         - type: vertical-stack
                           view_layout:
                             grid-area: colonna2

@@ -380,7 +380,7 @@
             - sensor.lavastoviglie_mese_runtime
             - sensor.lavastoviglie_anno_runtime
 
-    reset_lavastoviglie_totale:
+    reset_totali_lavastoviglie:
       sequence:
         - alias: "Reset cicli totale"
           service: counter.reset

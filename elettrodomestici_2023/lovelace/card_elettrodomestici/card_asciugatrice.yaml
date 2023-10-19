@@ -150,7 +150,7 @@ custom_fields:
   ### ENERGY LABEL
   #######################################
         - type: state-label
-          entity: TAG_02
+          entity: sensor.asciugatrice_oggi_energy
           prefix: '🏭 '
           style:
             top: 0%
@@ -538,14 +538,14 @@ custom_fields:
                                 action_name: Reset
                                 tap_action:
                                   action: call-service
-                                  service: script.reset_asciugatrice_cicli
+                                  service: script.reset_contatori_asciugatrice
                               - type: button
                                 icon: mdi:restore-alert
                                 name: Reset Valori Totali
                                 action_name: Reset
                                 tap_action:
                                   action: call-service
-                                  service: script.reset_asciugatrice_totale
+                                  service: script.reset_totali_asciugatrice
                       - type: vertical-stack
                         view_layout:
                           grid-area: colonna2

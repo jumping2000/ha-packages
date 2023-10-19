@@ -377,7 +377,7 @@
   #                                                               #
   #################################################################
   script:
-    reset_forno_cicli:
+    reset_contatori_forno:
       sequence:
         - alias: "Reset cotture forno"
           service: utility_meter.calibrate
@@ -395,7 +395,7 @@
             - sensor.forno_mese_runtime
             - sensor.forno_anno_runtime
 
-    reset_forno_totale:
+    reset_totali_forno:
       sequence:
         - alias: "Reset cicli totale"
           service: counter.reset
