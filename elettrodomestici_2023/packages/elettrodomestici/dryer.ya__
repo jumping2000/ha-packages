@@ -26,8 +26,8 @@
       ## CUSTOMIZE NODE ANCHORS
       ############################################################################
       package.dryer:
-        version: &v "2023.10.0"
-        date: 📅 01/09/2023 - Updated 30/09/2023
+        version: &v "2023.10.6"
+        date: 📅 01/09/2023 - Updated 22/10/2023
         info: https://github.com/jumping2000/
         information provided by: Smart Plug
         links: 

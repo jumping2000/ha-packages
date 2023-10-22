@@ -26,8 +26,8 @@
       ## CUSTOMIZE NODE ANCHORS
       ############################################################################
       package.washing_machine:
-        version: &v "2023.10.0"
-        date: 📅 29/04/2023 - Updated 12/10/2023
+        version: &v "2023.10.6"
+        date: 📅 29/04/2023 - Updated 22/10/2023
         info: https://github.com/jumping2000/
         information provided by: Smart Plug
         links: 

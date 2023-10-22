@@ -1,6 +1,6 @@
   #################################################################
   #                                                               #
-  #                    Packages/Dishwashwer                       #
+  #                    Packages/Dishwashwer FSM                   #
   #                                                               #
   #################################################################
   ## package_lavastoviglie:
@@ -26,8 +26,8 @@
       ## CUSTOMIZE NODE ANCHORS
       #############################################################
       package.dishwasher:
-        version: &v "2023.10.0"
-        date: 📅 01/04/2023 - Updated 12/10/2023
+        version: &v "2023.10.6"
+        date: 📅 01/04/2023 - Updated 22/10/2023
         info: https://github.com/jumping2000/
         information provided by: Smart Plug
         links: 
@@ -419,7 +419,8 @@
           entity_id: input_select.lavastoviglie_program
         - platform: state
           entity_id: sensor.dishwasher_status
-          to: "Prelavaggio"
+          from: "Idle"
+          to: "Lavaggio"
       action:
         - service: input_datetime.set_datetime
           entity_id: input_datetime.lavastoviglie_time_end
