@@ -308,7 +308,7 @@
       - name: washing_machine_status
         device_class: power
         state: >
-          {{ states('sensor.washing_machine_status') in ['Riempimento','Lavaggio','Risciacquo','Centrifuga'] }}
+          {{ states('sensor.washing_machine_status') in ['Lavaggio','Risciacquo','Svuotare'] }}
         availability: >
           {{ states('sensor.washing_machine_status') not in ['unavailable', 'unknown', 'none'] }}
 

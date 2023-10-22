@@ -302,7 +302,7 @@
       - name: dryer_status
         device_class: power
         state: >
-          {{ states('sensor.dryer_status') in ['Riempimento','Lavaggio','Risciacquo','Centrifuga'] }}
+          {{ states('sensor.dryer_status') in ['Asciugatura','Mantenimento','Svuotare'] }}
         availability: >
           {{ states('sensor.dryer_status') not in ['unavailable', 'unknown', 'none'] }}
 

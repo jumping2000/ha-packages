@@ -300,7 +300,7 @@
       - name: dishwasher_status
         device_class: power
         state: >
-          {{ True if states('sensor.dishwasher_status') in ['Lavaggio','Risciacquo','Asciugatura'] else False}}
+          {{ states('sensor.dishwasher_status') in ['Lavaggio','Risciacquo','Asciugatura'] }}
         availability: >
           {{ states('sensor.dishwasher_status') not in ['unavailable', 'unknown', 'None'] }}
 
