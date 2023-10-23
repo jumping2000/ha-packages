@@ -394,6 +394,14 @@
             value: 0
           target:
             entity_id: input_number.asciugatrice_runtime
+            
+    reset_stato_asciugatrice:
+      sequence:
+        - alias: "Reset stato"
+          service: input_select.select_first
+          data: {}
+          target:
+            entity_id: input_select.dryer_status
 
   #################################################################
   #                                                               #

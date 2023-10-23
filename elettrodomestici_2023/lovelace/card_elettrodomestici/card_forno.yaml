@@ -521,6 +521,13 @@ custom_fields:
                                 tap_action:
                                   action: call-service
                                   service: script.reset_totali_forno
+                              - type: button
+                                icon: mdi:restore-alert
+                                name: Reset Stato Iniziale
+                                action_name: Reset
+                                tap_action:
+                                  action: call-service
+                                  service: script.reset_stato_forno
                         - type: vertical-stack
                           view_layout:
                             grid-area: colonna2
@@ -544,6 +551,7 @@ custom_fields:
                                 entities:
                                   - entity: sensor.forno_ultimo_runtime
                                     name: Durata
+                                    format: duration-h
                                   - entity: sensor.forno_run_energy
                                     name: Energia
                                     unit: kWh
@@ -558,7 +566,7 @@ custom_fields:
                                     name: Cicli
                                   - entity: sensor.forno_total_runtime
                                     name: Durata
-                                    unit: h
+                                    format: duration-h
                                   - entity: sensor.plug_forno_total_energy
                                     name: Energia
                               - type: divider

@@ -552,6 +552,13 @@ custom_fields:
                                 tap_action:
                                   action: call-service
                                   service: script.reset_totali_lavatrice
+                              - type: button
+                                icon: mdi:restore-alert
+                                name: Reset Stato Iniziale
+                                action_name: Reset
+                                tap_action:
+                                  action: call-service
+                                  service: script.reset_stato_lavatrice
                         - type: vertical-stack
                           view_layout:
                             grid-area: colonna2
@@ -575,6 +582,7 @@ custom_fields:
                                 entities:
                                   - entity: sensor.lavatrice_ultimo_runtime
                                     name: Durata
+                                    format: duration-h
                                   - entity: sensor.lavatrice_run_energy
                                     name: Energia
                                     unit: kWh
@@ -589,7 +597,7 @@ custom_fields:
                                     name: Cicli
                                   - entity: sensor.lavatrice_total_runtime
                                     name: Durata
-                                    unit: h
+                                    format: duration-h
                                   - entity: sensor.plug_lavatrice_total_energy
                                     name: Energia
                               - type: divider

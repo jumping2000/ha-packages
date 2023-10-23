@@ -520,6 +520,13 @@ custom_fields:
                                 tap_action:
                                   action: call-service
                                   service: script.reset_totali_lavastoviglie
+                              - type: button
+                                icon: mdi:restore-alert
+                                name: Reset Stato Iniziale
+                                action_name: Reset
+                                tap_action:
+                                  action: call-service
+                                  service: script.reset_stato_lavastoviglie
                         - type: vertical-stack
                           view_layout:
                             grid-area: colonna2
@@ -543,6 +550,7 @@ custom_fields:
                                 entities:
                                   - entity: sensor.lavastoviglie_ultimo_runtime
                                     name: Durata
+                                    format: duration-h
                                   - entity: sensor.lavastoviglie_run_energy
                                     name: Energia
                                     unit: kWh
@@ -557,7 +565,7 @@ custom_fields:
                                     name: Cicli
                                   - entity: sensor.lavastoviglie_total_runtime
                                     name: Durata
-                                    unit: h
+                                    format: duration-h
                                   - entity: sensor.plug_lavastoviglie_total_energy
                                     name: Energia
                               - type: divider

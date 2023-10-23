@@ -393,6 +393,14 @@
           target:
             entity_id: input_number.lavastoviglie_runtime 
 
+    reset_stato_lavastoviglie:
+      sequence:
+        - alias: "Reset stato"
+          service: input_select.select_first
+          data: {}
+          target:
+            entity_id: input_select.dishwasher_status
+
   #################################################################
   #                                                               #
   #                          AUTOMATION                           #

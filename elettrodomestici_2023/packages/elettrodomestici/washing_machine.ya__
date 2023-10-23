@@ -401,6 +401,14 @@
           target:
             entity_id: input_number.lavatrice_runtime
 
+    reset_stato_lavatrice:
+      sequence:
+        - alias: "Reset stato"
+          service: input_select.select_first
+          data: {}
+          target:
+            entity_id: input_select.washing_machine_status
+            
   #################################################################
   #                                                               #
   #                          AUTOMATION                           #
