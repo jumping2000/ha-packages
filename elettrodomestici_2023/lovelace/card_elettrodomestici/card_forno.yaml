@@ -557,12 +557,12 @@ custom_fields:
                                     unit: kWh
                                   - entity: sensor.forno_cost
                                     name: Costo
-                              - entity: counter.cicli_lavaggio_forno
+                              - entity: counter.cicli_cottura_forno
                                 type: custom:multiple-entity-row
                                 show_state: false
                                 name: Totali
                                 entities:
-                                  - entity: counter.cicli_lavaggio_forno
+                                  - entity: counter.cicli_cottura_forno
                                     name: Cicli
                                   - entity: sensor.forno_total_runtime
                                     name: Durata
