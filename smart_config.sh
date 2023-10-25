@@ -167,7 +167,7 @@ case "$option" in
                         ;;
                 esac
             done
-            
+
             info "Hai scelto: $selected_appliance"
             # Scegli sensore energia
             read -p "[REQUIRED] Enter energy sensor for the chosen appliance / [OBBLIGATORIO] Inserisci il sensore di energia (kWh) per l'elettrodomestico scelto: " energy_sensor
@@ -180,20 +180,6 @@ case "$option" in
             rename_files "$result" "$haPath/packages/elettrodomestici"
             replace_string "TAG_02" "$energy_sensor" "$haPath/packages/elettrodomestici/$result.yaml"
 
-            case $result in
-                washing_machine)
-                    cp "$haPath/packages/keys_washing_machine.txt" "$haPath/packages/keys.txt"
-                    ;;
-                oven)
-                    cp "$haPath/packages/keys_oven.txt" "$haPath/packages/keys.txt"
-                    ;;
-                dishwasher)
-                    cp "$haPath/packages/keys_dishwasher.txt" "$haPath/packages/keys.txt"
-                    ;;
-                dryer)
-                    cp "$haPath/packages/keys_dryer.txt" "$haPath/packages/keys.txt"
-                    ;;
-                esac
             info "Now you can restart Home Assistant / Prima parte della configurazione finita, riavvia Home Assistant e continua con la configurazione"
         else
             echo
