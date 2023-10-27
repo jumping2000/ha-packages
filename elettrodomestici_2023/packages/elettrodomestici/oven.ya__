@@ -351,15 +351,19 @@
     forno_oggi_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: daily
+      unique_id: forno_oggi_energy
     forno_settimana_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: weekly
+      unique_id: forno_settimana_energy
     forno_mese_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: monthly
+      unique_id: forno_mese_energy
     forno_anno_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: yearly
+      unique_id: forno_anno_energy
   ## DURATA FORNO ##
     forno_settimana_runtime:
       source: *CONF_OGGI_RUNTIME

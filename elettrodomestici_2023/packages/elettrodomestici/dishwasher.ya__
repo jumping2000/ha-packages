@@ -336,15 +336,19 @@
     lavastoviglie_oggi_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: daily
+      unique_id: lavastoviglie_oggi_energy
     lavastoviglie_settimana_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: weekly
+      unique_id: lavastoviglie_settimana_energy
     lavastoviglie_mese_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: monthly
+      unique_id: lavastoviglie_mese_energy
     lavastoviglie_anno_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: yearly
+      unique_id: lavastoviglie_anno_energy
   ## LAVASTOVIGLIE RUNTIME ##
     lavastoviglie_settimana_runtime:
       source: *CONF_OGGI_RUNTIME

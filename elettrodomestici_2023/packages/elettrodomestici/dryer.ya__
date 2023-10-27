@@ -338,15 +338,19 @@
     asciugatrice_oggi_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: daily
+      unique_id: asciugatrice_oggi_energy
     asciugatrice_settimana_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: weekly
+      unique_id: asciugatrice_settimana_energy
     asciugatrice_mese_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: monthly
+      unique_id: asciugatrice_mese_energy
     asciugatrice_anno_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: yearly
+      unique_id: asciugatrice_anno_energy
   ## DURATA ASCIUGATURE ##
     asciugatrice_settimana_runtime:
       source: *CONF_OGGI_RUNTIME 

@@ -344,15 +344,19 @@
     lavatrice_oggi_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: daily
+      unique_id: lavatrice_oggi_energy
     lavatrice_settimana_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: weekly
+      unique_id: lavatrice_settimana_energy
     lavatrice_mese_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: monthly
+      unique_id: lavatrice_mese_energy
     lavatrice_anno_energy:
       source: *CONF_ENERGY_ENTITY
       cycle: yearly
+      unique_id: lavatrice_anno_energy
   ## DURATA LAVAGGI ##
     lavatrice_settimana_runtime:
       source: *CONF_OGGI_RUNTIME 
