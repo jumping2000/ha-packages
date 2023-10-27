@@ -672,7 +672,7 @@ custom_fields:
                 - grid-template-areas: '"i" "n" "s"'
                 - grid-template-columns: 1fr
                 - grid-template-rows: 50% auto auto
-            double_action:
+            double_tap_action:
               action: fire-dom-event
               browser_mod:
                 service: browser_mod.popup
