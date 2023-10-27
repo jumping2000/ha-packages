@@ -75,7 +75,7 @@ custom_fields:
       image: /local/hassiohelp/pkg_elettrodomestici/sfondo_black.png
       elements:
   #######################################
-  ### Switch elettrodomestico            
+  # switch elettrodomestico             #
   #######################################
         - type: image
           entity: TAG_00

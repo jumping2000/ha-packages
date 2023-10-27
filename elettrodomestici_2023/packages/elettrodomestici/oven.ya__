@@ -439,11 +439,12 @@
     - alias: Forno Program
       mode: queued
       trigger:
-      - platform: state
-        entity_id: input_select.forno_program
-      - platform: state
-        entity_id: sensor.oven_status
-        not_to: "Idle"
+        - platform: state
+          entity_id: input_select.forno_program
+        - platform: state
+          entity_id: sensor.oven_status
+          from: "Idle"
+          to: "Riscaldamento"
       action:
       - service: input_datetime.set_datetime
         target:

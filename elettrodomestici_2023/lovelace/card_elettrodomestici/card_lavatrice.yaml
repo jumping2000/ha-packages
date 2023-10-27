@@ -85,7 +85,7 @@ custom_fields:
       image: /local/hassiohelp/pkg_elettrodomestici/sfondo_black.png
       elements:
   #######################################
-  # inserire lo switch della lavatrice  #
+  # switch elettrodomestico             #
   #######################################
         - type: image
           entity: TAG_00 
