@@ -1,12 +1,12 @@
   #################################################################
   #                                                               #
-  #                        Packages/Dryer FSM                     #
+  #                      Packages/Dryer FSM  Lite                 #
   #                                                               #
   #################################################################
   ## package_asciugatrice:
   ## INFO 📦
   ##  😅 Gianpi [hassiohelp.eu]
-  ##  📅 29/04/2023
+  ##  📅 29/08/2023
   ##  📌 INFORMATION provided by plug and energy meter
   ##  📂 PATH IMAGE /config/www/hassiohelp/pkg_elettrodomestici
   ##  🎁 THANKS TO: https://philhawthorne.com/making-dumb-dishwashers-and-washing-machines-smart-alerts-when-the-dishes-and-clothes-are-cleaned/
@@ -26,8 +26,8 @@
       ## CUSTOMIZE NODE ANCHORS
       ############################################################################
       package.dryer:
-        version: &v "2023.10.6"
-        date: 📅 01/09/2023 - Updated 22/10/2023
+        version: &v "2023.10.8"
+        date: 📅 01/09/2023 - Updated 29/10/2023
         info: https://github.com/jumping2000/
         information provided by: Smart Plug
         links: 

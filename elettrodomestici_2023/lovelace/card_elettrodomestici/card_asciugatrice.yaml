@@ -15,6 +15,9 @@
 # COLORE_BUTTON_NAME: "var(--primary-text-color)"
 # COLORE_BUTTON_LABEL: "var(--google-grey)" #"gray"
 ###########################################################
+## date: 📅 01/09/2023 - Updated 29/10/2023
+## version: 📌 2023.10.8
+###########################################################
 type: custom:button-card
 styles:
   card:

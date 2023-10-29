@@ -1,6 +1,6 @@
   #################################################################
   #                                                               #
-  #                    Packages/Dishwashwer FSM                   #
+  #                    Packages/Dishwashwer FSM Lite              #
   #                                                               #
   #################################################################
   ## package_lavastoviglie:
@@ -26,8 +26,8 @@
       ## CUSTOMIZE NODE ANCHORS
       #############################################################
       package.dishwasher:
-        version: &v "2023.10.6"
-        date: 📅 01/04/2023 - Updated 22/10/2023
+        version: &v "2023.10.8"
+        date: 📅 01/04/2023 - Updated 29/10/2023
         info: https://github.com/jumping2000/
         information provided by: Smart Plug
         links: 

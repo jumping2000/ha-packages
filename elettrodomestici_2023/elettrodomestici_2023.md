@@ -321,6 +321,8 @@ Fatto questo **riavviate  Home Assistant** e verificate che non ci siano nel log
 | Blueprint |
 | :---: |
 
+$$\textbf{\color{blue} \normalsize 🌀 Ricorda per ogni elettrodomestico che vorrai configurare dovrai eseguire il blueprint. 🌀}$$
+
 Lanciare il blueprint [CN FSM ](https://github.com/jumping2000/ha-templates/tree/main/blueprints/cn_fsm):
 * impostare le entità richieste come sensori di potenza e energia e le soglie di potenza relative all'attivazioni dell'elettrodomestico
 * impostare le modalità di notifica, il blueprint funziona sia con il ***Centro Notifiche*** che senza;
@@ -329,7 +331,15 @@ Lanciare il blueprint [CN FSM ](https://github.com/jumping2000/ha-templates/tree
 [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fjumping2000%2Fha-templates%2Fblob%2Fmain%2Fblueprints%2Fcn_fsm%2Fcn_fsm_appliances.yaml)
 
 
-Nel blueprint occorre indicare i sensori relativi a potenza ed energia, i servizi di notifica, alcuni helper e le entità relative allo stato dell'eletrodomestico  scelto, anche se poi ogni utilizzatore è libero di cambiarli; vediamo le entità per singolo eletrodomestico:
+Nel blueprint occorre indicare i sensori relativi a potenza ed energia, i servizi di notifica, alcuni helper e le entità relative allo stato dell'eletrodomestico  scelto, anche se poi ogni utilizzatore è libero di cambiarli; il tutto è abbastanza semplice poichè è organizzato in maniera ordinata secono questo ordine:
+
+1. prima si inseriscono i dati relativi alla presa/dispositivo di misurazione, quindi potenza, energia, tensione, corrente etc 
+2. dopo si inseriscono le entità relative all'elettrodomestico scelto e specificati di seguito, per facilitare la compilazione si può inserire il nome ad esempio "asciugatrice" nel campo di inserimento.
+3. quindi si inseriscono le varie soglie di innesco delle varie fasi di lavaggio/cottura etc
+4. come ultimo punto si inseriscono le informazioni necessarie per le notifiche
+
+
+Vediamo ora le entità relative al punto **2.** da inserire per singolo eletrodomestico:
 
 
 ASCIUGATRICE
