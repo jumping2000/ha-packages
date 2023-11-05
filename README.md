@@ -39,6 +39,7 @@ Here some packages for Home Assistant:
 
 ---
 
+<!--
 ## Download ZIP with all Home Assistant Project!
 
 <table>
@@ -49,7 +50,7 @@ Here some packages for Home Assistant:
       <td><div align=center><img width = "400" src="elettrodomestici_2023/img/github_download.png"/></div></td>
   </tr>
 </table>
-
+-->
 <!-- ✨ _special_ ✨ -->
 [website]: https://hassiohelp.eu/
 [Websitebadge]: https://img.shields.io/website?down_message=Offline&label=HssioHelp&logoColor=blue&up_message=Online&url=https%3A%2F%2Fhassiohelp.eu
