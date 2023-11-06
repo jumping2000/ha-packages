@@ -80,8 +80,8 @@ L'utilizzo delle card _non indispensabili_ permette una migliore visualizzazione
 | Configurazioni obbligatorie |
 | :---: |
 
-Per poter procedere con l'installazione del package ci sono alcuni passi da effettuare:
-* abilitare i packages come descritto qui: [Packages](https://www.home-assistant.io/docs/configuration/packages/);
+Per poter procedere con l'installazione del package ci sono alcuni passi da effettuare (potete saltare questa parte se avete già tutto configurato):
+* abilitare i packages come descritto qui: [Packages](https://www.home-assistant.io/docs/configuration/packages/) oppure su [HassioHelp](https://hassiohelp.eu);
 * configurare Home Assistant per avere i sensori di tempo e di data come spiegato qui: [Time & Date](https://www.home-assistant.io/integrations/time_date/) o nelle guide [HassioHelp](https://hassiohelp.eu);
 * impostazione dei servizi di notifica: ad esempio [Telegram](https://www.home-assistant.io/integrations/telegram/), [Google](https://www.home-assistant.io/integrations/google_assistant/), [Mobile App](https://companion.home-assistant.io/) la scelta migliore rimane sempre l'uso del [Centro Notifiche](https://github.com/caiosweet/Package-Notification-HUB-AppDaemon) che centralizza la configurazione di tutti i servizi di notifica.
 * configurare il ***blueprint*** ad hoc.
@@ -222,7 +222,7 @@ Come detto la card è adattabile al dispositivo usato e al suo orientamento, non
 
 
 ## Installazione
-L'installazione di ognuno dei quattro package si compone di quattro passaggi:
+Dopo aver configurato tutti i vari custom componments e aver otemperato ai prerequisiti è venuto il momento di iniziare con l'installazione vera e propria dei packages, che si compone di quattro passaggi:
 1. download da Github dello script di installazione
 2. avvio dello script in modalità "download"
 3. completamento del blueprint relativo all'elettrodomestico scelto
