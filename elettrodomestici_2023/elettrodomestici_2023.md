@@ -242,9 +242,10 @@ Il download automatico dei packages è possibile con l'utilizzo dello script `sm
 Di seguito la sequenza dei comandi:
 
 ```bash
-/# cd /config
-/config# wget https://raw.githubusercontent.com/jumping2000/ha-packages/main/smart_config.sh
-/config# chmod +x smart_config.sh
+
+cd /config
+wget https://raw.githubusercontent.com/jumping2000/ha-packages/main/smart_config.sh
+chmod +x smart_config.sh
 
 ```
 
