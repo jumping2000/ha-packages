@@ -193,13 +193,11 @@ case "$option" in
     "config")
         if [[ $(arch) == "aarch"* ]]; then
             info "Running on a Raspberry Pi"
-            chmod +x /config/packages/autoconfig_rpi/auto_config.py
-            python /config/packages/autoconfig_rpi/auto_config.py -v
         else
             info "Running on an x86-based machine."
-            chmod +x /config/packages/autoconfig_x86_64/auto_config.py
-            python /config/packages/autoconfig_x86_64/auto_config.py -v
         fi
+        chmod +x /config/packages/autoconfig/auto_config.py
+        python /config/packages/autoconfig/auto_config.py -v
         ;;
     *)
         echo "Opzione non valida"
