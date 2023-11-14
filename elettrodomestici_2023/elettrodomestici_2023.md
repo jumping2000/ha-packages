@@ -1,5 +1,7 @@
 $$\textbf{\color{lightgreen} \huge 🌀 Elettrodomesticoi Smart 2023💦}$$
 
+<p align="center">  **[Elettrodomestici Smart Video](https://www.youtube.com/@jumping-/videos)**  </p>
+
 <p align="center"> 🔥 <b>con AUTO-DOWNLOAD e AUTO-CONFIG</b> 🔥 </p>
 
 | Sommario |
@@ -30,6 +32,8 @@ $$\textbf{\color{lightgreen} \huge 🌀 Elettrodomesticoi Smart 2023💦}$$
 **Ti piace questo package? Lascia una stella su Github e supportami per realizzarne altri!** <a href="https://www.buymeacoffee.com/jumping"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" height="20"></a>
 
 [![Websitebadge]][website] [![Forum][forumbadge]][forum] [![telegrambadge]][telegram] [![facebookbadge]][facebook] 
+
+<p align="center">  **[Elettrodomestici Smart Video](https://www.youtube.com/@jumping-/videos)**  </p>
 
 ## Introduzione
 
