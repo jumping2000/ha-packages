@@ -1,8 +1,6 @@
 $$\textbf{\color{lightgreen} \huge 🌀 Elettrodomesticoi Smart 2023💦}$$
 
-<p align="center">  **[Elettrodomestici Smart Video](https://www.youtube.com/@jumping-/videos)**  </p>
-
-<p align="center"> 🔥 <b>con AUTO-DOWNLOAD e AUTO-CONFIG</b> 🔥 </p>
+<p align="center"> 🔥 <b>con AUTO-DOWNLOAD, AUTO-CONFIG E VIDEO PASSO PASSO </b> 🔥 </p>
 
 | Sommario |
 | :---: |
@@ -26,6 +24,8 @@ $$\textbf{\color{lightgreen} \huge 🌀 Elettrodomesticoi Smart 2023💦}$$
 | :---: | --- |
 | Livello | Novizio (Novizio, Esperto, Pro) |
 | Difficoltà | Bassa (Bassa, Media, Alta) |
+
+**[Elettrodomestici Smart Video](https://www.youtube.com/@jumping-/videos)**
 
 <br>
 
