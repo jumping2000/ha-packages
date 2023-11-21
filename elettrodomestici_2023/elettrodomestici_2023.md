@@ -33,8 +33,6 @@ $$\textbf{\color{lightgreen} \huge 🌀 Elettrodomesticoi Smart 2023💦}$$
 
 [![Websitebadge]][website] [![Forum][forumbadge]][forum] [![telegrambadge]][telegram] [![facebookbadge]][facebook] 
 
-<p align="center">  **[Elettrodomestici Smart Video](https://www.youtube.com/@jumping-/videos)**  </p>
-
 ## Introduzione
 
 L'articolo riprende quanto avevamo già scritto nel 2020 con l'articolo **[Elettrodomestici Smart](https://hassiohelp.eu/2020/04/05/elettrodomestici-smart-con-home-assistant/)** che ha introdotto:
