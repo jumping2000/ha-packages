@@ -324,7 +324,7 @@ Fatto questo **riavviate  Home Assistant** e verificate che non ci siano nel log
 | Blueprint |
 | :---: |
 
-$$\textbf{\color{blue} \normalsize 🌀 Ricorda per ogni elettrodomestico che vorrai configurare dovrai eseguire il blueprint. 🌀}$$
+$$\textbf{\color{blue} \normalsize 🌀 Ricorda: dovrai eseguire il blueprint per ogni elettrodomestico che vorrai configurare. 🌀}$$
 
 Lanciare il blueprint [CN FSM ](https://github.com/jumping2000/ha-templates/tree/main/blueprints/cn_fsm):
 * impostare le entità richieste come sensori di potenza e energia e le soglie di potenza relative all'attivazioni dell'elettrodomestico
