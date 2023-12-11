@@ -1,4 +1,4 @@
-$$\textbf{\color{lightgreen} \huge 🌀 Elettrodomesticoi Smart 2023💦}$$
+$$\textbf{\color{lightgreen} \huge 🌀 Elettrodomestici Smart 2023💦}$$
 
 <p align="center"> 🔥 <b>con AUTO-DOWNLOAD, AUTO-CONFIG E VIDEO PASSO PASSO </b> 🔥 </p>
 
