@@ -381,7 +381,7 @@ Dopo le operazioni preliminare sul package e il completamento del blueprint si p
 
 * avviare lo script `smart_config.sh`con l'opzione `config` (--> `config# ./smart_config.sh config` <--), questo script si preoccuperà di configurare il pacchetto con i dati inseriti nel blueprint;
 
-* controllare package e card con un editor di testo e verificare che non ci siano tag "**ENTITA' NON NEL BLUEPRINT**", che può indicare 2 cose:
+* controllare package e card con un editor di testo e verificare che non ci siano tag "**ENTITA' NON NEL BLUEPRINT**" o "**TAG_XX**", che può indicare 2 cose:
   * hai dimenticato di inserire nel blueprint delle entità necessarie;
   * ci sono delle entità da cancellare poichè non significative nella tua configurazione;
 * finiti questi passaggi inserire la card dell'elettrodomestico (es. card_lavatrice.yaml) nella propria configurazione Lovelace in YAML oppure nella propria interfaccia costruita tramite UI come di seguito riportato;
